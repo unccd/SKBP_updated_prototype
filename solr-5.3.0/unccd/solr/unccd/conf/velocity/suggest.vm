@@ -1,0 +1,3 @@
+#foreach($t in $response.response.terms.keywords)
+  $t.key
+#end

@@ -1,0 +1,15 @@
+#set($sort = $request.params.get('sort', "score desc"))
+#set($rows = $request.params.get('rows', "10"))
+#set($queryOpts = $params.get("queryOpts"))
+
+#if($queryOpts == "simple")
+  <table>
+    <tr>
+      <td><b>Find:</b><input type="text" id="q" name="q" value="$!esc.html($params.get('q'))"/></td>
+      <td><a href="#url_for_home?help=basic" target="blank"><img id="help" src="#{url_root}/img/FAQ.png" height="24" width="24" title="Basic Query Syntax Help"/></a></td>
+      <td> &nbsp; &nbsp; <input type="submit" id="querySubmit" value="Search" title="Submit Query"/></td>
+    </tr>
+  </table>
+  <br>
+#end
+

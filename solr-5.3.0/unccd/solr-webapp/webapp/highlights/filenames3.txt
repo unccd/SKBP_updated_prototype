@@ -1,0 +1,2 @@
+highlight1.txt,highlight2.txt,highlight3.txt
+image1.jpg,image2.jpg,image3.jpg

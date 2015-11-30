@@ -1,0 +1,72 @@
+#set($queryOpts = $params.get("queryOpts"))
+
+#if($response.facetFields)
+  <h2><center>Search Filters</center></h2>
+  #foreach($field in $response.facetFields)
+    #if($field.values.size() > 0)
+      #if ($field.name == 'source')
+        <span class="facet-field">Source</span>
+      #elseif ($field.name == 'partnername')
+        <span class="facet-field">Partner Name</span>
+      #elseif ($field.name == 'langname')
+        <span class="facet-field">Language</span>
+      #elseif ($field.name == 'keywords')
+        <span class="facet-field">Keywords</span>
+      #elseif ($field.name == 'regions_nav')
+        <span class="facet-field">Regions</span>
+      #elseif ($field.name == 'annexes_nav')
+        <span class="facet-field">UNCCD Annexes</span>
+      #elseif ($field.name == 'nonannexes_nav')
+        <span class="facet-field">UNCCD Non-Annex Country</span>
+      #elseif ($field.name == 'landmanagement_nav')
+        <span class="facet-field">Causes of Land Degradation</span>
+      #elseif ($field.name == 'climatezones_nav')
+        <span class="facet-field">Climate Zones</span>
+      #elseif ($field.name == 'typology')
+        <span class="facet-field">Document Type</span>
+      #elseif ($field.name == 'datatype')
+        <span class="facet-field">Data Type</span>
+      #elseif ($field.name == 'format')
+        <span class="facet-field">Format</span>
+      #elseif ($field.name == 'authors_nav')
+        <span class="facet-field">Authors</span>
+      #elseif ($field.name == 'classifications')
+        <span class="facet-field">CBW Classifications</span>
+      #elseif ($field.name == 'yearpublished')
+        <span class="facet-field">Published</span>
+      #elseif ($field.name == 'country')
+        <span class="facet-field">Country</span>
+      #elseif ($field.name == 'disciplines_nav')
+        <span class="facet-field">Disciplines</span>
+      #elseif ($field.name == 'knowledgebase')
+        <span class="facet-field">Knowledge Base</span>
+      #elseif ($field.name == 'region')
+        <span class="facet-field">Region</span>
+      #elseif ($field.name == 'specializations_nav')
+        <span class="facet-field">Specializations</span>
+      #elseif ($field.name == 'managingentitytype')
+        <span class="facet-field">Managing Entity Type</span>
+      #elseif ($field.name == 'postcop_nav')
+        <span class="facet-field">Postcop</span>
+      #elseif ($field.name == 'thematicareas_nav')
+        <span class="facet-field">Thematic Areas</span>
+      #elseif ($field.name == 'topics_nav')
+        <span class="facet-field">Topics</span>
+      #elseif ($field.name == 'infoformats')
+        <span class="facet-field">Information Formats</span>
+      #end
+      <ul>
+        #foreach($facet in $field.values)
+          <li>
+            #if ($queryOpts == 'advanced' && $field.name == 'source')
+              $facet.name ($facet.count)
+            #else
+              <a href="#url_for_facet_filter($field.name, $facet.name)">$facet.name</a> ($facet.count)
+            #end
+          </li>
+        #end
+      </ul>
+      <br>
+    #end
+  #end
+#end

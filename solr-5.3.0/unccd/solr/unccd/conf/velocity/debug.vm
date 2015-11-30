@@ -1,0 +1,444 @@
+<br>
+<a href="#" onclick='jQuery(this).siblings("pre2").toggle(); return false;'>Additional Information</a>
+<br>
+<pre2 style="display:none">
+  <br>
+
+  ## Common fields
+
+
+  #if ($doc.getFieldValue("score"))
+    <span class="field-name">Score: </span><span>$esc.html($doc.getFieldValue("score"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("id"))
+    <span class="field-name">Document ID: </span><span>$esc.html($doc.getFieldValue("id"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("modified"))
+    <span class="field-name">Modified: </span><span>$esc.html($doc.getFieldValue("modified"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("published"))
+    <span class="field-name">Published: </span><span>$esc.html($doc.getFieldValue("published"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("langname"))
+    <span class="field-name">Language: </span><span>$esc.html($doc.getFieldValue("langname"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("typology"))
+    <span class="field-name">Typology: </span><span>$esc.html($doc.getFieldValue("typology"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("datatype"))
+    <span class="field-name">Data Type: </span><span>$esc.html($doc.getFieldValue("datatype"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("authors"))
+    <span class="field-name">Authors: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("authors"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("regions"))
+    <span class="field-name">Regions: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("regions"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("annexes"))
+    <span class="field-name">UNCCD Annexes: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("annexes"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("nonannexes"))
+    <span class="field-name">UNCCD Non-Annex Country: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("nonannexes"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("landmanagement"))
+    <span class="field-name">Causes of Land Degradation: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("landmanagement"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("climatezones"))
+    <span class="field-name">Climate zones: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("climatezones"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("yearmodified"))
+    <span class="field-name">Modified Year: </span><span>$esc.html($doc.getFieldValue("yearmodified"))</span><br><br>
+  #end
+
+
+  ## CBW HTML fields
+
+
+  #if ($doc.getFieldValue("classifications"))
+    <span class="field-name">Classifications: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("classifications"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+
+  ## CSIC XML fields
+
+
+  #if ($doc.getFieldValue("isbn"))
+    <span class="field-name">ISBN: </span><span>$esc.html($doc.getFieldValue("isbn"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("identifier"))
+    <span class="field-name">Identifier: </span><span>$esc.html($doc.getFieldValue("identifier"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("subjects"))
+    <span class="field-name">Subjects:</span>
+    <span>
+      #foreach($value in $doc.getFieldValues("subjects"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("accessioneddate"))
+    <span class="field-name">Accessioned Date: </span><span>$esc.html($doc.getFieldValue("accessioneddate"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("citation"))
+    <span class="field-name">Citation: </span><span>$esc.html($doc.getFieldValue("citation"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("publishers"))
+    <span class="field-name">Publishers:</span>
+    <span>
+      #foreach($value in $doc.getFieldValues("publishers"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+
+  ## ISRIC XML fields
+
+
+  #if ($doc.getFieldValue("contactname"))
+    <span class="field-name">Contact Name: </span><span>$esc.html($doc.getFieldValue("contactname"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("contactorganisation"))
+    <span class="field-name">Contact Organisation: </span><span>$esc.html($doc.getFieldValue("contactorganisation"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("contactphone"))
+    <span class="field-name">Contact Phone: </span><span>$esc.html($doc.getFieldValue("contactphone"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("contactemail"))
+    <span class="field-name">Contact email: </span><span>$esc.html($doc.getFieldValue("contactemail"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("publication"))
+    <span class="field-name">Publication: </span><span>$esc.html($doc.getFieldValue("publication"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("citationcode"))
+    <span class="field-name">Citation Code: </span><span>$esc.html($doc.getFieldValue("citationcode"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("geolocation"))
+    <span class="field-name">Geo Location: </span><span>$esc.html($doc.getFieldValue("geolocation"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("geolocationpoly"))
+    <span class="field-name">Geo Rect Coords:</span>
+    <span>
+      #foreach($value in $doc.getFieldValues("geolocationpoly"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+
+  ## AGRIS XML fields
+
+
+  #if ($doc.getFieldValue("extent"))
+    <span class="field-name">Extent: </span><span>$esc.html($doc.getFieldValue("extent"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("volume"))
+    <span class="field-name">Volume: </span><span>$esc.html($doc.getFieldValue("volume"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("issue"))
+    <span class="field-name">Issue: </span><span>$esc.html($doc.getFieldValue("issue"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("type"))
+    <span class="field-name">Document Type: </span><span>$esc.html($doc.getFieldValue("type"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("yearsubmitted"))
+    <span class="field-name">Year Submitted: </span><span>$esc.html($doc.getFieldValue("yearsubmitted"))</span><br><br>
+  #end
+
+
+  ## TECA XML fields
+
+  #if ($doc.getFieldValue("attachedfiles"))
+    <span class="field-name">Attached Files:</span>
+    <span>
+      #foreach($value in $doc.getFieldValues("attachedfiles"))
+        <a href="$esc.html($value)" target="_blank"><b>$esc.html($value)</b></a>,&nbsp
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("countries"))
+    <span class="field-name">Countries:</span>
+    <span>
+      #foreach($value in $doc.getFieldValues("countries"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("categories"))
+    <span class="field-name">Categories:</span>
+    <span>
+      #foreach($value in $doc.getFieldValues("categories"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+
+  ## WOCAT XML fields
+
+  #if ($doc.getFieldValue("sponsorship"))
+    <span class="field-name">Sponsorship: </span><span>$esc.html($doc.getFieldValue("sponsorship"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("issn"))
+    <span class="field-name">ISSN: </span><span>$esc.html($doc.getFieldValue("issn"))</span><br><br>
+  #end
+
+
+  ## ROE XML fields
+
+  #if ($doc.getFieldValue("country"))
+    <span class="field-name">Country: </span><span>$esc.html($doc.getFieldValue("country"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("lastname"))
+    <span class="field-name">Last Name: </span><span>$esc.html($doc.getFieldValue("lastname"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("firstname"))
+    <span class="field-name">First Name: </span><span>$esc.html($doc.getFieldValue("firstname"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("persontitle"))
+    <span class="field-name">Title: </span><span>$esc.html($doc.getFieldValue("persontitle"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("sex"))
+    <span class="field-name">Sex: </span><span>$esc.html($doc.getFieldValue("sex"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("division"))
+    <span class="field-name">Division: </span><span>$esc.html($doc.getFieldValue("division"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("institution"))
+    <span class="field-name">Institution: </span><span>$esc.html($doc.getFieldValue("institution"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("City"))
+    <span class="field-name">Sponsorship: </span><span>$esc.html($doc.getFieldValue("city"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("telcountrycode"))
+    <span class="field-name">Phone Country Code: </span><span>$esc.html($doc.getFieldValue("telcountrycode"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("telcitycode"))
+    <span class="field-name">Phone City Code: </span><span>$esc.html($doc.getFieldValue("telcitycode"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("telnumber"))
+    <span class="field-name">Phone Number: </span><span>$esc.html($doc.getFieldValue("telnumber"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("website"))
+    <span class="field-name">Website: </span><span>$esc.html($doc.getFieldValue("website"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("expertemail"))
+    <span class="field-name">Email: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("expertemail"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("workexperience"))
+    <span class="field-name">Work Experience: </span><span>$esc.html($doc.getFieldValue("workexperience"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("disciplines"))
+    <span class="field-name">Disciplines: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("disciplines"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("regionid"))
+    <span class="field-name">Region ID: </span><span>$esc.html($doc.getFieldValue("regionid"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("recarchived"))
+    <span class="field-name">Record Archived: </span><span>$esc.html($doc.getFieldValue("recarchived"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("specializations"))
+    <span class="field-name">Specializations: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("specializations"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("postcop"))
+    <span class="field-name">Postcop: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("postcop"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("thematicareas"))
+    <span class="field-name">Thematic Areas: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("thematicareas"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+
+  ## KB XML fields
+
+  #if ($doc.getFieldValue("knowledgebase"))
+    <span class="field-name">Knowledge Base: </span><span>$esc.html($doc.getFieldValue("knowledgebase"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("kss"))
+    <span class="field-name">KSS: </span><span>$esc.html($doc.getFieldValue("kss"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("kssaddress"))
+    <span class="field-name">KSS Address: </span><span>$esc.html($doc.getFieldValue("kssaddress"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("managingentity"))
+    <span class="field-name">Managing Entity: </span><span>$esc.html($doc.getFieldValue("managingentity"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("registrationreq"))
+    <span class="field-name">Registration Required: </span><span>$esc.html($doc.getFieldValue("registrationreq"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("region"))
+    <span class="field-name">Region: </span><span>$esc.html($doc.getFieldValue("region"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("translation"))
+    <span class="field-name">Translation: </span><span>$esc.html($doc.getFieldValue("translation"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("managingentitytype"))
+    <span class="field-name">Managing Entity: </span><span>$esc.html($doc.getFieldValue("managingentitytype"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("searchcapability"))
+    <span class="field-name">Search Capability: </span><span>$esc.html($doc.getFieldValue("searchcapability"))</span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("topics"))
+    <span class="field-name">Topics: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("topics"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+  #if ($doc.getFieldValue("infoformats"))
+    <span class="field-name">Infomation Formats: </span>
+    <span>
+      #foreach($value in $doc.getFieldValues("infoformats"))
+        $esc.html($value),
+      #end
+    </span><br><br>
+  #end
+
+
+  ## Dynamic common fields
+
+  #foreach($langValue in $doc.getFieldValues("languages"))
+    #set($fieldName = "title_" + $langValue)
+    #if($doc.getFieldValue($fieldName))
+      <span class="field-name">Title ($langValue): </span>#field($fieldName)<br><br>
+    #end
+
+    #set($fieldName = "description_" + $langValue)
+    #if($doc.getFieldValue($fieldName))
+      <span class="field-name">Description ($langValue): </span><span>#field($fieldName)<br><br>
+    #end
+
+    #set($fieldName = "abstract_" + $langValue)
+    #if($doc.getFieldValue($fieldName))
+      <span class="field-name">Abstract ($langValue): </span><span>#field($fieldName)</span><br><br>
+    #end
+
+    #set($fieldName = "body_" + $langValue)
+    #if($doc.getFieldValue($fieldName))
+      <span class="field-name">Body ($langValue): </span><span>#field($fieldName)</span><br><br>
+    #end
+  #end
+
+
+</pre2>

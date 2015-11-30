@@ -1,0 +1,3 @@
+WOCAT Best Practices
+#/results?q=*&source=Partner&partnername=WOCAT
+The World Overview of Conservation Approaches and Technologies (WOCAT) is the primary recommended database for best practices on SLM technologies. The WOCAT Best Practices will be made available through the UNCCD Scientific Knowledge Brokering Portal (SKBP).

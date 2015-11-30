@@ -1,0 +1,432 @@
+#set($help = $params.get("help", ''))
+
+<html>
+  <head>
+    <title>Query Syntax Help</title>
+  </head>
+  <body style="font-family:verdana;font-style:normal">
+    #if($help == 'basic')
+      <table width="100%">
+        <tr>
+          <td align="center">
+            <table width="800px" cellspacing="12" style="font-size:10pt">
+              <tr>
+                <td bgcolor="#0B0B3B">
+                  <font size="3" color="white"><b>Table of Contents</b></font>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <ul>
+                    <li><a href="#_Terms">Terms</a></li>
+                    <li><a href="#_Term_Modifiers">Term Modifiers</a></li>
+                    <ul>
+                      <li><a href="#_Wildcard_Searches">Wildcard</a></li>
+                      <li><a href="#_Fuzzy_Searches">Fuzzy Searches</a></li>
+                      <li><a href="#_Proximity_Searches">Proximity Searches</a></li>
+                    </ul>
+                    <li><a href="#_Boolean_Operators">Boolean Operators</a></li>
+                    <ul>
+                      <li><a href="#_OR">OR</a></li>
+                      <li><a href="#_AND">AND</a></li>
+                      <li><a href="#_+">+</a></li>
+                      <li><a href="#_NOT">NOT</a></li>
+                      <li><a href="#_-">-</a></li>
+                    </ul>
+                    <li><a href="#_Grouping">Grouping</a></li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td bgcolor="#0B0B3B">
+                  <a name="_Terms"></a><font size="3" color="white"><b>Terms</b></font>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  A query is broken up into terms and operators. There are two types of terms:<br>
+                  <ol>
+                    <li><i>Single Terms:</i> Refers to a single word such as "world" or "soil".</li>
+                    <li><i>Phrases:</i> Refers to a group of words surrounded by double quotes such as "combat desertification".</li>
+                  </ol>
+                  Multiple terms can be combined together with Boolean operators to form a more complex query (see below).<br><br>
+                </td>
+              </tr>
+              <tr>
+                <td bgcolor="#0B0B3B">
+                  <a name="_Term_Modifiers"></a><font size="3" color="white"><b>Term Modifiers</b></font>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Query terms can be modified to provide a wide range of searching options.<br><br>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">
+                  <table width="740px" style="font-size:10pt">
+                    <tr>
+                      <td bgcolor="#0B0B3B">
+                        <a name="_Wildcard_Searches"></a><font size="3" color="white"><b><i>Wildcard Searches</i></b></font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>Single and multiple character wildcard searches within single terms (not within phrase queries) can be used:
+                        <ul>
+                          <li>To perform a single character wildcard search use the "?" symbol.</li>
+                          <li>To perform a multiple character wildcard search use the "*" symbol.</li>
+                        </ul>
+                        The single character wildcard search looks for a keyword, where the replaced character that is replaced by “?” can be replaced by any other character. For example, to search for <i>"text"</i> or <i>"test"</i> you can use the search:<br><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#F3F3F3">
+                        <font face="courier">te?t</font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>Multiple character wildcard searches looks for 0 or more characters. For example, to search for test, tests or tester, you can use the search:<br><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#F3F3F3">
+                        <font face="courier">test*</font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>You can also use the wildcard searches in the middle of a term.<br><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#F3F3F3">
+                        <font face="courier">te*t</font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><br></td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#0B0B3B">
+                        <a name="_Fuzzy_Searches"></a><font size="3" color="white"><b><i>Fuzzy Searches</i></b></font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>To do a fuzzy search use the tilde, "~", symbol at the end of a single word term.<br>
+                        For example, to search for a term similar in spelling to "roam" use the fuzzy search:
+                        <br><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#F3F3F3">
+                        <font face="courier">roam~</font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>This search will find terms such as <i>from, COAM, room, road</i>.<br>
+                        <br>An additional (optional) parameter can specify the required similarity. The value is between 0 and 1, where terms with a value closer to 1 are the most similar. For example:<br><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#F3F3F3">
+                        <font face="courier">roam~0.8</font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>The default value used if the parameter is not given is 0.5.<br><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#0B0B3B">
+                        <a name="_Proximity_Searches"></a><font size="3" color="white"><b><i>Proximity Searches</i></b></font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>To do a proximity search use the tilde, "~", symbol at the end of a phrase.<br>
+                        For example, to search for a "world" and "desertification" within 10 words of each other in a document use the search:<br><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#F3F3F3">
+                        <font face="courier">"world desertification"~5</font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>This search will return documents matching:<br><br>
+
+                        ...of the <b>World</b> Day to Combat <b>Desertification</b> and drought...<br>
+                        ...<b>World</b> Atlas of <b>Desertification</b>...<br>
+                        ...occasion of <b>World Desertification</b> Day...<br>
+                        ...the <b>world’s</b> land surface is threatened by <b>desertification</b>, or put...<br><br>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td bgcolor="#0B0B3B">
+                  <a name="_Boolean_Operators"></a><font size="3" color="white"><b>Boolean Operators</b></font>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Boolean operators allow terms to be combined through logic operators.<br>
+                  AND, "+", OR, NOT and "-" are the supported Boolean operators.<br><br>
+                  <b>NOTE: Boolean operators must be ALL CAPS.<b.><br><br>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">
+                  <table width="740px" style="font-size:10pt">
+                    <tr>
+                      <td bgcolor="#0B0B3B">
+                        <a name="_OR"></a><font size="3" color="white"><b><i>OR</i></b></font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>The OR operator links two terms and finds a matching document if either of the terms exist in a document. This is equivalent to union using sets.<br><br>
+                        To search for documents that contains either "combat desertification" or just "soil" use the query:<br><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#F3F3F3">
+                        <font face="courier">"combat desertification" OR soil</font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#0B0B3B">
+                        <a name="_AND"></a><font size="3" color="white"><b><i>AND</i></b></font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>The AND operator is the default conjunction operator. This means that if there is no Boolean operator between two terms, the AND operator is implicitly used. The AND operator matches documents where both terms exist anywhere in the text of a single document. This is equivalent to an intersection using sets.<br><br>
+                        To search for documents that contain "combat desertification" and "soil conservation" use the query:<br><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#F3F3F3">
+                        <font face="courier">"combat desertification" "soil conservation"</font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td height="30">or</td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#F3F3F3">
+                        <font face="courier">"combat desertification" AND "soil conservation"</font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><br></td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#0B0B3B">
+                        <a name="_+"></a></a><font size="3" color="white"><b><i>+</i></b></font><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>The "+" or required operator requires that the term after the "+" symbol exist somewhere in the field of a single document.<br><br>
+                        To search for documents that must contain "desertification" and may contain "combat" use the query:<br><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#F3F3F3">
+                        <font face="courier">+desertification OR combat</font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><br></td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#0B0B3B">
+                        <a name="_NOT"></a><font size="3" color="white"><b><i>NOT</i></b></font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>The NOT operator excludes documents that contain the term after NOT. This is equivalent to a difference using sets.<br><br>
+                        To search for documents that contain "combat desertification" but not "land degradation" use the query:<br><br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#F3F3F3">
+                        <font face="courier">"combat desertification" NOT "land degradation"</font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td height="40">
+                        The NOT operator can be used with just one term.
+                      </td>
+                    </tr>
+                      <td bgcolor="#F3F3F3">
+                        <font face="courier">NOT "land degradation"</font>
+                      </td>
+                    <tr>
+                      <td><br></td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#0B0B3B">
+                        <a name="_-"></a><font size="3" color="white"><b>-</b></font>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <br>The "-" or prohibit operator excludes documents that contain the term after the "-" symbol.<br><br>
+                        To search for documents that contain "combat desertification" but not "land degradation" use the query:<br><br>
+                      </td>
+                    </tr>
+                      <td bgcolor="#F3F3F3">
+                        <font face="courier">"combat desertification" -"land degradation"</font>
+                      </td>
+                    <tr>
+                      <td><br></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td bgcolor="#0B0B3B">
+                  <a name="_Grouping"></a><font size="3" color="white"><b>Grouping</b></font>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Use parentheses to group clauses to form sub queries. This can be very useful if you want to control the Boolean logic for a query.<br><br>
+                  To search for either "combat" or "conservation" and "desertification" use the query:<br>
+                </td>
+              </tr>
+              <tr>
+                <td bgcolor="#F3F3F3">
+                  <font face="courier">(combat OR conservation) AND desertification</font>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  This eliminates any confusion and makes sure you that "desertification" must exist and either term "combat" or "conservation" may exist.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    #elseif($help == 'advanced')
+      <table width="100%">
+        <tr>
+          <td align="center">
+            <table width="800px" cellspacing="12" style="font-size:10pt">
+              <tr>
+                <td bgcolor="#0B0B3B">
+                  <font size="3" color="white"><b>Advanced Search Help</b></font>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Advanced or fielded search supports the same features and search standards as the basic search tab.<br><br>
+                  Please refer to the <a href="#url_for_home?help=basic">Basic Search Query Syntax Help</a> for more details.<br><br><br>
+
+                  <b>The following rules apply to <i>"Title", "Body", "Description"</i> and <i>"Abstract"</i> fields</b><br><br>
+
+                  <b>To find search results matching:</b><br>
+
+                  <ul>
+                    <li><b><i>All of the words entered in a search query,</i></b> type the terms without using any Boolean operator.<br>
+                        By default the search engine uses <b>AND.</b><br><br>
+
+                        This means that all keywords entered in a particular field must appear in that field, though not in a particular order.<br><br>
+
+                        <i>For example:</i>If the <font face="courier">Land management soil</font> is entered in the title field; all of these words should appear in the title field for a search result to be retrieved by the SKBP.
+                    </li><br>
+
+                    <li><b><i>An exact phrase,</i></b> type the exact words in between quotes.<br><br>
+
+                        This means that all keywords entered between the quotation mark should appear in a given field exactly as they are written<br><br>
+
+                        <i>For example:</i><font face="courier"> "Land management"</font>
+                    </li><br>
+
+                    <li><b><i>Any of the words in a search query,</i></b> type OR between all of the words.<br><br>
+
+                        This means that any of the keywords entered for a given search may appear in the search result records, though no more than one of the entered keywords are required to appear in the search results.<br><br>
+
+                        <i>For example:</i><font face="courier"> Land OR management OR Soil</font></li><br>
+
+                    <li><b><i>None of the words,</i></b> type NOT before the word or phrase that should be excluded.<br><br>
+
+                        This means that all search records returned for this search query will not contain the words or phrase entered after NOT. Please note all phrases should be entered in quotes.<br><br>
+
+                        <i>For example:</i><font face="courier"> NOT soil</font>
+                    </li><br>
+
+                    <li><b><i>Combination of the previous rules.</i></b><br><br>
+
+                        <i>For example:</i><font face="courier"> "Land management" NOT soil</font>
+                    </li><br>
+                  </ul>
+
+
+                  <b>The following rules apply to <i>"Published"</i> field.</b><br><br>
+
+                  <b>To find search results matching:</b><br>
+
+                  <ul>
+                    <li><b><i>A defined range of years,</i></b> type years in "From" and "To" fields, where "From" refers to the earliest year of publication, and "To" refers to the most recent year of publication.<br><br>
+
+                        <i>For example:</i><font face="courier"> From: [2010]  To: [2012]</font>
+                    </li><br>
+
+                    <li><b><i>From a particular year until today,</i></b> type the year of publication in "From" field only.<br><br>
+
+                        <i>For example:</i><font face="courier"> From: [2010]  To: [&nbsp; &nbsp; ]</font>
+                    </li><br>
+
+                    <li><b><i>From the earliest available records to a particular year of publication,</i></b> type the year of publication in "To" field only.<br><br>
+
+                        <i>For example:</i><font face="courier"> From: [&nbsp; &nbsp; ]  To: [2010]</font>
+                    </li>
+                  </ul>
+                  &nbsp; &nbsp; &nbsp;<b>NOTE:</b> Ignore square brackets.<br><br><br>
+
+
+                  <b>The following rules apply to <i>"Geosearch"</i> field.</b><br><br>
+
+                  <b>To find search results matching:</b><br>
+
+                  <ul>
+                    <li><b><i>A specific area,</i></b> type geo coordinates in "From" and "To" fields.<br><br>
+
+                        <i>For example:</i><font face="courier"> From: [-17.10 -34.50]  To: [51.20 37.40]</font>
+                    </li><br>
+                  </ul>
+
+                  &nbsp; &nbsp; &nbsp;<b>NOTE:</b> Geo coordinates correspond to a rectangular area where From is minX,minY and To MaxX,MaxY.<br>
+                  &nbsp; &nbsp; &nbsp;Documents with areas overlapping the coordinates typed will be returned in the results.<br>
+                  &nbsp; &nbsp; &nbsp;All 4 coordinates are required to execute the search; otherwise the entered search values will be ignored.<br>
+
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    #end
+  </body>
+</html>

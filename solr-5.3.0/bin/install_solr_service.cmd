@@ -1,0 +1,1 @@
+install_solr_service.exe install Solr-5.3.1 "%~dp0solr.cmd" start -p 8983 -d unccd -f

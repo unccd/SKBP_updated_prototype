@@ -1,0 +1,221 @@
+#set($queryOpts = $params.get("queryOpts"))
+
+#if($queryOpts == "advanced")
+  #set($q = $params.get("q", ''))
+  #set($qf = '')
+  <input type="hidden" id="q" name="q" value="$!esc.html($params.get('q', ""))"/>
+
+  #set($docLang = "")
+  #set($sourceUnccd = "")
+  #set($sourceCsic = "")
+  #set($sourceIsric = "")
+  #set($sourceTeca = "")
+  #set($sourceWocat = "")
+  #set($sourceAgris = "")
+  #set($docTitle = "")
+  #set($docBody = "")
+  #set($docDesc = "")
+  #set($docAbst = "")
+  #set($pubFrom = "")
+  #set($pubTo = "")
+
+  #foreach ($element in $q.split(" AND "))
+    #if($element.contains("language"))
+      #set($docLang = $element.substring(9))
+    #elseif($element.contains("source"))
+      #foreach ($source in $element.split(" OR "))
+        #if($source.contains("UNCCD"))
+          #set($sourceUnccd = "checked")
+        #elseif($source.contains("CSIC"))
+          #set($sourceCsic = "checked")
+        #elseif($source.contains("ISRIC"))
+          #set($sourceIsric = "checked")
+        #elseif($source.contains("TECA"))
+          #set($sourceTeca = "checked")
+        #elseif($source.contains("WOCAT"))
+          #set($sourceWocat = "checked")
+        #elseif($source.contains("AGRIS"))
+          #set($sourceAgris = "checked")
+        #end
+      #end
+    #elseif($element.contains("title_"))
+      #set($docTitle = $element.substring(11, $element.indexOf(")")).replace('"', '&quot;'))
+    #elseif($element.contains("body_"))
+      #set($docBody = $element.substring(10, $element.indexOf(")")).replace('"', '&quot;'))
+    #elseif($element.contains("description_"))
+      #set($docDesc = $element.substring(17, $element.indexOf(")")).replace('"', '&quot;'))
+    #elseif($element.contains("abstract_"))
+      #set($docAbst = $element.substring(14, $element.indexOf(")")).replace('"', '&quot;'))
+    #elseif($element.contains("yearpublished"))
+      #if ($element.contains("[*"))
+        #set($pubTo = $element.substring(20, 24))
+      #elseif ($element.contains("*]"))
+        #set($pubFrom = $element.substring(15, 19))
+      #else
+        #set($pubFrom = $element.substring(15, 19))
+        #set($pubTo = $element.substring(23, 27))
+      #end
+    #end
+  #end
+
+  <table>
+    <tr>
+      <td nowrap align="right" width=110px>
+        <label><b>Language:</b></label>
+      </td>
+      <td nowrap width=330px>
+        <select id="docLang" name="docLang">
+          <option value="en" #if($docLang == 'en')selected="true"#end>English</option>
+          <option value="es" #if($docLang == 'es')selected="true"#end>Spanish</option>
+          <option value="de" #if($docLang == 'de')selected="true"#end>German</option>
+          <option value="it" #if($docLang == 'it')selected="true"#end>Italian</option>
+          <option value="fr" #if($docLang == 'fr')selected="true"#end>French</option>
+        </select>
+      </td>
+      <td nowrap align="right" width=130px>
+        <label><b>Source:</b></label>
+      </td>
+      <td nowrap width=390px>
+        <font size="1">
+          <input id="sourceCsic" name="sourceCsic" type="checkbox" value="CSIC" $sourceCsic>CSIC
+          <input id="sourceIsric" name="sourceIsric" type="checkbox" value="ISRIC" $sourceIsric>ISRIC
+          <input id="sourceTeca" name="sourceTeca" type="checkbox" value="TECA" $sourceTeca>TECA
+          <input id="sourceWocat" name="sourceWocat" type="checkbox" value="WOCAT" $sourceWocat>WOCAT
+          <input id="sourceAgris" name="sourceAgris" type="checkbox" value="AGRIS" $sourceAgris>AGRIS
+        </font>
+      </td>
+      <td nowrap width="100px">
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+        <label><b>Title:</b></label>
+      </td>
+      <td>
+        <input id="docTitle" name="docTitle" type="text" size="50" value="#if($docTitle != '')$docTitle#end"/>
+      </td>
+      <td align="right">
+        <label><b>Body:</b></label>
+      </td>
+      <td>
+        <input id="docBody" name="docBody" type="text" size="50" value="#if($docBody != '')$docBody#end"/>
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+        <label><b>Description:</b></label>
+      </td>
+      <td>
+        <input id="docDesc" name="docDesc" type="text" size="50" value="#if($docDesc != '')$docDesc#end"/>
+      </td>
+      <td align="right">
+        <label><b>Abstract:</b></label>
+      </td>
+      <td>
+        <input id="docAbst" name="docAbst" type="text" size="50" value="#if($docAbst != '')$docAbst#end"/>
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+        <label><b>Published:</b></label>
+      </td>
+      <td align="right">
+        <label> From: </label>
+        <input id="pubFrom" name="pubFrom" type="text" size="4" maxlength="4" value="#if($pubFrom != '')$pubFrom#end"/>
+        <label> To: </label>
+        <input id="pubTo" name="pubTo" type="text" size="4" maxlength="4" value="#if($pubTo != '')$pubTo#end"/>
+      </td>
+      <td>
+      </td>
+      <td>
+      </td>
+      <td align="left">
+        <input type="submit" id="querySubmit" value="Search"/>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <script type="text/javascript">
+    $('#query-form').submit(function() {
+      var qValue = 'language:' + docLang.value;
+
+      if(sourceUnccd.checked || sourceCsic.checked || sourceIsric.checked || sourceTeca.checked || sourceWocat.checked || sourceAgris.checked) {
+        var source = "";
+        if(sourceUnccd.checked) {
+          source = 'source:UNCCD';
+        }
+        if(sourceCsic.checked) {
+          if (source == "") {
+            source = 'source:CSIC';
+          } else {
+            source += ' OR source:CSIC';
+          }
+        }
+        if(sourceIsric.checked) {
+          if (source == "") {
+            source = 'source:ISRIC';
+          } else {
+            source += ' OR source:ISRIC';
+          }
+        }
+        if(sourceTeca.checked) {
+          if (source == "") {
+            source = 'source:TECA';
+          } else {
+            source += ' OR source:TECA';
+          }
+        }
+        if(sourceWocat.checked) {
+          if (source == "") {
+            source = 'source:WOCAT';
+          } else {
+            source += ' OR source:WOCAT';
+          }
+        }
+        if(sourceAgris.checked) {
+          if (source == "") {
+            source = 'source:AGRIS';
+          } else {
+            source += ' OR source:AGRIS';
+          }
+        }
+        qValue += ' AND (' + source + ')';
+      }
+
+      if (docTitle.value.trim() != '') {
+        qValue += ' AND (title_' + docLang.value + ':(' + docTitle.value.trim() + '))';
+      }
+
+      if (docBody.value.trim() != '') {
+        qValue += ' AND (body_' + docLang.value + ':(' + docBody.value.trim() + '))';
+      }
+
+      if (docDesc.value.trim() != '') {
+        qValue += ' AND (description_' + docLang.value + ':(' + docDesc.value.trim() + '))';
+      }
+
+      if (docAbst.value.trim() != '') {
+        qValue += ' AND (abstract_' + docLang.value + ':(' + docAbst.value.trim() + '))';
+      }
+
+      if (pubFrom.value.trim() != '' && pubTo.value.trim() != '') {
+        qValue += ' AND yearpublished:[' + pubFrom.value.trim() + ' TO ' + pubTo.value.trim() + ']';
+      } else if (pubFrom.value.trim() != '' && pubTo.value.trim() == '') {
+        qValue += ' AND yearpublished:[' + pubFrom.value.trim() + ' TO *]';
+      } else if (pubFrom.value.trim() == '' && pubTo.value.trim() != '') {
+        qValue += ' AND yearpublished:[* TO ' + pubTo.value.trim() + ']';
+      }
+
+      document.getElementById('q').value = qValue;
+
+      return true;
+    });
+
+  </script>
+
+#end

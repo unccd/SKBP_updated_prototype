@@ -1,0 +1,30 @@
+
+
+#if (!$params.get('queryOpts'))
+  #set($queryOpts = $params.get('queryOpts', "simple"))
+#end
+
+<div class="tabs-bar">
+  <br><br>
+  <b>Type of Search:</b>
+
+  #set( $selected = ($queryOpts == "simple"))
+
+  <span class="tab #if($selected)selected#end">
+    #if ($selected)
+      Basic
+    #else
+      <a href="#url_for_home">Basic</a>
+    #end
+  </span>
+
+  #set( $selected = ($queryOpts == "advanced"))
+
+  <span class="tab #if($selected)selected#end">
+    #if($selected)
+      Advanced
+    #else
+      <a href="#url_for_advanced?queryOpts=advanced&q=*:*">Advanced</a>
+    #end
+  </span>
+</div>

@@ -1,0 +1,198 @@
+#set($q = $request.params.get('q', ""))
+#parse('mime_type_lists.vm')
+
+## Title firstname lastname
+#if($doc.getFieldValue('source').equals("ROE"))
+  ## Source
+  <div><b>Roster of Experts</b></div>
+
+  ## Expert full name
+  <div>
+    #if($doc.getFieldValue('persontitle'))$doc.getFieldValue('persontitle')#end #if($doc.getFieldValue('firstname'))$doc.getFieldValue('firstname')#end #if($doc.getFieldValue('lastname'))$doc.getFieldValue('lastname')#end
+  </div>
+
+  ## Expert email
+  #if($doc.getFieldValue('expertemail'))
+    <div>
+      #foreach($value in $doc.getFieldValues("expertemail"))
+        $esc.html($value),
+      #end
+    </div>
+  #end
+
+  ## Intitution
+  #if ($doc.getFieldValue("institution"))
+    <div>$esc.html($doc.getFieldValue("institution"))</div>
+  #end
+
+  ## City, country
+  <div>
+    #if($doc.getFieldValue('city'))$doc.getFieldValue('city')#end#if($doc.getFieldValue('city'))#end#if($doc.getFieldValue('country')), $doc.getFieldValue('country')#end
+  </div>
+
+  ## Website
+  #if ($doc.getFieldValue("website"))
+    <div><a href="$doc.getFieldValue('website')" target="_blank">$esc.html($doc.getFieldValue("website"))</a></div>
+  #end
+
+#elseif($doc.getFieldValue('source').equals("KB"))
+  ## Source
+  <div><b>UNCCD Knowledge Base</b></div>
+
+  ## KSS
+  #if ($doc.getFieldValue("kss"))
+    <div>$esc.html($doc.getFieldValue("kss"))</div>
+  #end
+
+  ## KSS address
+  #if ($doc.getFieldValue("kssaddress"))
+    <div>$esc.html($doc.getFieldValue("kssaddress"))</div>
+  #end
+
+  ## Country, region
+  <div>#if ($doc.getFieldValue("country"))$esc.html($doc.getFieldValue("country"))#end#if ($doc.getFieldValue("region")), $esc.html($doc.getFieldValue("region"))#end</div>
+
+  ## Website
+  #if ($doc.getFieldValue("website"))
+    <div><a href="$doc.getFieldValue('website')" target="_blank">$esc.html($doc.getFieldValue("website"))</a></div>
+  #end
+
+#else
+  #set($langValue = $doc.getFieldValue('language'))
+
+  <ul>
+    #foreach($name in $session.getAttributeNames())
+      <li> $name = $session.getAttribute($name) </li>
+    #end
+  </ul>
+
+  #if($doc.getFieldValue('url'))
+    #set($url = $esc.html($doc.getFieldValue('url')))
+  #end
+
+  #if($doc.getFieldValue('sourceurl'))
+    #set($sourceurl = $esc.html($doc.getFieldValue('sourceurl')))
+  #end
+
+  ## Title
+  #set($titleFieldName = "title_" + $langValue)
+  #if($doc.getFieldValue($titleFieldName))
+    #set($title = $esc.html($doc.getFieldValue($titleFieldName)))
+  #elseif($doc.getFieldValue('title_en'))
+    #set($title = $esc.html($doc.getFieldValue('title_en')))
+  #elseif($doc.getFieldValue('alttitle_en'))
+    #set($title = $esc.html($doc.getFieldValue('alttitle_en')))
+  #elseif($doc.getFieldValue('title_un'))
+    #set($title = $esc.html($doc.getFieldValue('title_un')))
+  #end
+
+  ## Mime-Type
+  #set($ct = $list.get($doc.getFirstValue('contenttype').split(";"),0))
+  #set($filetype = $mimeExtensionsMap.get($ct))
+
+  <div class="result-title">
+    ## Small file type icons from http://www.splitbrain.org/projects/file_icons (public domain)
+    <img src="#{url_root}/img/filetypes/${filetype}.png" align="center">
+    #if($doc.getFieldValue('url'))
+      <a href="${url}" target="_blank"><b>$title</b></a>
+    #else
+      <b>$title</b>
+    #end
+  </div>
+
+  ## Partner name
+  #if ($doc.getFieldValue("partnername"))
+    <div>$esc.html($doc.getFieldValue("partnername"))</div>
+  #end
+
+  ## Author
+  #if($doc.getFieldValue('authors'))
+    <div>
+      <b>Author:</b> $doc.getFieldValue('authors')
+    </div>
+  #end
+
+  ## Published Year
+  #if($doc.getFieldValue('yearpublished'))
+    <div>
+      <b>Published Year:</b> $doc.getFieldValue('yearpublished')
+    </div>
+  #end
+
+  ## Source
+  <div>
+    #if($doc.getFieldValue('source'))
+      #if($doc.getFieldValue('sourceurl'))
+        <b>Source:</b> <a href="${sourceurl}" target="_blank">$esc.html($doc.getFieldValue('source'))</a>
+      #else
+        <b>Source:</b> $doc.getFieldValue('source')
+      #end
+    #end
+  </div>
+
+  ## Document format
+  #if($doc.getFieldValue('format'))
+    <div>
+      <b>Format:</b> $doc.getFieldValue('format')
+    </div>
+  #end
+
+  ## Document keywords
+
+  #if($doc.getFieldValue('keywords'))
+    <div>
+      #set($keywords = $doc.getFieldValue('keywords'))
+      <b>Keywords:</b>
+      #set($kw = "")
+
+      #foreach ($key in $keywords)
+        #if ($q.toLowerCase().contains($key.toLowerCase()))
+          #set($kw = $kw + "<span class='result-highlight'>" + $key + "</span>, ")
+        #else
+          #set($kw = $kw + $key + ", ")
+        #end
+      #end
+      ## Remove the last comma
+      #set($trimLength = 2)
+      #set($kwLength = $kw.length()-$trimLength)
+      $kw.substring(0, $kwLength)
+    </div>
+  #end
+
+  ## Get document body if not available get abstract
+    #set($bodyFieldName = "body_" + $langValue)
+    #if($doc.getFieldValue($bodyFieldName))
+      <br>
+      <div class="result-body">
+        #field($bodyFieldName)
+      </div>
+    #else
+      #set($abstractFieldName = "abstract_" + $langValue)
+      #if($doc.getFieldValue($abstractFieldName))
+        <br>
+        <div class="result-body">
+          #field($abstractFieldName)
+        </div>
+      #else
+        #set($descriptionFieldName = "description_" + $langValue)
+        #if($doc.getFieldValue($descriptionFieldName))
+          <br>
+          <div class="result-body">
+            #field($descriptionFieldName)
+          </div>
+        #end
+      #end
+    #end
+
+
+  ## ISRIC disclaimer
+  #if($doc.getFieldValue('source').equals("ISRIC"))
+    <br>
+    <div>
+      <a href="http://www.isric.org/content/disclaimer" target="_blank">Disclaimer</a>&nbsp &nbsp
+      <a href="http://www.isric.org/content/data-usage-and-citation" target="_blank">Data Usage Policy</a>
+    </div>
+  #end
+#end
+
+#parse('debug.vm')

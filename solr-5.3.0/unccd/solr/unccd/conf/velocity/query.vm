@@ -1,0 +1,119 @@
+<div class="query-box">
+
+  <form id="query-form" action="#if($request.params.get('queryOpts')=='advanced')#{url_for_advanced}#else#{url_for_home}#end" method="GET">
+    <div class="inputs">
+      #if(!$queryOpts)
+        #set($queryOpts = $request.params.get('queryOpts', "simple"))
+      #end
+      <input type="hidden" id="queryOpts" name="queryOpts" value="$queryOpts"/>
+
+      #parse("query_form.vm")
+      #parse("query_advanced.vm")
+
+      <label><font size=3><b>Sort By:</b></font></label>
+      <select id="sort" name="sort">
+        <option value="score desc" #if($sort == 'score desc')selected="true"#end>Relevance</option>
+        <option value="source asc" #if($sort == 'source asc')selected="true"#end>Source</option>
+        <option value="language asc" #if($sort == 'language asc')selected="true"#end>Language</option>
+        <option value="format asc" #if($sort == 'format asc')selected="true"#end>Format</option>
+        <option value="yearpublished desc" #if($sort == 'yearpublished desc')selected="yearpublished desc"#end>Published</option>
+      </select> &nbsp; &nbsp; &nbsp; &nbsp;
+
+      <label><font size=3><b>Results:</b></font></label>
+      <select id="rows" name="rows">
+        <option value="10" #if($rows == '10')selected="true"#end>10</option>
+        <option value="20" #if($rows == '20')selected="true"#end>20</option>
+        <option value="50" #if($rows == '50')selected="true"#end>50</option>
+        <option value="100" #if($rows == '100')selected="true"#end>100</option>
+      </select>
+    </div>
+    <br>
+
+    #foreach($fq in $request.params.getParams('fq'))
+      #if ($fq != "{!bbox}")
+        <input type="hidden" name="fq" id="allFQs" value="$esc.html($fq)"/>
+      #end
+    #end
+
+    #foreach($fq in $params.getParams('fq'))
+      #set($fq_pos = $velocityCount)
+
+      #if ($fq != '')
+        #if ($fq.startsWith("source:"))
+          #set($display = $fq.replace("source:", "Source:"))
+        #elseif ($fq.startsWith("partnername:"))
+          #set($display = $fq.replace("partnername:", "Parner Name:"))
+        #elseif ($fq.startsWith("langname:"))
+          #set($display = $fq.replace("langname:", "Language:"))
+        #elseif ($fq.startsWith("keywords:"))
+          #set($display = $fq.replace("keywords:", "Keywords:"))
+        #elseif ($fq.startsWith("regions_nav:"))
+          #set($display = $fq.replace("regions_nav:", "Regions:"))
+        #elseif ($fq.startsWith("annexes_nav:"))
+          #set($display = $fq.replace("annexes_nav:", "UNCCD Annexes:"))
+        #elseif ($fq.startsWith("nonannexes_nav:"))
+          #set($display = $fq.replace("nonannexes_nav:", "UNCCD Non-Annexes:"))
+        #elseif ($fq.startsWith("landmanagement_nav:"))
+          #set($display = $fq.replace("landmanagement_nav:", "Causes of Land Degradation:"))
+        #elseif ($fq.startsWith("climatezones_nav:"))
+          #set($display = $fq.replace("climatezones_nav:", "Climate Zones:"))
+        #elseif ($fq.startsWith("typology:"))
+          #set($display = $fq.replace("typology:", "Typology:"))
+        #elseif ($fq.startsWith("doctype:"))
+          #set($display = $fq.replace("doctype:", "Document Type:"))
+        #elseif ($fq.startsWith("datatype:"))
+          #set($display = $fq.replace("datatype:", "Data Type:"))
+        #elseif ($fq.startsWith("authors_nav:"))
+          #set($display = $fq.replace("authors_nav:", "Country:"))
+        #elseif ($fq.startsWith("country:"))
+          #set($display = $fq.replace("country:", "Country:"))
+
+        #elseif ($fq.startsWith("disciplines_nav:"))
+          #set($display = $fq.replace("disciplines_nav:", "Discipline:"))
+        #elseif ($fq.startsWith("specializations_nav:"))
+          #set($display = $fq.replace("specializations_nav:", "Specialization:"))
+        #elseif ($fq.startsWith("postcop_nav:"))
+          #set($display = $fq.replace("postcop_nav:", "Postcop:"))
+        #elseif ($fq.startsWith("thematicareas_nav:"))
+          #set($display = $fq.replace("thematicareas_nav:", "Thematic Areas:"))
+
+        #elseif ($fq.startsWith("region:"))
+          #set($display = $fq.replace("region:", "Region:"))
+        #elseif ($fq.startsWith("managingentitytype:"))
+          #set($display = $fq.replace("managingentitytype:", "Managing Entity Type:"))
+        #elseif ($fq.startsWith("topics_nav:"))
+          #set($display = $fq.replace("topics_nav:", "Topic:"))
+        #elseif ($fq.startsWith("infoformats:"))
+          #set($display = $fq.replace("infoformats:", "Information Format:"))
+
+        #elseif ($fq.startsWith("yearpublished"))
+          #set($display = $fq.replace("yearpublished:[", "Published:"))
+          #set($display = $display.replace("TO", "-"))
+          #if ($display.endsWith("*}"))
+            #set($display = $display.replace("*}", "Now"))
+          #elseif ($display.endsWith(" }"))
+            #set($display = $display.replace(" }", ""))
+          #end
+          #if ($display.contains("* -"))
+            #set($display = $display.replace("* -", " Before "))
+          #end
+        #elseif ($fq.startsWith("yearmodified"))
+          #set($display = $fq.replace("yearmodified:[", "Modified:"))
+          #set($display = $display.replace("TO", "-"))
+          #if ($display.endsWith("*}"))
+            #set($display = $display.replace("*}", "Now"))
+          #elseif ($display.endsWith(" }"))
+            #set($display = $display.replace(" }", ""))
+          #end
+          #if ($display.contains("* -"))
+            #set($display = $display.replace("* -", " Before "))
+          #end
+        #end
+        #if ($display)
+          <a href="#url_for_filters($request.params.getParams('fq'), $fq_pos)"><img src="#{url_root}/img/cross-button.png" align="center" title="Remove filter"></a> <span style="color:#6E3826;">$display</span>&nbsp;
+        #end
+      #end
+    #end
+  </form>
+
+</div>

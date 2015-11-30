@@ -1,0 +1,30 @@
+  <title>SKBP</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+  <meta name="google-translate-customization" content="96ac6c1ca2075c82-3d3ed09ebe9914d8-g9ffda9d846dcb351-30"></meta>
+
+  <script type="text/javascript" src="#{url_root}/js/lib/jquery-1.7.2.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="#{url_for_solr}/admin/file?file=/velocity/main.css&contentType=text/css"/>
+  <link rel="stylesheet" href="#{url_for_solr}/admin/file?file=/velocity/jquery.autocomplete.css&contentType=text/css" type="text/css" />
+  <script type="text/javascript" src="#{url_for_solr}/admin/file?file=/velocity/jquery.autocomplete.js&contentType=text/javascript"></script>
+
+  <script>
+    $(document).ready(function(){
+      $("\#q").autocomplete('#{url_for_solr}/terms', {  ## backslash escaped #q as that is a macro defined in VM_global_library.vm
+           extraParams:{
+             'terms.prefix': function() { return $("\#q").val();},
+             'terms.sort': 'count',
+             'terms.fl': 'keywords',
+             'wt': 'velocity',
+             'v.template': 'suggest'
+           }
+         }
+      ).keydown(function(e){
+        if (e.keyCode === 13){
+          $("#query-form").trigger('submit');
+        }
+      });
+
+      // http://localhost:8983/solr/unccd/terms?terms.fl=keywords&terms.prefix=l&terms.sort=count&wt=velocity&v.template=suggest
+    });
+
+  </script>

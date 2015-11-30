@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <title>About</title>
+  </head>
+  <body style="font-family:verdana;font-style:normal">
+    <table width="100%">
+      <tr>
+        <td align="center">
+          <table width="800px" cellspacing="12" style="font-size:10pt">
+            <tr>
+              <td>
+                <img src="#{url_root}/img/about-skbp.png" alt="UNCCD Scientific Knowledge Brokering Portal" width="302px" height="151px">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <font size="3" color="black"><b>UNCCD Scientific Knowledge Brokering Portal pilot</b></font>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                The UNCCD Scientific Knowledge Brokering Portal (SKBP) has been developed as a pilot in 2014 to act as<br>
+                a "bridge to bridges". It is designed to improve access to scientific and technical information on<br>
+                desertification/land degradation and drought (DLDD).  The SKBP pilot uses advanced search technologies<br>
+                as well as a spatial (mapping) interface to assist users in finding the most relevant information sources.<br>
+                It increases visibility and enables access to valuable knowledge products, developed by its partners, and<br>
+                enables the partners to receive feedback from the users of that information.  As such the SKBP pilot has<br>
+                opened the door for future developments, such as mobile applications and other “on the ground" tools.<br><br>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <font size="3" color="black"><b>Bridge to bridges: Accessing Knowledge from around the world</b></font>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                The SKBP will address many knowledge gaps on global sustainable land management practices. At a basic<br>
+                level, the SKBP interactive knowledge base map prototype is intended to help build awareness on available<br>
+                knowledge resources reported by country Parties during the UNCCD biannual reporting process.  Eventually,<br>
+                the SKBP will also aim to provide guidance on how to navigate through the information reported in these<br>
+                knowledge resources. Finally, the SKBP will also provide access to SLM best practices, scientific documents,<br>
+                and grey literature through a dedicated search portal.<br><br>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <font size="3" color="black"><b>Partners</b></font>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Current partners cooperating in the SKBP Pilot are WOCAT, ISRIC, CSIC, and FAO AGRIS and TECA.<br>
+                On the search portal you will find a wealth of information from their knowledge bases.<br><br>
+
+                The current pilot of the SKBP also includes the <a href="http://skbp.unccd.int/" target="blank">interactive maps</a>, which have been developed with the<br>
+                support of the Jornada Dryland Research Program, USDA-ARS.<br>
+
+                <ul>
+                  <li><a href="http://agris.fao.org/agris-search/index.do" target="blank">Agris</a> FAO AGRIS International Information System for the Agricultural Science and Technology</li>
+                  <li><a href="http://www.csic.es/" target="blank">CSIC</a> La Agencia Estatal Consejo Superior de Investigaciones Científicas (CSIC)</li>
+                  <li><a href="http://www.isric.org/" target="blank">ISRIC</a> ISRIC - World Soil Information</li>
+                  <li><a href="http://skbp.unccd.int" target="blank">UNCCD</a> United Nations Convention to Combat Desertification</li>
+                  <li><a href="http://teca.fao.org/" target="blank">TECA</a> FAO TECA Technologies and practices for small agricultural producers</li>
+                  <li><a href="https://www.wocat.net/" target="blank">WOCAT</a> World Overview of Conservation Approaches and Technologies</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <font size="3" color="black"><b>Contact info:</b></font>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Are you interested to become a partner and get involved in this project? Please contact us, using the<br>
+                information below:<br><br>
+                <i>United Nations Convention to Combat Desertification<br>
+                UNCCD Secretariat<br>
+                P.O. Box 260129<br>
+                D-53153 Bonn, Germany</i><br><br>
+                For information regarding the Scientific Knowledge Brokering Portal:<br><br>
+                <a href="mailto:skbp@unccd.int" target="_top">skbp@unccd.int</a><br>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
