@@ -1,0 +1,10 @@
+/*** Content ***/
+.unccd-page {
+  background-color: #f7f7f8;
+  margin-bottom: 20px;
+}
+
+.unccd-page .container {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}

@@ -1,0 +1,136 @@
+/*** Overwrite default boostrap css ***/
+.pagination > li > a, .pagination > li > span {
+  border: none;
+}
+
+.pagination > li:first-child > a, 
+.pagination > li:first-child > span,
+.pagination > li > a:focus, 
+.pagination > li > a:hover, 
+.pagination > li > span:focus,
+.pagination > li > span:hover,
+.unccd-facets-switch .btn-default:hover
+{
+  border-radius: 0;
+}
+
+.pagination > .active > a, 
+.pagination > .active > a:focus, 
+.pagination > .active > a:hover, 
+.pagination > .active > span, 
+.pagination > .active > span:focus, 
+.pagination > .active > span:hover {
+  background-color: #79a245;
+}
+
+
+/*** Facets ***/
+.unccd-result-description {
+  margin-top: 25px;
+  margin-bottom: 0;
+  background-color: #F7F7F8;
+}
+
+
+/*** Facets ***/
+.unccd-facets {
+  margin-top: 25px;
+}
+
+.unccd-facets-list {
+  padding-right: 30px;
+  line-height: 1.6em !important;
+}
+
+.unccd-facets-list ul {
+  margin-left: 15px;
+}
+
+.unccd-facets-title {
+  border-bottom: 1px solid #E6E6E6;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  color: #303032;
+}
+
+.unccd-facets-switch {
+  margin: 0 20px 20px 0;
+}
+
+.unccd-facets-switch .btn-default {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.unccd-facets-switch .btn-default:active, 
+.unccd-facets-switch .btn-default.active {
+  /*border-radius: 0;*/
+  box-shadow: none;
+  background-color:#92b86d;
+  color: #fff;
+}
+
+.unccd-format-icons span {
+  padding-right: 2px;
+}
+
+/*** Results ***/
+.unccd-result-item {
+  margin-bottom: 30px;
+}
+
+.unccd-result-item h4,
+.unccd-result-item p {
+  margin-bottom: 5px;
+}
+
+
+
+/*************************/
+/***** MEDIA QUERIES *****/
+/*************************/
+
+/*** Min 991 ***/
+@media only screen and (min-width: 991px) {
+  .unccd-facets {
+    border-right: 2px solid #E6E6E6;
+  }
+  .unccd-facets {
+    margin-bottom: 30px;
+  }
+  .unccd-results {
+    padding: 30px;
+  }
+}
+
+/*** Max 991 ***/
+@media only screen and (max-width: 991px) {
+  .unccd-facets-list .unccd-clear-border {
+    border-bottom: 1px solid #E6E6E6 !important;
+  }
+  .unccd-results {
+    padding-top: 0;
+  }
+}
+
+
+/*** Min 769 ***/
+@media only screen and (min-width: 769px) {
+  .unccd-jumbotron-results .container {
+    min-height: 120px;
+  }
+  .unccd-jumbotron-results .navbar-form {
+    margin-top:40px;
+  }
+}
+
+/*** Max 768 ***/
+@media (max-width: 768px) {
+  .unccd-jumbotron-results .container {
+    min-height: 120px;
+  }
+  .unccd-jumbotron-results .navbar-form {
+    padding-top:0 !important; 
+    margin-top: 20px;
+  }
+}

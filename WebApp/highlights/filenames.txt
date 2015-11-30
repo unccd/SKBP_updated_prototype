@@ -1,0 +1,2 @@
+highlight01.txt,highlight02.txt,highlight03.txt,highlight04.txt
+marketplace.jpg,wocat.jpg,roster.jpg,knowledgebases.png

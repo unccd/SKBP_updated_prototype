@@ -1,0 +1,33 @@
+<!--<h4>
+    <span class="glyphicon glyphicon-globe unccd-color-green"> </span>&#160;&#160;
+    <a href="{{place.url}}" title="{{place['title_en']}}" class="unccd-color-green">{{place['title_en']}}</a>
+</h4>
+<a class="btn btn-default unccd-color-green" role="button" data-toggle="modal" data-target="#resultItemModal" ng-click="prepareResultModal(place.listPosition)">
+    View details &raquo;
+</a>-->
+
+
+<h4>
+          <span class="unccd-format-icons">
+            <span class="glyphicon glyphicon-globe unccd-color-green" ng-if="place.format == 'HTML'"> </span>
+            <span class="glyphicon glyphicon-globe unccd-color-green" ng-if="place.format  == 'Web Page'"> </span>
+            <span class="fa fa-file-pdf-o unccd-color-green" ng-if="place.format  == 'Adobe PDF'"> </span>
+            <span class="fa fa-file-word-o unccd-color-green" ng-if="place.format  == 'Word'"> </span>
+            <span class="fa fa-file-image-o unccd-color-green" ng-if="place.format  == 'Image'"> </span>
+            <span class="fa fa-file-powerpoint-o unccd-color-green" ng-if="place.format  == 'PowerPoint'"> </span>
+            <span class="fa fa-question unccd-color-green" ng-if="place.format  == 'Unknown'"> </span>
+          </span>
+    <!--<a href="{{place.url}}{{place.website}}" title="" class="unccd-color-green">-->
+        <a href="" title="" class="unccd-color-green" data-toggle="modal" data-target="#resultItemModal" ng-click="prepareResultModalWithId(currentId)">
+        {{place.id}}{{place.title_en}}{{place.title_es}}{{place.title_de}}{{place.title_it}}{{place.title_fr}}{{place.kss}}{{place.persontitle}} {{place.firstname}} {{place.lastname}}</a>
+</h4>
+<p class="unccd-color-gray">{{place.published | date:'yyyy-MM-dd'}}</p>
+<p class="unccd-color-gray" ng-if="place.abstract_en || place.abstract_es || place.abstract_de || place.abstract_it || place.abstract_fr || place.nationality || place.managingentity">
+    {{place.abstract_en}}{{place.abstract_es}}{{place.abstract_de}}{{place.abstract_it}}{{place.abstract_fr}}{{place.nationality}}{{place.managingentity}}
+</p>
+<p ng-if="place.disciplines || place.topics">
+    {{getFormattedVersion(place.disciplines)}}{{getFormattedVersion(place.topics)}}
+</p>
+<p>
+    <a class="btn btn-default unccd-color-green" role="button"  ng-click="prepareResultModalWithId(currentId)">View details &raquo;</a>
+</p>

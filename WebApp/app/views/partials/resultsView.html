@@ -1,0 +1,139 @@
+<!-- Search area -->
+<div class="jumbotron unccd-clear-mg unccd-clear-pd unccd-jumbotron unccd-jumbotron-results">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 unccd-search">
+        <div data-search-input-directive></div>
+        <a href="#/advancedSearch" title="Advanced search" class="unccd-advanced-search-link unccd-color-white">Advanced search</a>
+        <div class="clearfix"> </div>
+      </div>
+    </div>
+  </div>
+</div><!--/.search area -->
+
+
+<!-- Description section -->
+<div class="container" ng-show="(bigTotalItems > 0) && isSourceSelected()">
+  <div class="panel panel-default unccd-clear-shadow unccd-clear-border unccd-color-gray unccd-result-description">
+    <div class="panel-body" ng-bind-html="sourceDescription">
+    </div>
+  </div>
+</div><!--/.description section -->
+
+
+<!-- Content -->
+<div class="container">
+  <!-- Row -->
+  <div class="row" ng-show="!loading">
+    <!-- Facets -->
+    <div class="col-md-3 unccd-facets" ng-show="bigTotalItems > 0">
+        <!-- Switch -->
+        <div class="unccd-facets-switch unccd-facets-title" role="group" aria-label="mode">
+            <button type="button" class="btn btn-default unccd-color-green" ng-class="{active: resultsMode == 'list'}" ng-click="changeResultsMode('list')">List</button>
+            <button type="button" class="btn btn-default unccd-color-green" ng-class="{active: resultsMode == 'map', disabled: mapResultsCount == 0}" ng-disabled="mapResultsCount == 0" ng-click="changeResultsMode('map')">Map</button>
+        </div><!--/.switch -->
+      <ul class="list-unstyled unccd-facets-list unccd-color-gray">
+        <li class="unccd-facets-title" ng-repeat="(title, refiners) in facets"><strong>{{title | translate}}</strong>
+          <ul class="list-unstyled">
+            <li ng-repeat="refiner in refiners">
+              <span class="unccd-format-icons">
+                <span class="glyphicon glyphicon-globe unccd-color-green" ng-if="refiner.name == 'HTML'"> </span>
+                <span class="glyphicon glyphicon-globe unccd-color-green" ng-if="refiner.name == 'Web Page'"> </span>
+                <span class="fa fa-file-pdf-o unccd-color-green" ng-if="refiner.name == 'Adobe PDF'"> </span>
+                <span class="fa fa-file-word-o unccd-color-green" ng-if="refiner.name == 'Word'"> </span>
+                <span class="fa fa-file-image-o unccd-color-green" ng-if="refiner.name == 'Image'"> </span>
+                <span class="fa fa-file-powerpoint-o unccd-color-green" ng-if="refiner.name == 'PowerPoint'"> </span>
+                <span class="fa fa-question unccd-color-green" ng-if="refiner.name == 'Unknown'"> </span>
+              </span>
+              <a title="{{refiner.name}}" ng-click="facetSelected(title,refiner.name,refiner.from,refiner.to)">{{refiner.name}}</a>
+              <small class="unccd-color-gray">({{refiner.count}})</small>&#160;&#160;<span class="glyphicon glyphicon-ok unccd-color-green" ng-show="refiner.enabled"> </span>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <div class="clearfix"> </div>
+    </div><!--/.facets -->
+    
+    <!-- Info found 0 item  -->
+    <div class="col-md-12 text-center" ng-show="bigTotalItems == 0">
+      <p class="unccd-clean-md-left unccd-color-gray">
+        <br /><br /><br />
+        <small>
+          <strong>Number of search results: {{bigTotalItems}}</strong>
+        </small>
+        <br />
+      </p>
+    </div><!--/.info found 0 item -->
+
+    <!-- Results -->
+    <div class="col-md-9 unccd-results">
+      <!-- Navbar -->
+      <nav class="navbar unccd-navbar-count unccd-clear-mg" ng-show="bigTotalItems > 0">
+        <p class="unccd-clean-md-left unccd-color-gray">
+          <small>Number of search results: <strong>{{bigTotalItems}}</strong></small>
+        </p>
+      </nav><!--/.navbar -->
+
+      <!-- List items -->
+      <div class="unccd-result-item" ng-repeat="result in results" ng-show="resultsMode == 'list'">
+        <h4>
+          <span class="unccd-format-icons">
+            <span class="glyphicon glyphicon-globe unccd-color-green" ng-if="result.format == 'HTML'"> </span>
+            <span class="glyphicon glyphicon-globe unccd-color-green" ng-if="result.format  == 'Web Page'"> </span>
+            <span class="fa fa-file-pdf-o unccd-color-green" ng-if="result.format  == 'Adobe PDF'"> </span>
+            <span class="fa fa-file-word-o unccd-color-green" ng-if="result.format  == 'Word'"> </span>
+            <span class="fa fa-file-image-o unccd-color-green" ng-if="result.format  == 'Image'"> </span>
+            <span class="fa fa-file-powerpoint-o unccd-color-green" ng-if="result.format  == 'PowerPoint'"> </span>
+            <span class="fa fa-question unccd-color-green" ng-if="result.format  == 'Unknown'"> </span>
+          </span>
+          <!--<a href="{{result.url}}{{result.website}}" title="" class="unccd-color-green">-->
+          <a href="" title="" class="unccd-color-green" data-toggle="modal" data-target="#resultItemModal" ng-click="prepareResultModal({{$index}})">
+            {{result.title_en}}{{result.title_es}}{{result.title_de}}{{result.title_it}}{{result.title_fr}}{{result.kss}}{{result.persontitle}} {{result.firstname}} {{result.lastname}}
+          </a>
+        </h4>
+        <p class="unccd-color-gray">{{result.published | date:'yyyy-MM-dd'}}</p>
+        <p class="unccd-color-gray" ng-if="result.abstract_en || result.abstract_es || result.abstract_de || result.abstract_it || result.abstract_fr || result.nationality || result.managingentity">
+          <!--{{result.abstract_en | limitTo: 200 }} {{longString.length < 200 ? '' : '...'}}<br />-->
+          {{result.abstract_en}}{{result.abstract_es}}{{result.abstract_de}}{{result.abstract_it}}{{result.abstract_fr}}{{result.nationality}}{{result.managingentity}}
+        </p>
+        <p ng-if="result.disciplines || result.topics">
+          {{getFormattedVersion(result.disciplines)}}{{getFormattedVersion(result.topics)}}
+        </p>
+        <p>
+          <!--<button class="btn btn-default unccd-color-green" role="button" data-toggle="modal" data-target="#resultItemModal" ng-click="prepareResultModal({{$index}})">View details &raquo;</button>-->
+            <button class="btn btn-default unccd-color-green" role="button"  ng-click="prepareResultModal({{$index}})">View details &raquo;</button>
+        </p>
+      </div><!--/.listm items -->
+
+
+      <!-- Pagination -->
+      <nav class="text-center" ng-show="resultsMode === 'list' && bigTotalItems > 0">
+          <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination unccd-color-green" boundary-links="true" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo" items-per-page="itemsPerPage"></pagination>
+      </nav><!-- /.pagination -->
+
+      <!-- Map items -->
+      <div ng-if="resultsMode == 'map'">
+        <!-- Map -->
+        <div id="map_canvas" ng-show="resultsMode == 'map'"></div><br><!-- ./map -->
+        <div id="map_disclaimer" style="margin-bottom: 13px; font-size: 0.8em;">
+          <p>
+            The boundaries and names shown and the designations used on this map do not imply official endorsement or acceptance by the United Nations Convention to Combat Desertification (UNCCD) and the                 United Nations.  
+            <a href="#/disclaimer">Read more></a>
+          </p>
+        </div>
+
+      </div><!--/.map items -->
+    </div><!--/.results -->
+    <div data-result-item-directive></div>
+  </div><!--/.row -->
+  
+  <!-- Loading ico -->
+  <div ng-show="loading">
+    <div class="container text-center">
+      <br /><br /><br /><br />
+      <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading ... 
+      <br /><br /><br /><br />
+    </div>
+  </div><!--/.loading ico -->
+</div><!--/.content -->
+

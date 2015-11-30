@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Scientific Knowledge Brokering Portal</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and scriptsle-touch-icon.png in the root directory -->
+      <link rel="icon" type="image/ico" href="favicon.ico">
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/css/unccd.css">
+    <link rel="stylesheet" href="styles/css/unccd-page.css">
+    <link rel="stylesheet" href="styles/css/unccd-results.css">
+    <link rel="stylesheet" href="styles/css/unccd-advanced-search.css">
+    <link rel="stylesheet" href="styles/css/unccd-typeahead.css">
+    <link rel="stylesheet" href="styles/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles/css/segoe-ui-bold.css">
+    <link rel="stylesheet" href="styles/css/segoe-ui-light.css">
+    <link rel="stylesheet" href="styles/css/segoe-ui-semibold.css">
+    <link rel="stylesheet" href="styles/css/segoe-ui-normal.css">
+    <!-- endbuild -->
+
+    <!--<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>-->
+    <!--<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>-->
+    <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><!-- google translator -->
+    <!-- google translator -->
+    <script>
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({ 
+        pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE 
+        }, 'google_translate_element');
+      }
+    </script>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function
+                (){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date ();a=s.createElement(o),
+                m=s.getElementsByTagName
+                (o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-39946240-4', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+
+  </head>
+
+  <body ng-app="unccdApp">
+    <!--[if lte IE 8]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Body -->
+    <div class="unccd-body">
+      <!-- Header -->
+      <div data-header-directive></div><!-- ./header -->
+
+      <!-- Main view -->
+      <div ng-view=""></div><!-- ./mainView -->
+    </div>
+
+    <!-- Footer -->
+    <div data-footer-directive></div><!-- ./footer -->
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
+    <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/carouFredSel/jquery.carouFredSel-6.2.1.js"></script>
+    <script src="bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+    <script src="bower_components/jquery-touchswipe/jquery.touchSwipe.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+
+
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/app.route.js"></script>
+
+    <script src="scripts/components/home/homeController.js"></script>
+    <script src="scripts/components/results/resultsController.js"></script>
+    <script src="scripts/components/about/aboutController.js"></script>
+    <script src="scripts/components/guides/guidesController.js"></script>
+    <script src="scripts/components/partners/partnersController.js"></script>
+    <script src="scripts/components/advancedSearch/advancedSearchController.js"></script>
+    <script src="scripts/components/results/resultItemDirective.js"></script>
+    <script src="scripts/components/home/fileUtilityService.js"></script>
+    <script src="scripts/components/results/resultsService.js"></script>
+    <script src="scripts/components/contact/contactController.js"></script>
+    <script src="scripts/components/disclaimer/disclaimerController.js"></script>
+    <script src="scripts/components/results/modalInstanceController.js"></script
+
+    <script src="scripts/shared/header/headerController.js"></script>
+    <script src="scripts/shared/footer/footerController.js"></script>
+    <script src="scripts/shared/searchInput/searchInputDirective.js"></script>
+    <script src="scripts/shared/communication/communicationService.js"></script>
+    <script src="scripts/shared/header/headerDirective.js"></script>
+    <script src="scripts/shared/footer/footerDirective.js"></script>
+    <script src="scripts/shared/searchInput/searchInputController.js"></script>
+    <script src="scripts/shared/searchPromo/searchPromoDirective.js"></script>
+    <script src="scripts/shared/searchPromo/searchPromoController.js"></script>
+    <script src="scripts/shared/partnerLogos/partnerLogosDirective.js"></script>
+    <script src="scripts/shared/partnerLogos/partnerLogosController.js"></script>
+
+
+    <script src="scripts/shared/map/infoWindowDirective.js"></script>
+    <!-- endbuild -->
+  </body>
+</html>
