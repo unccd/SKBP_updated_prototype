@@ -1,0 +1,250 @@
+Africa
+  +Algeria
+  +Angola
+  +Benin
+  +Botswana
+  +Burkina Faso
+  +Burundi
+  +Cameroon
+  +Cape Verde
+  +Central African Republic
+  +Chad
+  +Comoros
+  +Congo
+  +Côte d'Ivoire
+  +Democratic Republic of the Congo
+  +Djibouti
+  +Egypt
+  +Equatorial Guinea
+  +Eritrea
+  +Ethiopia
+  +Gabon
+  +Gambia
+  +Ghana
+  +Guinea
+  +Guinea-Bissau
+  +Kenya
+  +Lesotho
+  +Liberia
+  +Libya
+  +Madagascar
+  +Malawi
+  +Mali
+  +Mauritania
+  +Mauritius
+  +Mayotte
+  +Morocco
+  +Mozambique
+  +Namibia
+  +Niger
+  +Nigeria
+  +Rwanda
+  +Réunion
+  +Saint Helena
+  +Sao Tome and Principe
+  +Senegal
+  +Seychelles
+  +Sierra Leone
+  +Somalia
+  +South Africa
+  +South Sudan
+  +Sudan
+  +Swaziland
+  +Togo
+  +Tunisia
+  +Uganda
+  +United Republic of Tanzania
+  +Western Sahara
+  +Zambia
+  +Zimbabwe
+
+Latin America and the Caribbean
+  +Anguilla
+  +Antigua and Barbuda
+  +Argentina
+  +Aruba
+  +Bahamas
+  +Barbados
+  +Belize
+  +Bermuda
+  +Bolivia (Plurinational State of)
+  +Bonaire, Saint Eustatius and Saba
+  +Brazil
+  +British Virgin Islands
+  +Canada
+  +Cayman Islands
+  +Chile
+  +Colombia
+  +Costa Rica
+  +Cuba
+  +Curaçao
+  +Dominica
+  +Dominican Republic
+  +Ecuador
+  +El Salvador
+  +Falkland Islands (Malvinas)
+  +French Guiana
+  +Greenland
+  +Grenada
+  +Guadeloupe
+  +Guatemala
+  +Guyana
+  +Haiti
+  +Honduras
+  +Jamaica
+  +Martinique
+  +Mexico
+  +Montserrat
+  +Nicaragua
+  +Panama
+  +Paraguay
+  +Peru
+  +Puerto Rico
+  +Saint Kitts and Nevis
+  +Saint Lucia
+  +Saint Martin (French part)
+  +Saint Pierre and Miquelon
+  +Saint Vincent and the Grenadines
+  +Saint-Barthélemy
+  +Sint Maarten (Dutch part)
+  +Suriname
+  +Trinidad and Tobago
+  +Turks and Caicos Islands
+  +United States of America
+  +United States Virgin Islands
+  +Uruguay
+  +Venezuela (Bolivarian Republic of)
+ 
+Asia
+  +Afghanistan
+  +Armenia
+  +Azerbaijan
+  +Bahrain
+  +Bangladesh
+  +Bhutan
+  +Brunei Darussalam
+  +Cambodia
+  +China
+  +China, Honk Kong Special Administrative Region
+  +China, Macao Special Administrative Region
+  +Cyprus
+  +Democratic People's Republic of Korea
+  +Georgia
+  +India
+  +Indonesia
+  +Iran (Islamic Republic of)
+  +Iraq
+  +Israel
+  +Japan
+  +Jordan
+  +Kazakhstan
+  +Kuwait
+  +Kyrgyzstan
+  +Lao People's Democratic Republic
+  +Lebanon
+  +Malaysia
+  +Maldives
+  +Mongolia
+  +Myanmar
+  +Nepal
+  +Oman
+  +Pakistan
+  +Philippines
+  +Qatar
+  +Republic of Korea
+  +Saudi Arabia
+  +Singapore
+  +Sri Lanka
+  +State of Palestine
+  +Syrian Arab Republic
+  +Tajikistan
+  +Thailand
+  +Timor-Leste
+  +Turkey
+  +Turkmenistan
+  +United Arab Emirates
+  +Uzbekistan
+  +Viet Nam
+  +Yemen
+  
+Europe
+  +Albania
+  +Andorra
+  +Austria
+  +Belarus
+  +Belgium
+  +Bosnia and Herzegovina
+  +Bulgaria
+  +Channel Islands
+  +Croatia
+  +Czech Republic
+  +Denmark
+  +Estonia
+  +Faeroe Islands
+  +Finland
+  +France
+  +Germany
+  +Gibraltar
+  +Greece
+  +Guernsey
+  +Holy See
+  +Hungary
+  +Iceland
+  +Ireland
+  +Isle of Man
+  +Italy
+  +Jersey
+  +Latvia
+  +Liechtenstein
+  +Lithuania
+  +Luxembourg
+  +Malta
+  +Monaco
+  +Montenegro
+  +Netherlands
+  +Norway
+  +Poland
+  +Portugal
+  +Republic of Moldova
+  +Romania
+  +Russian Federation
+  +San Marino
+  +Sark
+  +Serbia
+  +Slovakia
+  +Slovenia
+  +Spain
+  +Svalbard and Jan Mayen Islands
+  +Sweden
+  +Switzerland
+  +The former Yugoslav Republic of Macedonia
+  +Ukraine
+  +United Kingdom of Great Britain and Northern Ireland
+  +Åland Islands
+  
+Oceania
+  +American Samoa
+  +Australia
+  +Cook Islands
+  +Fiji
+  +French Polynesia
+  +Guam
+  +Kiribati
+  +Marshall Islands
+  +Micronesia (Federated States of)
+  +Nauru
+  +New Caledonia
+  +New Zealand
+  +Niue
+  +Norfolk Island
+  +Northern Mariana Islands
+  +Palau
+  +Papua New Guinea
+  +Pitcairn
+  +Samoa
+  +Solomon Islands
+  +Tokelau
+  +Tonga
+  +Tuvalu
+  +Vanuatu
+  +Wallis and Futuna Islands

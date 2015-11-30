@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application name="ApplicationAGRIS" typeFlags="job-input">
+
+  <components>
+
+    <component name="HotFolderFeeder" subType="hotFolderFeeder" factoryName="aspire-filefeeder">
+      <config>
+        <feederLabel>CrawlFolder</feederLabel>
+        <metadataMap>
+          <map from="fileName" to="fileName"/>
+          <map from="fullPath" to="fullPath"/>
+        </metadataMap>
+        <autoStart>false</autoStart>
+        <loopWait>43200000</loopWait>
+        <hotFolders>
+          <hotFolder match=".*\.rdf">
+            <inputQueueFolder>datastore/agris/input-queue</inputQueueFolder>
+            <quarantineFolder>datastore/agris/quarantine</quarantineFolder>
+            <completedFolder>datastore/agris/completed</completedFolder>
+            <inProcessFolder>datastore/agris/in-process</inProcessFolder>
+          </hotFolder>
+        </hotFolders>
+        <branches>
+          <branch event="onPublish" pipelineManager="ProcessAGRISData"/>
+        </branches>
+      </config>
+    </component>
+
+
+    <component name="CompressUtils" subType="default" factoryName="com.searchtechnologies:aspire-compress-utils"/>
+
+  
+    <component name="ProcessAGRISGZip" subType="pipeline" factoryName="aspire-application">     
+      <components>
+
+        <component name="Scheduler" subType="default" factoryName="aspire-scheduler">
+          <schedules>
+            <schedule name="CrawlSchedule" enabled="true" singleton="false">
+              <cron>0 0 19 ? * 1</cron>
+              <event>onPublish</event>
+            </schedule>
+          </schedules>
+          <branches>
+            <branch event="onPublish" pipelineManager="../ProcessAGRISGZip" pipeline="doc-process-xml"/>
+          </branches>
+        </component>
+        
+        
+        <component name="DownloadGZip" subType="default" factoryName="aspire-groovy">
+          <script>
+            <![CDATA[
+              import java.text.DateFormat;
+              import java.text.SimpleDateFormat;
+              import java.net.MalformedURLException;
+
+              BufferedInputStream bufferedInputStream = null;
+              FileOutputStream fileOutputStream = null;
+
+
+              try {
+                String year = new SimpleDateFormat("yyyy").format(new Date());
+                String urlString = "ftp://ext-ftp.fao.org/GI/Reserved/Agris/LOD/" + year + ".tar.gz";
+              
+                component.info("DownloadZip: Downloading " + urlString);
+
+                URL url = new URL(urlString);
+                URLConnection urlConn = url.openConnection();
+
+                String contentType = urlConn.getContentType();
+                int contentLength = urlConn.getContentLength();
+
+                if (contentType.startsWith("application/") || contentLength != -1) {
+                  bufferedInputStream = new BufferedInputStream(urlConn.getInputStream());
+
+                  String outputPath = "datastore" + File.separator + "content-cache" + File.separator  + "agris";
+                  File outputDir = new File(outputPath);
+                  if ((!outputDir.exists() && outputDir.mkdirs()) || outputDir.exists()) {                  
+                    String filename = outputPath + File.separator + year + ".tar.gz";
+                    fileOutputStream = new FileOutputStream(filename);
+
+                    int i = 0;
+                    byte[] bytes = new byte[1024];
+                    while ((i = bufferedInputStream.read(bytes)) >= 0) {
+                      fileOutputStream.write(bytes, 0, i);
+                    }
+                  } else {
+                    component.warn("DownloadGZip: Cannot create directory " + outputPath);
+                  }
+                } else {
+                  component.warn("DownloadGZip: Invalid file " + year + ".tar.gz");
+                }
+              } catch (MalformedURLException mue) {
+                component.error(mue.printStackTrace());
+              } catch (IOException ioe) {
+                component.error(ioe.printStackTrace());
+              } finally {
+                try {
+                  if (fileOutputStream != null ) {
+                    fileOutputStream.close(); 
+                  }
+                } catch (IOException e) {
+                  component.error(e.printStackTrace());
+                }
+                try {
+                  if (bufferedInputStream != null ) {
+                    bufferedInputStream.close();  
+                  }
+                } catch (IOException e) {
+                  component.error(e.printStackTrace());
+                }     
+              }
+            ]]>
+          </script>
+        </component>
+        
+        
+        <component name="DecompressGZip" subType="default" factoryName="aspire-groovy">
+          <variable name="compressUtils" component="/ApplicationAGRIS/CompressUtils"/>
+          <script>
+            <![CDATA[
+              import java.text.DateFormat;
+              import java.text.SimpleDateFormat;
+
+              String year = new SimpleDateFormat("yyyy").format(new Date());
+              String inputPath = "datastore" + File.separator + "content-cache" + File.separator  + "agris" + File.separator + year + ".tar.gz";
+              String outputPath = "datastore" + File.separator + "content-cache" + File.separator  + "agris";
+
+              component.info("DecompressGZip: Decompress " + inputPath);
+
+              File inputFile = new File(inputPath);
+              if (inputFile.exists() && inputFile.isFile()) {
+                boolean success = compressUtils.gUnzipUntar(inputPath, outputPath);
+                if (success) {
+                  // Delete gzip file from disk
+                  inputFile.delete();
+                } else {
+                  component.warn("DecompressGZip: Cannot decompress " + inputPath);  
+                }
+              } else {
+                component.warn("DecompressGZip: Invalid file path " + inputPath);
+              }
+            ]]>
+          </script>
+        </component>
+
+        
+        <component name="SetFetchURL" subType="default" factoryName="aspire-groovy">
+          <script>
+            <![CDATA[
+              import java.text.DateFormat;
+              import java.text.SimpleDateFormat;
+              import com.searchtechnologies.aspire.services.AspireObject;
+              import com.searchtechnologies.aspire.services.Job;
+
+              String year = new SimpleDateFormat("yyyy").format(new Date());
+              String inputPath = "datastore" + File.separator + "content-cache" + File.separator  + "agris" + File.separator + year
+              File inputDir = new File(inputPath);
+              File[] filesList = inputDir.listFiles();
+              
+              component.info("SetFetchURL: Processing files in " + inputPath);
+              
+              for (File file : filesList) {
+                if (file.isFile()) {
+                  doc.subDir = file.getName().substring(0, 2) + File.separator + file.getName().substring(2, 6) + File.separator + file.getName().substring(7, file.getName().indexOf("."));
+                  doc.fetchUrl = "file:///" + file.getCanonicalFile();
+                  Job subJob = job.createSubJob(doc, job.getJobId() + "-" + file.getName());
+                  bh.enqueue(subJob, "onSubJob");
+                }
+              }
+            ]]>
+          </script>
+          <branches>  
+            <branch event="onSubJob" pipelineManager="../ProcessAGRISData" />
+          </branches>
+        </component>
+        
+        
+        <component name="WaitForSubJobs" subType="waitForSubJobs" factoryName="aspire-tools"/>
+
+      </components>
+
+
+      <pipelines>
+        <pipeline name="doc-process-xml" default="true">
+          <stages>
+            <stage component="DownloadGZip"/>
+            <stage component="DecompressGZip"/>
+            <stage component="SetFetchURL"/>
+          </stages>
+        </pipeline>
+      </pipelines>
+    </component>
+    
+
+    <component name="ProcessAGRISData" subType="pipeline" factoryName="aspire-application">
+      <gatherStatistics>true</gatherStatistics>
+      <queueSize>200</queueSize>
+      <maxThreads>10</maxThreads>
+      
+      <components>
+        
+        <component name="FetchUrl" subType="default" factoryName="aspire-fetch-url"/>       
+        
+
+        <component name="XMLSubJobExtract" subType="xmlSubJobExtractor" factoryName="aspire-xml-files">
+          <config>
+            <branches>
+              <branch event="onSubJob" pipelineManager="../ProcessAGRISXML"/>
+            </branches>
+          </config>
+        </component>
+
+
+        <component name="WaitForSubJobs" subType="waitForSubJobs" factoryName="aspire-tools"/>
+
+      </components>
+
+
+      <pipelines>
+        <pipeline name="doc-process-xml" default="true">
+          <stages>
+            <stage component="FetchUrl"/>
+            <stage component="XMLSubJobExtract"/>
+            <stage component="WaitForSubJobs"/>
+          </stages>
+        </pipeline>
+      </pipelines>
+    </component>
+    
+    
+    <component name="ProcessAGRISXML" subType="pipeline" factoryName="aspire-application">
+      <components>                
+
+        <component name="SetSubdirectory" subType="default" factoryName="aspire-groovy">
+          <script>
+            <![CDATA[
+             // When processing using Hot Folder Feeder
+             if (doc.subDir == null) {
+               File file = new File(doc.parent.fileName.text());
+               doc.subDir = file.getName().substring(0, 2) + File.separator + file.getName().substring(2, 6) + File.separator + file.getName().substring(7, file.getName().indexOf("."));
+             }
+            ]]>
+          </script>
+        </component>
+        
+        
+        <component name="SetTaggerFields" subType="default" factoryName="aspire-groovy">
+          <variable name="APP_VARS" component="/initialize/initPipeline/loadVariables"/>
+          <script>
+            <![CDATA[
+              import com.searchtechnologies.aspire.services.AspireObject;
+              
+              def setTaggerField(fieldName, taggerFieldName) {
+                List<AspireObject> fieldsList = doc.getAll(fieldName);
+                String fieldValues = "";
+                for (AspireObject field : fieldsList) {
+                  if (field != null && field.text() != null && !field.text().isEmpty()) {
+                    fieldValues += field.text() + " ";
+                  }
+                }
+                
+                if (fieldValues != null && !fieldValues.trim().isEmpty()) {
+                  doc.add(taggerFieldName, fieldValues.trim());
+                }
+              }
+              
+              
+              setTaggerField("dct:title", "titlesTagger");
+              setTaggerField("dct:alternative", "altTitleTagger");
+              setTaggerField("bibo:abstract", "abstractsTagger");
+              setTaggerField("dct:description", "descriptionsTagger");
+              
+              
+              String subjects = "";
+              Map<String, String> agrovocMap = APP_VARS.getVariable("AGROVOC_MAP");
+              List<AspireObject> subjectsList = doc.getAll("dct:subject");
+              for (AspireObject subject : subjectsList) {
+                String subj = subject.getAttribute("rdf:resource");
+                if (subj != null && !subj.isEmpty() && agrovocMap.containsKey(subj.trim())) {
+                  subjects += agrovocMap.get(subj.trim()) + " ";
+                }
+              }
+              if (subjects != null && !subjects.isEmpty()) {
+                doc.subjectsTagger = subjects.trim();
+              }
+            ]]>
+          </script>
+        </component>
+        
+
+        <component name="KeywordsTagger" subType="default" factoryName="aspire-tag-text">
+          <output>keywordsTags</output>
+          <tagFields>
+            <tagField field="titlesTagger"/>
+            <tagField field="altTitleTagger"/>
+            <tagField field="abstractsTagger"/>
+            <tagField field="descriptionsTagger"/>
+            <tagField field="subjectsTagger"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="agrovoc_keywords_unccd" tagFile="config/tagger/agrovoc_keywords_unccd.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+          </tokenProcessing>
+        </component>        
+        
+        
+        <component name="DocumentTypesTagger" subType="default" factoryName="aspire-tag-text">
+          <output>documentTypesTags</output>
+          <tagFields>
+            <tagField field="titlesTagger"/>
+            <tagField field="altTitleTagger"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="document_types" tagFile="config/tagger/document_types.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+          </tokenProcessing>
+        </component>  
+        
+        
+        <component name="RegionsTagger" subType="default" factoryName="aspire-tag-text">
+          <output>regionsTags</output>
+          <tagFields>
+            <tagField field="titlesTagger"/>
+            <tagField field="altTitleTagger"/>
+            <tagField field="abstractsTagger"/>
+            <tagField field="descriptionsTagger"/>
+            <tagField field="subjectsTagger"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="regions" tagFile="config/tagger/regions.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+          </tokenProcessing>
+        </component>
+        
+        
+        <component name="AnnexesTagger" subType="default" factoryName="aspire-tag-text">
+          <output>annexesTags</output>
+          <tagFields>
+            <tagField field="titlesTagger"/>
+            <tagField field="altTitleTagger"/>
+            <tagField field="abstractsTagger"/>
+            <tagField field="descriptionsTagger"/>
+            <tagField field="subjectsTagger"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="annexes" tagFile="config/tagger/annexes.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+          </tokenProcessing>
+        </component>
+        
+        
+        <component name="NonAnnexesTagger" subType="default" factoryName="aspire-tag-text">
+          <output>nonAnnexesTags</output>
+          <tagFields>
+            <tagField field="titlesTagger"/>
+            <tagField field="altTitleTagger"/>
+            <tagField field="abstractsTagger"/>
+            <tagField field="descriptionsTagger"/>
+            <tagField field="subjectsTagger"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="nonAnnexes" tagFile="config/tagger/non_annexes.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+          </tokenProcessing>
+        </component>
+        
+        
+        <component name="LandManagementTagger" subType="default" factoryName="aspire-tag-text">
+          <output>landManagementTags</output>
+          <tagFields>
+            <tagField field="titlesTagger"/>
+            <tagField field="altTitleTagger"/>
+            <tagField field="abstractsTagger"/>
+            <tagField field="descriptionsTagger"/>
+            <tagField field="subjectsTagger"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="landManagement" tagFile="config/tagger/land_management.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+          </tokenProcessing>
+        </component>
+        
+
+        <component name="ClimateZonesTagger" subType="default" factoryName="aspire-tag-text">
+          <output>climateZonesTags</output>
+          <tagFields>
+            <tagField field="titlesTagger"/>
+            <tagField field="altTitleTagger"/>
+            <tagField field="abstractsTagger"/>
+            <tagField field="descriptionsTagger"/>
+            <tagField field="subjectsTagger"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="climateZones" tagFile="config/tagger/climate_zones.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+          </tokenProcessing>
+        </component>
+
+
+        <component name="ProcessedJobLogger" subType="jobLogger" factoryName="aspire-tools">
+          <logFile>log/${app.name}/processed.jobs</logFile>
+        </component>
+
+
+        <component name="Router" subType="router" factoryName="aspire-tools">
+          <routeTable>
+            <route component="/BusinessRulesEngine"/>
+            <route component="/PublishToSolr"/>
+          </routeTable>
+        </component>
+       
+      </components>
+
+
+      <pipelines>
+        <pipeline name="default-pipeline" default="true">
+          <stages>
+            <stage component="SetSubdirectory"/>
+            <stage component="SetTaggerFields"/>
+            <stage component="KeywordsTagger"/>
+            <stage component="RegionsTagger"/>
+            <stage component="AnnexesTagger"/>
+            <stage component="NonAnnexesTagger"/>
+            <stage component="LandManagementTagger"/>
+            <stage component="ClimateZonesTagger"/>
+            <!-- stage component="ProcessedJobLogger"/ -->
+            <stage component="Router"/>
+          </stages>
+        </pipeline>
+      </pipelines>
+    </component>
+  </components>
+</application>

@@ -1,0 +1,41 @@
+<html>
+	<header>
+		<title>Send Receipt Messages</title>
+	</header>
+	<body>
+		<script type="text/javascript" language="JavaScript">
+			function submit_form()
+			{
+				document.forms[0].action="http://" + document.getElementById('ServerName').value + ":" + document.getElementById('ServerPort').value + "/receipt-form/" + document.getElementById('URLOption').value;
+				
+				if (document.getElementById('txtId').value ==''){
+					alert("Provide a Job Id");
+					return false;
+				}
+				
+				if (document.getElementById('txtReceipt').value ==''){
+					alert("Provide a Receipt Type");
+					return false;
+				}
+				return true;
+			}
+		</script>
+		<b>Receipt Message Parameters: </b><br/><br/>
+		<label for="ServerName">Server name or IP: </label>
+		<input type="text" id="ServerName"/><br/>
+		<label for="ServerPort">Server port: </label>
+		<input type="text" id="ServerPort"/><br/>
+		<label for="URLOption">URL Option (success or error): </label>
+		<input type="text" id="URLOption"/><br/>
+		<form action="http://localhost:51515/receipt-form/" method="post">
+			<p>
+			<label for="Id">Job Id: </label>
+			<input type="text" name="Id" id="txtId"><br>
+			<label for="Receipt">Receipt Type: </label>
+			<input type="text" name="Receipt" id="txtReceipt"><br>
+			<input type="submit" value="Send"> 
+			<input type="reset">
+			</p>
+		</form>
+	</body>
+ </html>

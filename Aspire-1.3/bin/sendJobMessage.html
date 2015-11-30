@@ -1,0 +1,43 @@
+<html>
+	<header>
+		<title>Send Job Messages</title>
+	</header>
+	<body>
+		<script type="text/javascript" language="JavaScript">
+			function submit_form()
+			{
+				document.forms[0].action="http://" + document.getElementById('ServerName').value + ":" + document.getElementById('ServerPort').value + "/job-form/" + document.getElementById('PipelineManager').value;
+				
+				if (document.getElementById('txtId').value ==''){
+					alert("Provide a Job Id");
+					return false;
+				}
+				return true;
+			}
+		</script>
+		<b>Job Message Parameters: </b><br/><br/>
+		<label for="ServerName">Server name or IP: </label>
+		<input type="text" id="ServerName"/><br/>
+		<label for="ServerPort">Server port: </label>
+		<input type="text" id="ServerPort"/><br/>
+		<label for="PipelineManager">PipelineManager: </label>
+		<input type="text" id="PipelineManager"/><br/>
+		
+		<form  name="jobForm" action="http://localhost:51515/job-form/" method="post" onSubmit="return submit_form();">
+			<p>
+			<label for="Id">Job Id: </label>
+			<input type="text" name="Id" id="txtId"/><br/>
+			<label for="Receipt">Receipt Type: </label>
+			<input type="text" name="Receipt" id="txtReceipt"/><br/>
+			<label for="ReturnHost">Return Host: </label>
+			<input type="text" name="ReturnHost" id="txtReturnHost"/><br/>
+			<label for="Pipeline">Pipeline: </label>
+			<input type="text" name="Pipeline" id="txtPipeline"/><br/>
+			<label for="Stage">Stage: </label>
+			<input type="text" name="Stage" id="txtStage"/><br/>
+			<input type="submit" value="Send" "/> 
+			<input type="reset"/>
+			</p>
+		</form>
+	</body>
+ </html>

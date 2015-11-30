@@ -1,0 +1,566 @@
+Tropics, Lowland
+  +Algeria
+  +American Samoa
+  +Angola
+  +Anguilla
+  +Antigua and Barbuda
+  +Aruba
+  +Australia
+  +Bahamas
+  +Bangladesh
+  +Belize
+  +Bolivarian Republic of Venezuela
+  +Bolivia
+  +Bonaire
+  +Botwana
+  +Brazil
+  +Brunei Darussalem
+  +Burkina Faso
+  +Burundi
+  +Cambodia
+  +Cameroon
+  +Cape Verde
+  +Cayman Islands
+  +Central African Republic
+  +Chad
+  +China
+  +Colombia
+  +Comoros
+  +Congo
+  +Cook Islands
+  +Costa Rica
+  +Cuba
+  +Curaçao
+  +Côte d'Ivoire
+  +Democratic Republic of the Congo
+  +Djibouti
+  +Dominica
+  +Dominican Republic
+  +Ecuador
+  +Egypt
+  +El Salvador
+  +Equitorial Guinea
+  +Eritrea
+  +Ethiopia
+  +Federated States of Micronesia
+  +Fiji
+  +French Guiana
+  +French Polynesia
+  +Gabon
+  +Gambia
+  +Ghana
+  +Grenada
+  +Guadeloupe
+  +Guam
+  +Guatemala
+  +Guinea
+  +Guinea-Bissau
+  +Guyana
+  +Haiti
+  +Honduras
+  +Indonesia
+  +Iran
+  +Jamaica
+  +Japan
+  +Kenya
+  +Kiribati
+  +Lao
+  +Liberia
+  +Libya
+  +Madagascar
+  +Malawi
+  +Malaysia
+  +Maldives
+  +Mali
+  +Marshall Islands
+  +Martinique
+  +Mauritania
+  +Mauritius
+  +Mayotte
+  +Mexico
+  +Micronesia
+  +Montserrat
+  +Mozambique
+  +Myanmar
+  +Namibia
+  +Nauru
+  +Nepal
+  +Netherlands Antilles
+  +New Caledonia
+  +Nicaragua
+  +Niger
+  +Nigeria
+  +Niue
+  +Northern Mariana Islands
+  +Oman
+  +Palau
+  +Panama
+  +Papua New Guinea
+  +Paraguay
+  +Peru
+  +Philippines
+  +Pitcairne
+  +Plurinational State of Bolivia
+  +Puerto Rico
+  +Rwanda
+  +Réunion
+  +Saba
+  +Saint Eustatius
+  +Saint Helena
+  +Saint Kitts and Nevis
+  +Saint Lucia
+  +Saint Martin
+  +Saint Vincent and the Grenadines
+  +Saint-Barthélemy
+  +Samoa
+  +Sao Tome and Principe
+  +Saudi Arabia
+  +Senegal
+  +Seychelles
+  +Sierra Leone
+  +Singapore
+  +Sint Maarten
+  +Solomon Islands
+  +Somalia
+  +South Africa
+  +South Sudan
+  +Sri Lanka
+  +Sudan
+  +Suriname
+  +Swaziland
+  +Tanzania
+  +Thailand
+  +Timor-Leste
+  +Togo
+  +Tokelau
+  +Tonga
+  +Trinidad and Tobago
+  +Turks and Caicos
+  +Tuvalu
+  +U.S.A
+  +Uganda
+  +United Arab Emirates
+  +United Republic of Tanzania
+  +United States of America
+  +USA
+  +Vanuatu
+  +Venezuela
+  +Viet Nam
+  +Vietnam
+  +Wallis and Futuna Islands
+  +Western Sahara
+  +Yemen
+  +Zambia
+  +Zimbabwe
+
+Tropics, Highland
+  +Algeria
+  +Argentina
+  +Australia
+  +Bolivarian Republic of Venezuela
+  +Bolivia
+  +Botswana
+  +Brazil
+  +Burundi
+  +Cameroon
+  +Cape Verde
+  +Chad
+  +Chile
+  +China
+  +Colombia
+  +Comoros
+  +Costa Rica
+  +Cuba
+  +Democratic Republic of the Congo
+  +Dominican Republic
+  +Ecuador
+  +El Salvador
+  +Equatorial Guinea
+  +Eritrea
+  +Ethiopia
+  +Guatemala
+  +Guyana
+  +Haiti
+  +Honduras
+  +India
+  +Indonesia
+  +Kenya
+  +Lao People's Democratic Republic
+  +Laos
+  +Lesotho
+  +Madagascar
+  +Malawi
+  +Malaysia
+  +Mexico
+  +Mozambique
+  +Myanmar
+  +Namibia
+  +Nicaragua
+  +Nigeria
+  +Oman
+  +Panama
+  +Papua New Guinea
+  +Paraguay
+  +Peru
+  +Philippines
+  +Plurinational State of Bolivia
+  +Rwanda
+  +Réunion
+  +Saudi Arabia
+  +Solomon Islands
+  +Somalia
+  +South Africa
+  +South Sudan
+  +Sri Lanka
+  +Sudan
+  +Swaziland
+  +Tanzania
+  +Thailand
+  +Timor-Leste
+  +U.S.A
+  +Uganda
+  +United Republic of Tanzania
+  +United States of America
+  +USA
+  +Venezuela
+  +Viet Nam
+  +Vietnam
+  +Yemen
+  +Zambia
+  +Zimbabwe
+
+Subtropics, summer rainfall
+  +Argentina
+  +Mexico
+  +U.S.A
+  +United States of America
+  +USA
+
+Subtropics, winter rainfall
+  +Afghanistan
+  +Albania
+  +Algeria
+  +Andorra
+  +Argentina
+  +Australia
+  +Azerbaijan
+  +Bosnia and Herzegovina
+  +Brazil
+  +Chile
+  +China
+  +Cyprus
+  +Egypt
+  +France
+  +Georgia
+  +Greece
+  +Holy See
+  +Hong Kong
+  +Iran
+  +Iraq
+  +Islamic Republic of Iran
+  +Israel
+  +Italy
+  +Japan
+  +Jordan
+  +Lebanon
+  +Libya
+  +Macao
+  +Macedonia
+  +Malta
+  +Mexico
+  +Monaco
+  +Montenegro
+  +Morocco
+  +New Zealand
+  +Pakistan
+  +Palestine
+  +Paraguay
+  +Portugal
+  +Russia
+  +Russian Federation
+  +San Marino
+  +Saudi Arabia
+  +Serbia
+  +South Africa
+  +Spain
+  +State of Palestine
+  +Syria
+  +Syrian Arab Republic
+  +Tajikistan
+  +The former Yugoslav Republic of Macedonia
+  +Tunisia
+  +Turkey
+  +Turkmenistan
+  +U.S.A
+  +United States of America
+  +Uruguay
+  +USA
+  +Uzbekistan
+
+Subtropics, summer rainfall
+  +Angola
+  +Argentina
+  +Australia
+  +Bangladesh
+  +Bhutan
+  +Botswana
+  +Brazil
+  +Cape Verde
+  +India
+  +Lesotho
+  +Mexico
+  +Myanmar
+  +Namibia
+  +Nepal
+  +Pakistan
+  +Peru
+  +Philippines
+  +South Africa
+  +Swaziland
+  +United States of America
+  +Uruguay
+  +USA
+  +Viet Nam
+  +Vietnam
+
+Subtropics, low rainfall
+  +Afghanistan  +Algeria
+  +Argentina
+  +Australia
+  +Azerbaijan
+  +Botswana
+  +Cape Verde
+  +Chad
+  +Chile
+  +China
+  +Egypt
+  +Gibraltar
+  +India
+  +Iran
+  +Iraq
+  +Islamic Republic of Iran
+  +Israel
+  +Jordan
+  +Kuwait
+  +Libya
+  +Mali
+  +Mauritania
+  +Mexico
+  +Morocco
+  +Namibia
+  +Niger
+  +Oman
+  +Pakistan
+  +Palestine
+  +Peru
+  +Qatar
+  +Saudi Arabia
+  +South Africa
+  +Spain
+  +State of Palestine
+  +Sudan
+  +Syria
+  +Syrian Arab Republic
+  +Tajikistan
+  +Tunisia
+  +Turkmenistan
+  +U.A.E.
+  +U.S.A
+  +United Arab Emirates
+  +United States of America
+  +USA
+  +Uzbekistan
+  +Western Sahara
+
+Temperate, Oceanic
+  +Albania
+  +Argentina
+  +Australia
+  +Austria
+  +Belgium
+  +Bermuda
+  +Bosnia and Herzegovina
+  +Britain
+  +Canada
+  +Channel Islands
+  +Chile
+  +Croatia
+  +Czech Republic
+  +Denmark
+  +Estonia
+  +Finland
+  +France
+  +Georgia
+  +Germany
+  +Great Britain
+  +Greece
+  +Guernsey
+  +Hungary
+  +Iceland
+  +Ile of Man
+  +Ireland
+  +Italy
+  +Japan
+  +Jersey
+  +Latvia
+  +Lichteinstein
+  +Lithuania
+  +Luxembourg
+  +Macedonia
+  +Montenegro
+  +Netherlands
+  +New Zealand
+  +Norflok Island
+  +Northern Ireland
+  +Norway
+  +Poland
+  +Romania
+  +Russia
+  +Russian Federation
+  +San Marino
+  +Sark
+  +Serbia
+  +Slovak Republic
+  +Slovakia
+  +Slovenia
+  +Sweden
+  +Switzerland
+  +The fomer Yugoslav Republic of Macedonia
+  +Turkey
+  +U.K
+  +UK
+  +Ukraine
+  +United Kingdom of Great Britain and Northern Ireland
+  +Åland Islands
+
+Temperate, sub-continental
+  +Afghanistan
+  +Albania
+  +Armenia
+  +Austria
+  +Azerbaijan
+  +Bosnia and Herzegovina
+  +Bulgaria
+  +Canada
+  +China
+  +Croatia
+  +Czech Republic
+  +Democratic People's Republic of Korea
+  +Estonia
+  +Finland
+  +Georgia
+  +Germany
+  +Greece
+  +Greenland
+  +Hungary
+  +Iran
+  +Iraq
+  +Islamic Republic of Iran
+  +Italy
+  +Japan
+  +Kazakhstan
+  +Kyrgyzstan
+  +Latvia
+  +Lithuania
+  +Macedonia
+  +Moldova
+  +Mongolia
+  +North Korea
+  +Norway
+  +Poland
+  +Republic of Korea
+  +Republic of Moldova
+  +Romania
+  +Russia
+  +Russian Federation
+  +Slovakia
+  +Slovenia
+  +Sweden
+  +Tajikistan
+  +The former Yugoslave Republic of Macedonia
+  +Turkey
+  +Turkmenistan
+  +U.S.A
+  +Ukraine
+  +United States of America
+  +USA
+  +Uzbekistan
+
+Temperate, continental
+  +Canada
+  +China
+  +Democratic People's Republic of Korea
+  +Kazakhstan
+  +Mongolia
+  +North Korea
+  +Russia
+  +Russian Federation
+  +Turkmenistan
+  +U.S.A
+  +United States of America
+  +USA
+
+Boreal, oceanic
+  +Argentina
+  +Britain
+  +Canada
+  +Chile
+  +Faeroe Islands
+  +Falkland Islands
+  +Great Britain
+  +Iceland
+  +New Zealand
+  +Northern Ireland
+  +Norway
+  +Russia
+  +Russian Federation
+  +Saint Pierre and Miquelon
+  +Sweden
+  +U.K
+  +U.S.A
+  +UK
+  +United Kingdom of Great Britain and Northern Ireland
+  +United States of America
+  +USA
+
+Boreal, sub-continental
+  +Canada
+  +Finland
+  +Greenland
+  +Japan
+  +Norway
+  +Russia
+  +Russian Federation
+  +Sweden
+  +U.S.A
+  +United States of America
+  +USA
+
+Boreal, continental
+  +Canada
+  +Russia
+  +Russian Federation
+  +U.S.A
+  +United States of America
+  +USA
+
+Arctic
+  +Australia
+  +Canada
+  +Chile
+  +Faeroe Islands
+  +Falkland Islands
+  +Greenland
+  +Iceland
+  +Isle of Man
+  +Malvinas
+  +New Zealand
+  +Norway
+  +Russia
+  +Russian Federation
+  +South Africa
+  +Svalbard and Jan Mayen Islands
+  +U.S.A
+  +United States of America
+  +USA
+  +Åland Islands

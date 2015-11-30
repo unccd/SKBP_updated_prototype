@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application name="ApplicationROE">
+
+  <!-- Component used for debugging purposes -->  
+  <components>
+
+    <component name="ProcessROEData" subType="pipeline" factoryName="aspire-application">
+      <gatherStatistics>true</gatherStatistics>
+      <queueSize>100</queueSize>
+      <maxThreads>50</maxThreads>
+      
+      <components>
+
+        <component name="Scheduler" subType="default" factoryName="aspire-scheduler">
+          <schedules>
+            <schedule name="CrawlSchedule" enabled="true" singleton="false">
+              <cron>0 0 19 ? * 1</cron>
+              <event>onPublish</event>
+            </schedule>
+          </schedules>
+          <branches>
+            <branch event="onPublish" pipelineManager="../ProcessROEData" pipeline="doc-process-csv"/>
+          </branches>
+        </component>
+        
+        
+        <component name="CSVFileReader" subType="default" factoryName="com.searchtechnologies:aspire-csv-file-reader:1.3">
+          <config>
+            <InputFiles>${inputFiles}</InputFiles>
+          </config>
+        </component>
+
+        <component name="ProcessCSVRows" subType="default" factoryName="aspire-groovy">
+          <script>
+            <![CDATA[
+              import com.searchtechnologies.aspire.services.AspireObject;
+              import com.searchtechnologies.aspire.services.Job;
+
+              int rowsCount = 1;
+              AspireObject csvFileReader = doc.get("csvFileReader");
+              List<AspireObject> rows = csvFileReader.getChildren();
+
+              for (AspireObject row : rows) {
+                component.info("Processing row: " + rowsCount);
+                AspireObject subDoc = new AspireObject("doc");
+                
+                subDoc.add("fetchUrl", row.fetchUrl.text());
+                
+                subDoc.add("solr"); 
+                if (row.id == null || row.id.text().trim().isEmpty()) {
+                  subDoc.solr.add("id", String.valueOf(rowsCount) + "_ROE");
+                } else {
+                  subDoc.solr.add("id", row.id.text() + "_ROE");
+                }
+                List<AspireObject> fields = row.getChildren();
+                for (AspireObject field : fields) {
+                  subDoc.solr.add(field.getName(), field.getText());
+                }
+
+                Job subJob = job.createSubJob(subDoc, job.getJobId() + "-" + rowsCount);
+                bh.enqueue(subJob, "onSubJob");
+                rowsCount++;
+              }              
+            ]]>
+          </script>
+          <branches>  
+            <branch event="onSubJob" pipelineManager="../ProcessROECSV" />
+          </branches>
+        </component>
+        
+
+        <component name="WaitForSubJobs" subType="waitForSubJobs" factoryName="aspire-tools"/>
+                  
+      </components>
+      <pipelines>
+        <pipeline name="doc-process-csv" default="true">
+          <stages>
+            <stage component="CSVFileReader"/>
+            <stage component="ProcessCSVRows"/>
+          </stages>
+        </pipeline>
+      </pipelines>
+    </component>
+
+    
+    <component name="ProcessROECSV" subType="pipeline" factoryName="aspire-application">
+      <components>                                    
+
+        <component name="Router" subType="router" factoryName="aspire-tools">
+          <routeTable>
+            <route component="/BusinessRulesEngine"/>
+            <route component="/PublishToSolr"/>
+          </routeTable>
+        </component>
+       
+      </components>
+
+
+      <pipelines>
+        <pipeline name="default-pipeline" default="true">
+          <stages>
+            <stage component="Router"/>
+          </stages>
+        </pipeline>
+      </pipelines>
+    </component>    
+    
+  </components>
+</application>

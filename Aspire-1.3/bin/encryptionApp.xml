@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application name="AspireShellApplication">
+  <components>
+    <component name="Main" subType="pipeline" factoryName="aspire-application">
+      <components>
+      </components>
+      <pipelines>
+        <pipeline name="defaultPipeline" default = "true">
+          <script><![CDATA[
+			import com.searchtechnologies.aspire.security.*;
+       
+
+			try{
+				aem = new AspireEncryptionManager(null,null,null)
+				br = new BufferedReader(new InputStreamReader(System.in,"UTF-8"))
+				print "Enter password: "
+				System.out.flush()
+				password = br.readLine()
+				println ""
+				print "Enter property name: "
+				System.out.flush()
+				propertyName = br.readLine()
+				println propertyName
+				
+				aem.encryptString(new String(password),propertyName)
+				println ""
+				println "Password encrypted and stored in settings.xml file."
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				System.err.printf("Encrypt password failed. Reason: '%s'.\n", e.getMessage())
+			}
+			
+          ]]></script>
+        </pipeline>
+      </pipelines>
+    </component>
+  </components>
+</application>

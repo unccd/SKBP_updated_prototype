@@ -1,0 +1,211 @@
+Africa
+  +Burundi
+  +Cameroon
+  +Cameroun
+  +Central African Republic
+  +CAR
+  +Chad
+  +Congo
+  +Republic of the Congo
+  +Democratic Republic of the Congo
+  +DRC
+  +Equatorial Guinea
+  +Gabon
+  +Rwanda
+  +Sao Tome and Principe
+  +Comoros
+  +Djibouti
+  +Eritrea
+  +Ethiopia
+  +Kenya
+  +Somalia
+  +Sudan
+  +Uganda
+  +Algeria
+  +Egypt
+  +Libya
+  +Libyan Arab Jamahiriya
+  +Mauritania
+  +Morocco
+  +Tunisia
+  +Angola
+  +Botswana
+  +Lesotho
+  +Madagascar
+  +Malawi
+  +Mauritius
+  +Mozambique
+  +Namibia
+  +Seychelles
+  +South Africa
+  +Swaziland
+  +United Republic of Tanzania
+  +Zambia
+  +Zimbabwe
+  +Benin
+  +Burkina Faso
+  +Cape Verde
+  +Côte d'Ivoire
+  +Gambia
+  +Ghana
+  +Guinea
+  +Guinea-Bissau
+  +Liberia
+  +Mali
+  +Niger
+  +Nigeria
+  +Senegal
+  +Sierra Leone
+  +Togo
+
+Asia
+  +Kazakhstan
+  +Kyrgyzstan
+  +Tajikistan
+  +Turkmenistan
+  +Uzbekistan
+  +China
+  +Democratic People's Republic of Korea
+  +North Korea
+  +Mongolia
+  +Republic of Korea
+  +South Korea
+  +Australia
+  +Cook Islands
+  +Fiji
+  +Kiribati
+  +Marshall Islands
+  +Micronesia
+  +Federated States of Micronesia
+  +Nauru
+  +Niue
+  +Palau
+  +Papua New Guinea
+  +Samoa
+  +Solomon Islands
+  +Tonga
+  +Tuvalu
+  +Vanuatu
+  +Afghanistan
+  +Bangladesh
+  +Bhutan
+  +India
+  +Nepal
+  +Pakistan
+  +Sri Lanka
+  +Cambodia
+  +Indonesia
+  +Laos
+  +Lao People's Democratic Republic
+  +Malaysia
+  +Myanmar
+  +Philippines
+  +Thailand
+  +Timor-Leste
+  +Viet Nam
+  +Bahrain
+  +Iran
+  +Islamic Republic of Iran
+  +Iraq
+  +Jordan
+  +Kuwait
+  +Lebanon
+  +Oman
+  +Qatar
+  +Saudi Arabia
+  +Syria
+  +Syrian Arab Republic
+  +UAE
+  +U.A.E.
+  +United Arab Emirates
+  +Yemen
+
+Central and Eastern Europe
+  +Armenia
+  +Azerbaijan
+  +Belarus
+  +Bosnia and Herzegovina
+  +Bulgaria
+  +Estonia
+  +Georgia
+  +Latvia
+  +Montenegro
+  +Moldova
+  +Republic of Moldova
+  +Romania
+  +Russia
+  +Russian Federation
+  +Serbia
+  +Slovak Republic
+  +Slovakia
+  +Macedonia
+  +The former Yugoslav Republic of Macedonia
+  +Ukraine
+
+Latin America and the Caribbean
+  +Bolivia
+  +Plurinantional State of Bolivia
+  +Colombia
+  +Ecuador
+  +Peru
+  +Venezuela
+  +Bolivarian Republic of Venezuela
+  +Antigua and Barbuda
+  +Antigua
+  +Barbuda
+  +Bahamas
+  +Barbados
+  +Cuba
+  +Dominica
+  +Dominican Republic
+  +República Domincana
+  +D.R.
+  +DR
+  +Grenada
+  +Guyana
+  +Haiti
+  +Jamaica
+  +St. Kitts and Nevis
+  +Saint Kitts and Nevis
+  +Saint Kitts
+  +Nevis
+  +Saint Lucia
+  +St. Lucia
+  +Saint Vincent
+  +St. Vincent
+  +St. Vincent and the Grenadines
+  +Saint Vincent and the Grenadines
+  +Grenadines
+  +Suriname
+  +Trinidad and Tobago
+  +Trinidad
+  +Tobago
+  +Belize
+  +Costa Rica
+  +El Salvador
+  +Guatemala
+  +Honduras
+  +Mexico
+  +Nicaragua
+  +Panama
+  +Argentina
+  +Brazil
+  +Chile
+  +Paraguay
+  +Uruguay
+
+Northern Mediterranean
+  +Albania
+  +Andorra
+  +Croatia
+  +Cyprus
+  +Greece
+  +Hungary
+  +Israel
+  +Italy
+  +Malta
+  +Monaco
+  +Portugal
+  +Slovenia
+  +Spain
+  +Turkey

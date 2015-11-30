@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application name="AspireShellApplication">
+  
+  <components>
+    <component name="Main" subType="pipeline" factoryName="aspire-application">
+      <components>
+          <!--<component name="FetchUrl" subType="default" factoryName="aspire-fetch-url" />  
+          <component name="ExtractText" subType="default" factoryName="aspire-extract-text">
+          </component>-->
+      </components>
+      
+      <pipelines>
+        <pipeline name="defaultPipeline" default = "true">
+          <script><![CDATA[ 
+            println "this is an empty groovy pipeline"
+          ]]></script>
+        </pipeline>
+      </pipelines>
+    </component>
+  </components>
+</application>

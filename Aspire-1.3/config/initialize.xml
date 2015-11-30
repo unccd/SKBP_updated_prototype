@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config name="initialize">
+  <components>
+       
+    <component name="initPipeline" subType="pipeline" factoryName="aspire-application">
+      <config>
+        <components>
+          
+          <component name="loadVariables" subType="default" factoryName="aspire-groovy">
+            <config>              
+              <!-- Regular expression to clean HTML pages -->
+
+              <variable name="HTML_CONTENT_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern contentRegex = Pattern.compile("<!-- page content loads from the pages and pages layout -->.*?<!-- Logobar at the bottom of the content area -->", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+                  println "********** HTML_CONTENT_REGEX loaded";
+                  return contentRegex;
+                ]]>
+              </variable>
+              
+              <variable name="HTML_BODY_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern bodyRegex = Pattern.compile("<div class=\"content-2 content-middle nowptitle notBoxStyled noFloat\">(.*)?<!-- Logobar at the bottom of the content area -->", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+                  println "********** HTML_BODY_REGEX loaded";
+                  return bodyRegex;
+                ]]>
+              </variable>
+
+              <variable name="HTML_H1_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern h1Regex = Pattern.compile("<h1[^>]*>(.*)?</h1>");
+                  println "********** HTML_H1_REGEX loaded";
+                  return h1Regex;
+                ]]>
+              </variable>
+
+              <variable name="HTML_DISPLAYNONE_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern displayNoneRegex = Pattern.compile("<div id=\"ECBItems_.*");
+                  println "********** HTML_DISPLAYNONE_REGEX loaded";
+                  return displayNoneRegex;
+                ]]>
+              </variable>
+              
+              <variable name="HTML_CRLF_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern crlfRegex = Pattern.compile("\\n|\\s+");
+                  println "********** HTML_CRLF_REGEX loaded";
+                  return crlfRegex;
+                ]]>
+              </variable>
+
+              <variable name="HTML_SCRIPTSTYLE_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern scriptStyleRegex = Pattern.compile("<script[^>]*>.*?</script>|<style[^>]*>.*?</style>");
+                  println "********** HTML_SCRIPTSTYLE_REGEX loaded";
+                  return scriptStyleRegex;
+                ]]>
+              </variable>
+              
+              <variable name="HTML_LINKS_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern linksRegex = Pattern.compile("<a [^>]*>.*?</a>");
+                  println "********** HTML_LINKS_REGEX loaded";
+                  return linksRegex;
+                ]]>
+              </variable>
+
+              <variable name="HTML_TAGS_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern htmlTagsRegex = Pattern.compile("<.*?>");
+                  println "********** HTML_TAGS_REGEX loaded";
+                  return htmlTagsRegex;
+                ]]>
+              </variable>
+
+              <variable name="HTML_AMP_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern ampRegex = Pattern.compile("&amp;amp;|&amp;");
+                  println "********** HTML_AMP_REGEX loaded";
+                  return ampRegex;
+                ]]>
+              </variable>
+              
+              <variable name="HTML_CHARS_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern charsRegex = Pattern.compile("&#160;|&nbsp;|&gt;|&lt;|\\||--|>|<");
+                  println "********** HTML_CHARS_REGEX loaded";
+                  return charsRegex;
+                ]]>
+              </variable>
+
+              <variable name="HTML_QUOTE_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern quoteRegex = Pattern.compile("&quot;");
+                  println "********** HTML_QUOTE_REGEX loaded";
+                  return quoteRegex;
+                ]]>
+              </variable>
+              
+              <variable name="HTML_APHOS_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern aphosRegex = Pattern.compile("&#39;");
+                  println "********** HTML_APHOS_REGEX loaded";
+                  return aphosRegex;
+                ]]>
+              </variable>
+              
+              <variable name="HTML_BLANKS_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern blanksRegex = Pattern.compile("\\s+");
+                  println "********** HTML_BLANKS_REGEX loaded";
+                  return blanksRegex;
+                ]]>
+              </variable>
+
+              <!-- Variables for data extraction -->
+
+              <variable name="ISBN_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern isbnRegex = Pattern.compile("[0-9|A-Z]{1,4}-[0-9|A-Z]{1,4}|[0-8]{8}")
+                  println "********** ISBN_REGEX loaded";
+                  return isbnRegex;
+                ]]>
+              </variable>
+              
+              <variable name="YEAR_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern yearRegex = Pattern.compile("[0-9]{4}")
+                  println "********** YEAR_REGEX loaded";
+                  return yearRegex;
+                ]]>
+              </variable> 
+              
+              <!-- Variables for XML data processing -->
+              
+              <variable name="XML_PREFIX_REGEX">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern xmlPrefixRegex = Pattern.compile("ags:|foaf:|rdf:|rdfs:|bibo:|dct:|xml:")
+                  println "********** XML_PREFIX_REGEX loaded";
+                  return xmlPrefixRegex;
+                ]]>
+              </variable>
+              
+              <variable name="XML_PRETTY_PRINT">
+                <![CDATA[
+                  import java.util.regex.Pattern;
+                  Pattern xmlPrettyPrintRegex = Pattern.compile("><")
+                  println "********** XML_PRETTY_PRINT loaded";
+                  return xmlPrettyPrintRegex;
+                ]]>
+              </variable>
+              
+              <!-- Stopwords list for document exclusion -->
+              
+              <variable name="STOPWORDS_DOC_EXCLUDE">
+                <![CDATA[
+                  List<String> stopwordsDocExcludeList = new ArrayList<String>();
+                  String docExcludeFilePath = "${docExcludeFilePath}";
+
+                  if (docExcludeFilePath != null && !docExcludeFilePath.isEmpty()) {
+                    File docExcludeFile = new File(docExcludeFilePath);
+
+                    if (docExcludeFile.exists() && docExcludeFile.isFile()) {
+                      docExcludeFile.eachLine { line ->
+                        stopwordsDocExcludeList.add(line.trim());
+                      }
+                    } else {
+                      component.error("Invalid stopwords file for document exclusion: " + docExcludeFilePath);
+                    }
+                  }
+
+                  println "********** STOPWORDS_DOC_EXCLUDE loaded";
+                  return stopwordsDocExcludeList;
+                ]]>
+              </variable>
+              
+              <!-- Language 3 chars code and 2 char code/name map -->
+              
+              <variable name="CODES_LANG_MAP">
+                <![CDATA[
+                  Map codesLangMap = [:];
+                  String codesLangFilePath = "${codesLangFilePath}";
+
+                  if (codesLangFilePath != null && !codesLangFilePath.isEmpty()) {
+                    File codesLangFile = new File(codesLangFilePath);
+
+                    if (codesLangFile.exists() && codesLangFile.isFile()) {
+                        codesLangFile.eachLine { line ->
+                        String[] keyValue = line.split("\\|");
+                        codesLangMap[keyValue[0]] = keyValue[1];
+                      }
+                    } else {
+                      component.error("Invalid language codes file: " + codesLangFilePath);
+                    }
+                  }
+
+                  println "********** CODES_LANG_MAP loaded";
+                  return codesLangMap;
+                ]]>
+              </variable>
+
+             <!-- Language name and 2 chars code/name map -->
+             
+              <variable name="LANG_CODENAME_MAP">
+                <![CDATA[
+                  Map langCodeNameMap = [:];
+                  String langCodeNameFilePath = "${codesLangFilePath}";
+
+                  if (langCodeNameFilePath != null && !langCodeNameFilePath.isEmpty()) {
+                    File langCodeNameFile = new File(langCodeNameFilePath);
+
+                    if (langCodeNameFile.exists() && langCodeNameFile.isFile()) {
+                      langCodeNameFile.eachLine { line ->
+                        String[] keyValue = line.split("\\|");
+                        String[] codeName = keyValue[1].split(";");
+                        langCodeNameMap[codeName[1].toLowerCase()] = keyValue[1];
+                      }
+                    } else {
+                      component.error("Invalid language codes file: " + langCodeNameFilePath);
+                    }
+                  }
+                  
+                  println "********** LANG_CODENAME_MAP loaded";
+                  return langCodeNameMap;
+                ]]>
+              </variable>
+              
+             <!-- Language 2 chars code and name map -->
+             
+              <variable name="LANG_NAMES_MAP">
+                <![CDATA[
+                  Map langNamesMap = [:];
+                  String langNamesFilePath = "${codesLangFilePath}";
+
+                  if (langNamesFilePath != null && !langNamesFilePath.isEmpty()) {
+                    File langNamesFile = new File(langNamesFilePath);
+
+                    if (langNamesFile.exists() && langNamesFile.isFile()) {
+                      langNamesFile.eachLine { line ->
+                        String[] keyValue = line.split("\\|");
+                        String[] codeName = keyValue[1].split(";");
+                        langNamesMap[codeName[0]] = codeName[1];
+                      }
+                    } else {
+                      component.error("Invalid language codes file: " + langNamesFilePath);
+                    }
+                  }
+
+                  println "********** LANG_NAMES_MAP loaded";
+                  return langNamesMap;
+                ]]>
+              </variable>
+              
+              
+              <variable name="SOLR_LANG_MAP">
+                <![CDATA[
+                  Map solrLangMap = [:];
+                  String solrLanguagesFilePath = "${solrLanguagesFilePath}";
+
+                  if (solrLanguagesFilePath != null && !solrLanguagesFilePath.isEmpty()) {
+                    File solrLanguagesFile = new File(solrLanguagesFilePath);
+
+                    if (solrLanguagesFile.exists() && solrLanguagesFile.isFile()) {
+                      solrLanguagesFile.eachLine { line ->
+                        if (!line.isEmpty()) {
+                          String[] keyValue = line.split(",");
+                          solrLangMap[keyValue[0]] = keyValue[1];
+                        }
+                      }
+                    } else {
+                      component.error("Invalid Solr languages file: " + solrLanguagesFilePath);
+                    }
+                  }
+                  
+                  println "********** SOLR_LANG_MAP loaded";
+                  return solrLangMap;
+                ]]>
+              </variable>
+              
+              <!-- Agrovoc map -->
+
+              <variable name="AGROVOC_MAP">
+                <![CDATA[
+                  String agrovocMapFilePath = "${agrovocMapFilePath}";
+
+                  Map<String, String> agrovocMap = new HashMap<String, String>();
+
+                  if (agrovocMapFilePath != null && !agrovocMapFilePath.isEmpty()) {
+                    File agrovocFile = new File(agrovocMapFilePath);
+                    
+                    if (agrovocFile.exists() && agrovocFile.isFile()) {                    
+                      BufferedReader bufferedReader = null;
+                      
+                      try {
+                        bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(agrovocFile), "UTF-8"));
+
+                        String line = "";
+                        while ((line = bufferedReader.readLine()) != null) {
+                          if (line.contains(",")) {
+                            String[] urlTerm = line.split(",");
+                            
+                            if (urlTerm.length == 2) {
+                              agrovocMap.put(urlTerm[0].trim(), urlTerm[1].trim());
+                            } else if (urlTerm.length > 2) {
+                              agrovocMap.put(urlTerm[0].trim(), line.substring(urlTerm[0].length()+1));
+                            }
+                          } else {
+                            component.warn("Ignoring invalid entry in Agrovoc file: " + line);
+                          }
+                        }
+                      } catch (IOException ioe) {
+                        component.error(ioe.printStackTrace());
+                      } finally {
+                        if (bufferedReader != null) {
+                          try {
+                            bufferedReader.close();
+                          } catch (IOException ioe) {
+                            component.error(ioe.printStackTrace());
+                          }
+                        }
+                      }
+                    } else {
+                      println "Invalid agrovoc map file path: " + agrovocMapFilePath;
+                    }
+                  } else {
+                    component.error("Missing agrovoc map file path");
+                  }
+                  
+                  println "********** AGROVOC_MAP loaded";
+                  return agrovocMap;
+                ]]>
+              </variable>
+
+
+              <!-- UNCCD Agrovoc list -->
+
+              <variable name="UNCCD_AGROVOC_LIST">
+                <![CDATA[
+                  String unccdAgrovocListFilePath = "${unccdAgrovocListFilePath}";
+                  HashSet<String> unccdAgrovocMap = new HashSet<String>();
+                          
+                  if (unccdAgrovocListFilePath != null && !unccdAgrovocListFilePath.isEmpty()) {
+                    File unccdAgrovocFile = new File(unccdAgrovocListFilePath);
+                    
+                    if (unccdAgrovocFile.exists() && unccdAgrovocFile.isFile()) {                    
+                      BufferedReader bufferedReader = null;
+                      
+                      try {
+                        bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(unccdAgrovocFile), "UTF-8"));
+
+                        String line;
+                        while ((line = bufferedReader.readLine()) != null) {
+                          unccdAgrovocMap.add(line.trim());
+                        }
+                      } catch (IOException ioe) {
+                        component.error(ioe.printStackTrace());
+                      } finally {
+                        if (bufferedReader != null) {
+                          try {
+                            bufferedReader.close();
+                          } catch (IOException ioe) {
+                            component.error(ioe.printStackTrace());
+                          }
+                        }
+                      }
+                    } else {
+                      println "Invalid UNCCD agrovoc list file path: " + unccdAgrovocListFilePath;
+                    }
+                  } else {
+                    component.error("Missing UNCCD agrovoc list file path");
+                  }
+                  
+                  println "********** UNCCD_AGROVOC_LIST loaded";
+                  return unccdAgrovocMap;
+                ]]>
+              </variable>
+              
+              
+              <!-- CSIC - UNCCD Document Type mapping -->
+              
+              <variable name="UNCCD_DOCUMENT_TYPES_MAP">
+                <![CDATA[
+                  Map unccdDocTypesMap = [:];
+                  String docTypesFilePath = "${docTypesFilePath}";
+
+                  if (docTypesFilePath != null && !docTypesFilePath.isEmpty()) {
+                    File docTypesFile = new File(docTypesFilePath);
+
+                    if (docTypesFile.exists() && docTypesFile.isFile()) {
+                      docTypesFile.eachLine { line ->
+                        if (!line.isEmpty()) {
+                          String[] keyValue = line.split(",");
+                          if (keyValue.size() == 2) {
+                            unccdDocTypesMap[keyValue[0]] = keyValue[1];
+                          } else {
+                            unccdDocTypesMap[keyValue[0]] = "";
+                          }
+                        }
+                      }
+                    } else {
+                      component.error("Invalid CSIC - UNCCD mapping file: " + docTypesFilePath);
+                    }
+                  }
+                  
+                  println "********** UNCCD_DOCUMENT_TYPES_MAP loaded";
+                  return unccdDocTypesMap;
+                ]]>
+              </variable>
+              
+
+              <!-- ROE - UNCCD Disciplines mapping -->
+              
+              <variable name="UNCCD_DISCIPLINES_MAP">
+                <![CDATA[
+                  Map unccdDisciplinesMap = [:];
+                  String disciplinesFilePath = "${disciplinesFilePath}";
+
+                  if (disciplinesFilePath != null && !disciplinesFilePath.isEmpty()) {
+                    File disciplinesFile = new File(disciplinesFilePath);
+
+                    if (disciplinesFile.exists() && disciplinesFile.isFile()) {
+                      disciplinesFile.eachLine { line ->
+                        if (!line.isEmpty()) {
+                          String[] keyValue = line.split(",");
+                          if (keyValue.size() == 2) {
+                            unccdDisciplinesMap[keyValue[0]] = keyValue[1];
+                          } else {
+                            unccdDisciplinesMap[keyValue[0]] = "";
+                          }
+                        }
+                      }
+                    } else {
+                      component.error("Invalid ROE - UNCCD mapping file: " + disciplinesFilePath);
+                    }
+                  }
+                  
+                  println "********** UNCCD_DISCIPLINES_MAP loaded";
+                  return unccdDisciplinesMap;
+                ]]>
+              </variable>
+
+              <!-- CBW classisifications mapping -->
+
+              <variable name="CBW_CLASSIFICATIONS_MAP">
+                <![CDATA[
+                  Map cbwClassificationsMap = [:];
+
+                  String cbwClassificationsFilePath = "${cbwClassificationsFilePath}";
+
+                  if (cbwClassificationsFilePath != null && !cbwClassificationsFilePath.isEmpty()) {
+                    File cbwClassificationsFile = new File(cbwClassificationsFilePath);
+
+                    if (cbwClassificationsFile.exists() && cbwClassificationsFile.isFile()) {
+                      cbwClassificationsFile.eachLine { line ->
+                        if (!line.isEmpty()) {
+                          String[] keyValue = line.split("\\|");
+                          if (keyValue.size() == 2) {
+                            cbwClassificationsMap[keyValue[0].trim()] = keyValue[1].trim();
+                          }
+                        }
+                      }
+                    } else {
+                      component.error("Invalid CBW classifications mapping file: " + cbwClassificationsFilePath);
+                    }
+                  }
+                  
+                  println "********** CBW_CLASSIFICATIONS_MAP loaded";
+                  return cbwClassificationsMap;
+                ]]>
+              </variable>              
+              
+              <!-- World countries geo data mapping -->
+              
+              <variable name="COUNTRIES_LATLON_MAP">
+                <![CDATA[
+                  Map countriesLatLonMap = [:];
+                  String countriesLatLonFilePath = "${countriesLatLonFilePath}";
+
+                  if (countriesLatLonFilePath != null && !countriesLatLonFilePath.isEmpty()) {
+                    File countriesLatLonFile = new File(countriesLatLonFilePath);
+
+                    if (countriesLatLonFile.exists() && countriesLatLonFile.isFile()) {
+                      countriesLatLonFile.eachLine { line ->
+                        if (!line.isEmpty()) {
+                          String[] keyValue = line.split(",");
+                          if (keyValue.size() == 3) {
+                            countriesLatLonMap[keyValue[0]] = keyValue[1] + "," + keyValue[2];
+                          } else {
+                            countriesLatLonMap[keyValue[0]] = "";
+                          }
+                        }
+                      }
+                    } else {
+                      component.error("Invalid countries latitude and longitude mapping file: " + countriesLatLonFilePath);
+                    }
+                  }
+                  
+                  println "********** COUNTRIES_LATLON_MAP loaded";
+                  return countriesLatLonMap;
+                ]]>
+              </variable>
+
+              <script>
+                component.info("Initialization finished");
+              </script>
+            </config>
+          </component>
+
+
+          <!-- Custom Aspire Java components -->
+          
+          <component name="LangDetector" subType="default" factoryName="com.searchtechnologies:aspire-lang-detector:1.3">
+            <config>
+              <LangProfiles>config/langProfiles</LangProfiles>
+              <MaxTextLength>100000</MaxTextLength>
+            </config>
+          </component>
+
+        </components>
+
+        <pipelines>
+          <pipeline name="initPipelineStages" default="true">
+            <stages>
+              <stage component="loadVariables"/>
+            </stages>
+          </pipeline>
+        </pipelines>
+
+      </config>
+    </component>
+  </components>
+</config>
+ 
