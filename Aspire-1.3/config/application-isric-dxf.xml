@@ -1,7 +1,0 @@
-<dxf:template version="1.0" xmlns:dxf="http://www.searchtechnologies.com/DXF/2011">
-  <properties>
-    <cacheXml display="Cache XML" type="boolean" default="true">
-      <dxf:help>Indicates whether the Solr XML will be cached on disk</dxf:help>
-    </cacheXml>
-  </properties>
-</dxf:template>

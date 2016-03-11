@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application name="ApplicationISRIC" typeFlags="job-input">
+
+  <components>
+
+    <component name="HotFolderFeeder" subType="hotFolderFeeder" factoryName="aspire-filefeeder">
+      <config>
+        <feederLabel>CrawlFolder</feederLabel>
+        <metadataMap>
+          <map from="fileName" to="fileName"/>
+          <map from="fullPath" to="fullPath"/>
+        </metadataMap>
+        <autoStart>false</autoStart>
+        <loopWait>43200000</loopWait>
+        <hotFolders>
+          <hotFolder match=".*\.xml">
+            <inputQueueFolder>datastore/isric/input-queue</inputQueueFolder>
+            <quarantineFolder>datastore/isric/quarantine</quarantineFolder>
+            <completedFolder>datastore/isric/completed</completedFolder>
+            <inProcessFolder>datastore/isric/in-process</inProcessFolder>
+          </hotFolder>
+        </hotFolders>
+        <branches>
+          <branch event="onPublish" pipelineManager="ProcessISRICXML"/>
+        </branches>
+      </config>
+    </component>
+    
+    
+    <component name="ProcessISRICData" subType="pipeline" factoryName="aspire-application">
+      <queueSize>200</queueSize>
+      <maxThreads>20</maxThreads>
+      
+      <components>
+
+        <component name="Scheduler" subType="default" factoryName="aspire-scheduler">
+          <schedules>
+            <schedule name="CrawlSchedule" enabled="true" singleton="false">
+              <cron>${schedule}</cron>
+              <event>onPublish</event>
+            </schedule>
+          </schedules>
+          <branches>
+            <branch event="onPublish" pipelineManager="../ProcessISRICData" pipeline="doc-process-xml"/>
+          </branches>
+        </component>
+
+
+        <component name="SetFetchURL" subType="default" factoryName="aspire-groovy">
+          <variable name="LOAD_VARIABLES" component="/initialize/initPipeline/loadVariables"/>
+          
+          <script>
+            <![CDATA[
+              import com.searchtechnologies.aspire.services.AspireObject;
+              import com.searchtechnologies.aspire.services.Job;
+              import java.util.regex.Pattern;
+        
+              if (doc.fetchUrl == null || doc.fetchUrl.text().isEmpty()) {
+                Pattern xmlPrettyPrint = LOAD_VARIABLES.getVariable("XML_PRETTY_PRINT");
+                
+                component.info("SetFetchURL: http://85.214.194.220/geonetwork/srv/en/iso19139.xml");
+                
+                // Iterates IDs looking for valid URL
+                for (int i=11800; i<=40000; i++) {
+                  String isricUrl = "http://85.214.194.220/geonetwork/srv/en/iso19139.xml?id=" + i;
+
+                  HttpURLConnection urlConn = null;
+                  try {
+                    URL url = new URL(isricUrl);
+                    if (url != null) {
+                      urlConn = (HttpURLConnection) url.openConnection();
+
+                      if (urlConn.getResponseCode() == 200) {                                             
+                        BufferedReader bufferReader = null;
+                        BufferedWriter bufferedWriter = null;                          
+
+                        try {
+                          InputStreamReader inputStreamReader = new InputStreamReader(urlConn.getInputStream(), "UTF-8");
+
+                          if (inputStreamReader != null) {
+                            StringBuffer content = new StringBuffer();
+                            bufferReader = new BufferedReader(inputStreamReader);
+                            
+                            String line;
+                            while ((line = bufferReader.readLine()) != null) {
+                              content.append(line);
+                              content.append(System.getProperty("line.separator"));
+                            }
+
+                            if (content.toString().contains("</gmd:MD_Metadata>")) {
+                              // Set FetchUrl
+                              AspireObject subDoc = new AspireObject("doc");
+                              subDoc.fetchUrl = isricUrl;
+                              subDoc.fileNameID = i;
+                              Job subJob = job.createSubJob(subDoc, job.getJobId() + "-" + i);
+                              bh.enqueue(subJob, "onSubJob");
+                              component.info("Processing: " + isricUrl);
+                            
+                              // Write XML to disk cache 
+                              
+                              String xmlCachePath = "datastore/content-cache/isric";
+                              if (xmlCachePath != null && !xmlCachePath.isEmpty()) {
+                                File outputFileDir = new File(xmlCachePath);
+
+                                if ((!outputFileDir.exists() && outputFileDir.mkdirs()) || outputFileDir.exists()) {
+                                  String outputFilename = xmlCachePath + File.separator + i + "_ISRIC.xml";
+                                  bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFilename, false), "UTF-8"));
+                                  bufferedWriter.append(content.replaceAll(xmlPrettyPrint, ">\n<"));
+                                } else {
+                                  component.error("SetFetchURL: Cannot create XML cache directory " + xmlCachePath);
+                                }
+                              } else {
+                                component.error("SetFetchURL: Missing application property xmlCachePath");
+                              }
+                            } else {
+                              component.error("SetFetchURL: Invalid XML file: " + isricUrl);
+                            }
+                          }                          
+                        } catch (IOException ioe) {
+                          component.error(ioe.printStackTrace());
+                        } finally {
+                          if (bufferReader != null) {
+                            try {
+                              bufferReader.close();
+                            } catch (IOException ioe) {
+                              component.error(ioe.printStackTrace());
+                            }
+                          }
+                          if (bufferedWriter != null) {
+                            try {
+                              bufferedWriter.close();
+                            } catch (IOException ioe) {
+                              component.error(ioe.printStackTrace());
+                            }
+                          }
+                        }
+                      }       
+                    }
+                  } catch (MalformedURLException mue) {
+                    component.error(mue.printStackTrace());
+                  } finally {
+                    if (urlConn != null) {
+                      urlConn.disconnect();
+                    }
+                  }
+                }
+              }
+            ]]>
+          </script>
+          <branches>  
+            <branch event="onSubJob" pipelineManager="../ProcessISRICXML" />
+          </branches>
+        </component>
+        
+        
+        <component name="WaitForSubJobs" subType="waitForSubJobs" factoryName="aspire-tools"/>
+
+      </components>
+
+
+      <pipelines>
+        <pipeline name="doc-process-xml" default="true">
+          <stages>
+            <stage component="SetFetchURL"/>
+            <stage component="WaitForSubJobs"/>
+          </stages>
+        </pipeline>
+      </pipelines>
+    </component>
+    
+    
+    <component name="ProcessISRICXML" subType="pipeline" factoryName="aspire-application">
+      <queueSize>200</queueSize>
+      <maxThreads>50</maxThreads>
+
+      <components>                        
+        
+        <component name="FetchUrl" subType="default" factoryName="aspire-fetch-url"/>
+        
+        
+        <component name="LoadXML" subType="loadXML" factoryName="aspire-xml-files"/>
+        
+        
+        <component name="SetFileNameID" subType="default" factoryName="aspire-groovy">
+          <script>
+            <![CDATA[            
+             if (doc.fileNameID == null || doc.fileNameID.text().isEmpty()) {
+               doc.fileNameID = doc.fetchUrl.text().substring(doc.fetchUrl.text().lastIndexOf("/")+1, doc.fetchUrl.text().lastIndexOf("."));
+             }
+            ]]>
+          </script>
+        </component>
+        
+
+        <component name="SetDocumentURL" subType="default" factoryName="aspire-groovy">
+          <script>
+            <![CDATA[
+              import com.searchtechnologies.aspire.services.AspireObject;
+              import com.searchtechnologies.aspire.services.Job;
+
+              if (doc.'gmd:MD_Metadata'.'gmd:distributionInfo'.'gmd:MD_Distribution'.'gmd:transferOptions' != null) {
+                List<AspireObject> onlines =  doc.'gmd:MD_Metadata'.'gmd:distributionInfo'.'gmd:MD_Distribution'.'gmd:transferOptions'.'gmd:MD_DigitalTransferOptions'.getAll("gmd:onLine");
+                String fetchUrl = "";
+
+                 Map filterDocs = ["html":"Web Page","htm":"Web Page","csv":"Excel","doc":"Word","docx":"Word","pdf":"Adobe PDF","pps":"PowerPoint","ppt":"PowerPoint","pptx":"PowerPoint","txt":"Text"];
+
+                for (AspireObject online : onlines) {
+                  if (online.'gmd:CI_OnlineResource'.'gmd:linkage'.'gmd:URL' != null) {
+                    String onlineUrl = online.'gmd:CI_OnlineResource'.'gmd:linkage'.'gmd:URL'.text().trim().toLowerCase();
+                    String docExt = onlineUrl.toLowerCase().substring(onlineUrl.lastIndexOf(".")+1);
+
+                    if (filterDocs.containsKey(docExt)) {
+                      doc.normalizedMimeName = filterDocs.get(docExt);
+                      fetchUrl = onlineUrl;
+                      break;
+                    }
+                  }
+                }
+
+                if (fetchUrl != null && !fetchUrl.isEmpty() && (fetchUrl.startsWith("http") || fetchUrl.startsWith("https") || fetchUrl.startsWith("ftp"))) {                
+                  boolean validUrl = false;
+                  HttpURLConnection urlConn = null;
+
+                  try {
+                    URL url = new URL(fetchUrl);
+                    if (fetchUrl.toLowerCase().startsWith("http://") || fetchUrl.toLowerCase().startsWith("https://")) {
+                      urlConn = (HttpURLConnection) url.openConnection();
+                      if (urlConn != null && urlConn.getResponseCode() == 200) {
+                        validUrl = true;
+                      }
+                    } else if (fetchUrl.toLowerCase().startsWith("ftp://")) {
+                      URLConnection conn = url.openConnection();
+                      validUrl = true;
+                    }
+                  } catch (UnknownHostException uhe) {
+                    component.warn("SetDocumentURL UnknownHostException ignoring URL: " + uhe.message);
+                  } catch (MalformedURLException mue) {
+                    component.warn("SetDocumentURL MalformedURLException ignoring URL: " + mue.message);
+                  } catch (IOException ioe) {
+                    component.warn("SetDocumentURL IOException ignoring URL: " + ioe.message);
+                  } finally {
+                    if (urlConn != null) {
+                      urlConn.disconnect();
+                    }
+                  }
+                  
+                  if (validUrl) {
+                    doc.fetchUrlXml = doc.fetchUrl.text();
+                    doc.fetchUrl = fetchUrl;
+                    Job subJob = job.createSubJob(doc, job.getJobId() + "-" + doc.fileNameID.text());
+                    bh.enqueue(subJob, "onSubJob");
+                  }
+                }                
+              }
+            ]]>
+          </script>
+          <branches>  
+            <branch event="onSubJob" pipelineManager="../ProcessURL" />
+          </branches>
+        </component>
+        
+        
+        <component name="WaitForSubJobs" subType="waitForSubJobs" factoryName="aspire-tools"/>
+        
+
+        <component name="ResetFetchUrl" subType="default" factoryName="aspire-groovy">
+          <script>
+            <![CDATA[
+              if (doc.fetchUrlXml != null && !doc.fetchUrlXml.text().isEmpty()) {
+                doc.online = doc.fetchUrl.text();
+                doc.fetchUrl = doc.fetchUrlXml.text();
+              }
+            ]]>
+          </script>
+        </component>
+        
+        
+        <component name="SetTaggerFields" subType="default" factoryName="aspire-groovy">
+          <script>
+            <![CDATA[
+              import com.searchtechnologies.aspire.services.AspireObject;
+
+              if (doc.'gmd:MD_Metadata'.'gmd:identificationInfo'.'gmd:MD_DataIdentification'.'gmd:citation'.'gmd:CI_Citation'.'gmd:title'.'gco:CharacterString' != null) {
+                String title = doc.'gmd:MD_Metadata'.'gmd:identificationInfo'.'gmd:MD_DataIdentification'.'gmd:citation'.'gmd:CI_Citation'.'gmd:title'.'gco:CharacterString'.text();              
+                if (title != null && !title.isEmpty()) {
+                  doc.titleTagger = title;
+                }
+              }
+              
+              if (doc.'gmd:MD_Metadata'.'gmd:identificationInfo'.'gmd:MD_DataIdentification'.'gmd:abstract'.'gco:CharacterString' != null) {
+                String abstrac = doc.'gmd:MD_Metadata'.'gmd:identificationInfo'.'gmd:MD_DataIdentification'.'gmd:abstract'.'gco:CharacterString'.text();
+                if (abstrac != null && !abstrac.isEmpty()) {
+                  doc.abstractTagger = abstrac;
+                }
+              }
+              
+              String keywordsTagger = "";
+              List<AspireObject> keywords =  doc.'gmd:MD_Metadata'.'gmd:identificationInfo'.'gmd:MD_DataIdentification'.getAll("gmd:descriptiveKeywords");
+              for (AspireObject keyword : keywords) {
+                if (keyword.'gmd:MD_Keywords'.'gmd:keyword' != null && keyword.'gmd:MD_Keywords'.'gmd:keyword'.'gco:CharacterString' != null && keyword.'gmd:MD_Keywords'.'gmd:keyword'.'gco:CharacterString'.text() != null && !keyword.'gmd:MD_Keywords'.'gmd:keyword'.'gco:CharacterString'.text().isEmpty()) {
+                  keywordsTagger += keyword.'gmd:MD_Keywords'.'gmd:keyword'.'gco:CharacterString'.text() + " ";
+                }
+              }
+              if (keywordsTagger != null & !keywordsTagger.isEmpty()) {
+                doc.keywordsTagger = keywordsTagger.trim();
+              }
+            ]]>
+          </script>
+        </component>
+        
+        
+        <component name="KeywordsTagger" subType="default" factoryName="aspire-tag-text">
+          <output>keywordsTags</output>
+          <tagFields>
+            <tagField field="titleTagger"/>
+            <tagField field="abstractTagger"/>
+            <tagField field="keywordsTagger"/>
+            <tagField field="content"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="agrovoc_keywords_unccd" tagFile="config/tagger/agrovoc_keywords_unccd.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+            <tokenFilter class="org.apache.lucene.analysis.LowerCaseFilter"/>
+          </tokenProcessing>
+        </component>
+
+
+        <component name="KeywordsTaggerCaseSensitive" subType="default" factoryName="aspire-tag-text">
+          <output>keywordsTags</output>
+          <tagFields>
+            <tagField field="titleTagger"/>
+            <tagField field="abstractTagger"/>
+            <tagField field="keywordsTagger"/>
+            <tagField field="content"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="agrovoc_keywords_unccd" tagFile="config/tagger/agrovoc_keywords_unccd_case_sensitive.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+          </tokenProcessing>
+        </component>
+
+
+        <component name="DocumentTypesTagger" subType="default" factoryName="aspire-tag-text">
+          <output>documentTypesTags</output>
+          <tagFields>
+            <tagField field="titlesTagger"/>
+            <tagField field="content"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="document_types" tagFile="config/tagger/document_types.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+            <tokenFilter class="org.apache.lucene.analysis.LowerCaseFilter"/>
+          </tokenProcessing>
+        </component> 
+        
+        
+        <component name="RegionsTagger" subType="default" factoryName="aspire-tag-text">
+          <output>regionsTags</output>
+          <tagFields>
+            <tagField field="titleTagger"/>
+            <tagField field="abstractTagger"/>
+            <tagField field="keywordsTagger"/>
+            <tagField field="content"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="regions" tagFile="config/tagger/regions.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+          </tokenProcessing>
+        </component>
+        
+        
+        <component name="AnnexesTagger" subType="default" factoryName="aspire-tag-text">
+          <output>annexesTags</output>
+          <tagFields>
+            <tagField field="titleTagger"/>
+            <tagField field="abstractTagger"/>
+            <tagField field="keywordsTagger"/>
+            <tagField field="content"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="annexes" tagFile="config/tagger/annexes.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+          </tokenProcessing>          
+        </component>
+        
+        
+        <component name="NonAnnexesTagger" subType="default" factoryName="aspire-tag-text">
+          <output>nonAnnexesTags</output>
+          <tagFields>
+            <tagField field="titleTagger"/>
+            <tagField field="abstractTagger"/>
+            <tagField field="keywordsTagger"/>
+            <tagField field="content"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="nonAnnexes" tagFile="config/tagger/non_annexes.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+          </tokenProcessing>
+        </component>
+        
+        
+        <component name="LandManagementTagger" subType="default" factoryName="aspire-tag-text">
+          <output>landManagementTags</output>
+          <tagFields>
+            <tagField field="titleTagger"/>
+            <tagField field="abstractTagger"/>
+            <tagField field="keywordsTagger"/>
+            <tagField field="content"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="landManagement" tagFile="config/tagger/land_management.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+            <tokenFilter class="org.apache.lucene.analysis.LowerCaseFilter"/>
+          </tokenProcessing>
+        </component>
+        
+
+        <component name="ClimateZonesTagger" subType="default" factoryName="aspire-tag-text">
+          <output>climateZonesTaggerTags</output>
+          <tagFields>
+            <tagField field="titleTagger"/>
+            <tagField field="abstractTagger"/>
+            <tagField field="keywordsTagger"/>
+            <tagField field="content"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="climateZones" tagFile="config/tagger/climate_zones.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+          </tokenProcessing>
+        </component>
+        
+
+        <component name="Router" subType="router" factoryName="aspire-tools">
+          <routeTable>
+            <route component="/BusinessRulesEngine"/>
+            <route component="/PublishToSolr"/>
+          </routeTable>
+        </component>
+       
+      </components>
+
+
+      <pipelines>
+        <pipeline name="default-pipeline" default="true">
+          <stages>
+            <stage component="FetchUrl"/>
+            <stage component="LoadXML"/>
+            <stage component="SetFileNameID"/>
+            <stage component="SetDocumentURL"/>
+            <stage component="WaitForSubJobs"/>
+            <stage component="ResetFetchUrl"/>
+            <stage component="SetTaggerFields"/>
+            <stage component="KeywordsTagger"/>
+            <stage component="KeywordsTaggerCaseSensitive"/>
+            <stage component="DocumentTypesTagger"/>
+            <stage component="RegionsTagger"/>
+            <stage component="AnnexesTagger"/>
+            <stage component="NonAnnexesTagger"/>
+            <stage component="LandManagementTagger"/>
+            <stage component="ClimateZonesTagger"/>
+            <stage component="Router"/>
+          </stages>
+        </pipeline>
+      </pipelines>
+    </component>
+  
+  
+    <!-- Extract content of document -->
+
+    <component name="ProcessURL" subType="pipeline" factoryName="aspire-application">
+      <queueSize>200</queueSize>
+      <maxThreads>50</maxThreads>
+      
+      <components>
+        <component name="FetchUrl" subType="default" factoryName="aspire-fetch-url"/>
+
+        <component name="ExtractText" subType="default" factoryName="aspire-extract-text">
+          <maxCharacters>20000000</maxCharacters>  // 20MB max size
+          <extractTimeout>600000</extractTimeout>  // 10 minutes timeout
+        </component>
+        
+      </components>
+
+      <pipelines>
+        <pipeline name="default-pipeline" default="true">
+          <stages>
+            <stage component="FetchUrl"/>
+            <stage component="ExtractText"/>
+          </stages>
+        </pipeline>
+      </pipelines>
+    </component>
+    
+  </components>
+</application>

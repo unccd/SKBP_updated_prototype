@@ -1,0 +1,7 @@
+<dxf:template version="1.0" xmlns:dxf="http://www.searchtechnologies.com/DXF/2011">
+  <properties>
+    <schedule display="Schedule" type="string" default="0 0 23 ? * 1">
+      <dxf:help>Specify the frequency of the cache crawler using cron job notation: seconds, minutes, hours, day-of-month, month, day-of-week</dxf:help>
+    </schedule>
+  </properties>
+</dxf:template>

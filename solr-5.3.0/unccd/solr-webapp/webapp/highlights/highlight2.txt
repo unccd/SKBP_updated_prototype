@@ -1,4 +1,0 @@
-Guides Highlight
-http://localhost:9000/#/guides
-This will redirect you to the guides page
-Second line of the description

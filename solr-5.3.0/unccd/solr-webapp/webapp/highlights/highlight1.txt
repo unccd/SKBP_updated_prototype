@@ -1,4 +1,0 @@
-About Highlight
-http://localhost:9000/#/about
-This will redirect you to the about page
-Second line of the description

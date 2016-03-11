@@ -1,7 +1,0 @@
-<dxf:template version="1.0" xmlns:dxf="http://www.searchtechnologies.com/DXF/2011">
-  <properties>
-    <inputFiles display="CSV Files Locations" type="string">
-      <dxf:help>Specify the location of the CSV files to be processed; can be relative to Aspire home directory. Use semicolon to separate multiple file paths</dxf:help>
-    </inputFiles>
-  </properties>
-</dxf:template>

@@ -1,0 +1,3 @@
+SKBP Knowledge Bases
+#/results?q=*&source=KB&resultsMode=map
+The SKBP Knowledge Base interactive map on the Scientific Knowledge Brokering Portal provides you with an overview of knowledge bases and websites, as reported by country Parties in their biannual reports submitted to the UNCCD secretariat.  

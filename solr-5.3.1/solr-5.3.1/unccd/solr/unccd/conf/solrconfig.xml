@@ -1,0 +1,1224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<config>
+
+  <!-- Version of Lucene various components of Solr adhere to -->
+  <luceneMatchVersion>5.3.1</luceneMatchVersion>
+
+
+  <!-- Solr Jar dependencies -->
+  <lib dir="${solr.install.dir:../../../..}/contrib/velocity/lib" regex=".*\.jar" />
+  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-velocity-\d.*\.jar" />
+
+
+  <!-- Data Directory under Solr home -->
+  <dataDir>${solr.data.dir:}</dataDir>
+
+
+  <!-- DirectoryFactory to use for indexes -->
+  <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}"/>
+  
+
+  <!-- CodecFactory for defining the format of the inverted index -->
+  <codecFactory class="solr.SchemaCodecFactory"/>
+
+
+  <!-- Classic index schema factory (static schema) -->
+  <schemaFactory class="ClassicIndexSchemaFactory"/>
+
+
+  <!-- Index Configuration -->
+  <indexConfig>
+
+    <!-- Specifies which Lucene LockFactory implementation to use -->
+    <lockType>${solr.lock.type:native}</lockType>
+
+    <!-- Lucene Infostream used for advanced debugging -->
+    <infoStream>false</infoStream>
+
+  </indexConfig>
+
+
+  <!-- JMX monitoring -->
+  <jmx />
+
+
+  <!-- The default high-performance update handler -->
+  <updateHandler class="solr.DirectUpdateHandler2">
+
+    <!-- Transaction log -->
+    <updateLog>
+      <str name="dir">${solr.ulog.dir:}</str>
+      <int name="numVersionBuckets">${solr.ulog.numVersionBuckets:65536}</int>
+    </updateLog>
+
+    <!-- AutoCommit configuration -->
+    <autoCommit>
+      <maxTime>${solr.autoCommit.maxTime:60000}</maxTime>
+      <openSearcher>true</openSearcher>
+    </autoCommit>
+
+  </updateHandler>
+
+
+  <!-- Query configuration -->
+  <query>
+
+    <!-- Max Boolean Clauses in query -->
+    <maxBooleanClauses>1024</maxBooleanClauses>
+
+    <!-- Slow Query Threshold -->
+    <slowQueryThresholdMillis>500</slowQueryThresholdMillis>
+
+    <!-- Filter Cache -->
+    <filterCache class="solr.FastLRUCache" size="100000" initialSize="10000" autowarmCount="10000"/>
+
+    <!-- Query Result Cache -->
+    <queryResultCache class="solr.LRUCache" size="100000" initialSize="10000" autowarmCount="10000"/>
+
+    <!-- Document Cache -->
+    <documentCache class="solr.LRUCache" size="100000" initialSize="10000" autowarmCount="10000"/>
+
+    <!-- Lazy Field Loading -->
+    <enableLazyFieldLoading>true</enableLazyFieldLoading>
+
+    <!-- Result Window Size -->
+    <queryResultWindowSize>20</queryResultWindowSize>
+
+    <!-- Maximum number of documents to cache per entry -->
+    <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
+
+    <!-- QuerySenderListener to warm cache -->
+    <listener event="newSearcher" class="solr.QuerySenderListener">
+      <arr name="queries"></arr>
+    </listener>
+    <listener event="firstSearcher" class="solr.QuerySenderListener">
+      <arr name="queries"></arr>
+    </listener>
+
+    <!-- Use Cold Searcher -->
+    <useColdSearcher>false</useColdSearcher>
+
+    <!-- Max Warming Searchers -->
+    <maxWarmingSearchers>2</maxWarmingSearchers>
+
+  </query>
+
+
+  <!-- Request Dispatcher -->
+  <requestDispatcher handleSelect="false" >
+
+    <!-- Request Parsing -->
+    <requestParsers enableRemoteStreaming="true" multipartUploadLimitInKB="2048000" formdataUploadLimitInKB="2048" addHttpRequestToContext="false"/>
+
+    <!-- HTTP Caching -->
+    <httpCaching never304="true" />
+
+  </requestDispatcher>
+
+
+  <!-- Default search handler -->
+  <requestHandler name="/select" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="rows">10</str>
+      <str name="defType">edismax</str>
+      
+      <!-- Query settings -->
+      <str name="qf">title^8.0 description^3.0 abstract^3.0 keywords^1.5 body^1.0 lastname^8.0 firstname^8.0 institution^5.0 workexperience^5.0 disciplines^5.0 specializations^5.0 postcop^3.0 thematicareas^3.0 kss^8.0 managingentity^5.0 topics^3.0</str>
+      <str name="f.langen.qf">title_en^8.0 description_en^3.0 abstract_en^3.0 keywords^1.5 body_en^1.0</str>
+      <str name="f.langes.qf">title_es^8.0 description_es^3.0 abstract_es^3.0 keywords^1.5 body_es^1.0</str>
+      <str name="f.langde.qf">title_de^8.0 description_de^3.0 abstract_de^3.0 keywords^1.5 body_de^1.0</str>
+      <str name="f.langit.qf">title_it^8.0 description_it^3.0 abstract_it^3.0 keywords^1.5 body_it^1.0</str>
+      <str name="f.langfr.qf">title_fr^8.0 description_fr^3.0 abstract_fr^3.0 keywords^1.5 body_fr^1.0</str>
+      <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
+      <str name="pf">title</str>
+      <int name="ps">0</int>
+      <str name="q.op">AND</str>
+      <str name="q.alt">*:*</str>
+      <str name="fl">id source partnername url modified published title_en description_en abstract_en body_en title_es description_es abstract_es body_es title_de description_de abstract_de body_de title_fr description_fr abstract_fr body_fr title_it description_it abstract_it body_it keywords langname language languages typology datatype format authors regions annexes nonannexes landmanagement climatezones yearpublished yearmodified isbn identifier subjects accessioneddate relation citation issueddate publishers contactname contactorganisation contactphone contactemail publication citationcode geolocation geolocationpoly docsource extent volume issue type yearsubmitted ispartof attachedfiles furtherreading images countries categories categories_nav sponsorship issn doctype country nationality lastname firstname persontitle sex division institution city telcountrycode telcitycode telnumber website expertemail workexperience disciplines regionid recarchived specializations postcop thematicareas knowledgebase kss kssaddress managingentity region topics</str>
+      <str name="wt">json</str>
+
+      <!-- Faceting defaults -->
+      <str name="facet">on</str>
+      <!-- SKBP partners and CBW -->
+      <str name="facet.field">source</str>
+      <str name="facet.field">partnername</str>
+      <str name="facet.field">langname</str>
+      <str name="facet.field">keywords</str>
+      <str name="facet.field">regions_nav</str>
+      <str name="facet.field">annexes_nav</str>
+      <str name="facet.field">nonannexes_nav</str>
+      <str name="facet.field">landmanagement_nav</str>
+      <str name="facet.field">climatezones_nav</str>
+      <str name="facet.field">typology</str>
+      <str name="facet.field">datatype</str>
+      <str name="facet.field">format</str>
+      <str name="facet.field">authors_nav</str>
+      <str name="facet.field">classifications</str>
+      <!-- UNCCD Roster of Experts (ROE) -->
+      <str name="facet.field">country</str>
+      <str name="facet.field">disciplines_nav</str>
+      <str name="facet.field">specializations_nav</str>
+      <str name="facet.field">postcop_nav</str>
+      <str name="facet.field">thematicareas_nav</str>
+      <!-- UNCCD Knowledge Base(KB) -->
+      <str name="facet.field">knowledgebase</str>
+      <str name="facet.field">region</str>
+      <str name="facet.field">managingentitytype</str>
+      <str name="facet.field">topics_nav</str>
+      <str name="facet.field">infoformats</str>
+      
+      <str name="facet.range">yearpublished</str>
+      <int name="f.yearpublished.facet.range.start">1980</int>
+      <int name="f.yearpublished.facet.range.end">2015</int>
+      <int name="f.yearpublished.facet.range.gap">3</int>
+      <str name="f.yearpublished.facet.range.other">before</str>
+      <str name="f.yearpublished.facet.range.other">after</str>
+      
+      <str name="facet.range">yearmodified</str>
+      <int name="f.yearmodified.facet.range.start">1980</int>
+      <int name="f.yearmodified.facet.range.end">2015</int>
+      <int name="f.yearmodified.facet.range.gap">3</int>
+      <str name="f.yearmodified.facet.range.other">before</str>
+      <str name="f.yearmodified.facet.range.other">after</str>
+       
+      <int name="facet.mincount">1</int>
+      <int name="facet.limit">10</int>
+
+      <!-- Highlighting defaults -->
+      <str name="hl">on</str>
+      <str name="hl.fl">keywords title_en description_en abstract_en body_en title_es description_es abstract_es body_es title_de description_de abstract_de body_de title_fr description_fr abstract_fr body_fr title_it description_it abstract_it body_it lastname firstname institution workexperience disciplines specializations postcop thematicareas kss managingentity topics</str>
+      <str name="hl.simple.pre">&lt;span class="result-highlight"&gt;</str>
+      <str name="hl.simple.post">&lt;/span&gt;</str>
+      <str name="hl.snippets">3</str>
+      <str name="hl.fragsize">400</str>
+      <str name="hl.mergeContiguous">true</str>
+
+      <!-- Spell checking defaults -->
+      <str name="spellcheck">on</str>
+      <str name="spellcheck.extendedResults">false</str>
+      <str name="spellcheck.count">5</str>
+      <str name="spellcheck.alternativeTermCount">2</str>
+      <str name="spellcheck.maxResultsForSuggest">5</str>
+      <str name="spellcheck.collate">true</str>
+      <str name="spellcheck.collateExtendedResults">true</str>
+      <str name="spellcheck.maxCollationTries">5</str>
+      <str name="spellcheck.maxCollations">3</str>
+    </lst>
+
+    <!-- append spellchecking to our list of components -->
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+  
+  
+  <!-- Default Map search handler -->
+  <requestHandler name="/selectmap" class="solr.SearchHandler">    
+    <lst name="invariants">
+      <str name="start">0</str>
+      <str name="rows">100000</str>
+    </lst>
+
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="defType">edismax</str>
+      
+      <!-- Query settings -->
+      <str name="qf">title^8.0 description^3.0 abstract^3.0 keywords^1.5 body^1.0 lastname^8.0 firstname^8.0 institution^5.0 workexperience^5.0 disciplines^5.0 specializations^5.0 postcop^3.0 thematicareas^3.0 kss^8.0 managingentity^5.0 topics^3.0</str>
+      <str name="f.langen.qf">title_en^8.0 description_en^3.0 abstract_en^3.0 keywords^1.5 body_en^1.0</str>
+      <str name="f.langes.qf">title_es^8.0 description_es^3.0 abstract_es^3.0 keywords^1.5 body_es^1.0</str>
+      <str name="f.langde.qf">title_de^8.0 description_de^3.0 abstract_de^3.0 keywords^1.5 body_de^1.0</str>
+      <str name="f.langit.qf">title_it^8.0 description_it^3.0 abstract_it^3.0 keywords^1.5 body_it^1.0</str>
+      <str name="f.langfr.qf">title_fr^8.0 description_fr^3.0 abstract_fr^3.0 keywords^1.5 body_fr^1.0</str>
+      <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
+      <str name="pf">title</str>
+      <int name="ps">0</int>
+      <str name="q.op">AND</str>
+      <str name="fl">id geolocation</str>
+      <str name="wt">json</str>
+
+      <!-- Faceting defaults -->
+      <str name="facet">on</str>
+      <!-- SKBP partners and CBW -->
+      <str name="facet.field">source</str>
+      <str name="facet.field">partnername</str>
+      <str name="facet.field">langname</str>
+      <str name="facet.field">keywords</str>
+      <str name="facet.field">regions_nav</str>
+      <str name="facet.field">annexes_nav</str>
+      <str name="facet.field">nonannexes_nav</str>
+      <str name="facet.field">landmanagement_nav</str>
+      <str name="facet.field">climatezones_nav</str>
+      <str name="facet.field">typology</str>
+      <str name="facet.field">datatype</str>
+      <str name="facet.field">format</str>
+      <str name="facet.field">authors_nav</str>
+      <str name="facet.field">classifications</str>
+      <!-- UNCCD Roster of Experts (ROE) -->
+      <str name="facet.field">country</str>
+      <str name="facet.field">disciplines_nav</str>
+      <str name="facet.field">specializations_nav</str>
+      <str name="facet.field">postcop_nav</str>
+      <str name="facet.field">thematicareas_nav</str>
+      <!-- UNCCD Knowledge Base(KB) -->
+      <str name="facet.field">knowledgebase</str>
+      <str name="facet.field">region</str>
+      <str name="facet.field">managingentitytype</str>
+      <str name="facet.field">topics_nav</str>
+      <str name="facet.field">infoformats</str>
+      
+      <str name="facet.range">yearpublished</str>
+      <int name="f.yearpublished.facet.range.start">1980</int>
+      <int name="f.yearpublished.facet.range.end">2015</int>
+      <int name="f.yearpublished.facet.range.gap">3</int>
+      <str name="f.yearpublished.facet.range.other">before</str>
+      <str name="f.yearpublished.facet.range.other">after</str>
+      
+      <str name="facet.range">yearmodified</str>
+      <int name="f.yearmodified.facet.range.start">1980</int>
+      <int name="f.yearmodified.facet.range.end">2015</int>
+      <int name="f.yearmodified.facet.range.gap">3</int>
+      <str name="f.yearmodified.facet.range.other">before</str>
+      <str name="f.yearmodified.facet.range.other">after</str>
+       
+      <int name="facet.mincount">1</int>
+      <int name="facet.limit">10</int>
+    </lst>
+
+    <lst name="appends">
+      <str name="fq">latlon:*</str>
+    </lst>
+  </requestHandler>
+
+
+  <!-- SKBP Partners search handler -->
+  <requestHandler name="/partner" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="rows">10</str>
+      <str name="defType">edismax</str>
+      
+      <!-- Query settings -->
+      <str name="qf">title^8.0 description^3.0 abstract^3.0 keywords^1.5 body^1.0</str>
+      <str name="f.langen.qf">title_en^8.0 description_en^3.0 abstract_en^3.0 keywords^1.5 body_en^1.0</str>
+      <str name="f.langes.qf">title_es^8.0 description_es^3.0 abstract_es^3.0 keywords^1.5 body_es^1.0</str>
+      <str name="f.langde.qf">title_de^8.0 description_de^3.0 abstract_de^3.0 keywords^1.5 body_de^1.0</str>
+      <str name="f.langit.qf">title_it^8.0 description_it^3.0 abstract_it^3.0 keywords^1.5 body_it^1.0</str>
+      <str name="f.langfr.qf">title_fr^8.0 description_fr^3.0 abstract_fr^3.0 keywords^1.5 body_fr^1.0</str>
+      <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
+      <str name="pf">title</str>
+      <int name="ps">0</int>
+      <str name="q.op">AND</str>
+      <str name="q.alt">*:*</str>
+      <str name="fq">source:Partner</str>
+      <str name="fl">id url title_en title_es title_de title_it title_fr abstract_en abstract_es abstract_de abstract_it description_fr description_en description_es description_de description_it description_fr modified published</str>
+      <str name="wt">json</str>
+
+      <!-- Faceting defaults -->
+      <str name="facet">on</str>
+      <str name="facet.field">source</str>
+      <str name="facet.field">partnername</str>
+      <str name="facet.field">langname</str>
+      <str name="facet.field">keywords</str>
+      <str name="facet.field">regions_nav</str>
+      <str name="facet.field">annexes_nav</str>
+      <str name="facet.field">nonannexes_nav</str>
+      <str name="facet.field">landmanagement_nav</str>
+      <str name="facet.field">climatezones_nav</str>
+      <str name="facet.field">typology</str>
+      <str name="facet.field">datatype</str>
+      <str name="facet.field">format</str>
+      <str name="facet.field">authors_nav</str>
+      
+      <str name="facet.range">yearpublished</str>
+      <int name="f.yearpublished.facet.range.start">1980</int>
+      <int name="f.yearpublished.facet.range.end">2015</int>
+      <int name="f.yearpublished.facet.range.gap">3</int>
+      <str name="f.yearpublished.facet.range.other">before</str>
+      <str name="f.yearpublished.facet.range.other">after</str>
+       
+      <int name="facet.mincount">1</int>
+      <int name="facet.limit">10</int>
+
+      <!-- Highlighting defaults -->
+      <str name="hl">on</str>
+      <str name="hl.fl">keywords title_en description_en abstract_en body_en title_es description_es abstract_es body_es title_de description_de abstract_de body_de title_fr description_fr abstract_fr body_fr title_it description_it abstract_it body_it</str>
+      <str name="hl.simple.pre">&lt;span class="result-highlight"&gt;</str>
+      <str name="hl.simple.post">&lt;/span&gt;</str>
+      <str name="hl.snippets">3</str>
+      <str name="hl.fragsize">400</str>
+      <str name="hl.mergeContiguous">true</str>
+
+      <!-- Spell checking defaults -->
+      <str name="spellcheck">on</str>
+      <str name="spellcheck.extendedResults">false</str>
+      <str name="spellcheck.count">5</str>
+      <str name="spellcheck.alternativeTermCount">2</str>
+      <str name="spellcheck.maxResultsForSuggest">5</str>
+      <str name="spellcheck.collate">true</str>
+      <str name="spellcheck.collateExtendedResults">true</str>
+      <str name="spellcheck.maxCollationTries">5</str>
+      <str name="spellcheck.maxCollations">3</str>
+    </lst>
+
+    <!-- append spellchecking to our list of components -->
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+  
+  
+<!-- SKBP Partners Map search handler -->
+  <requestHandler name="/partnermap" class="solr.SearchHandler">
+    <lst name="invariants">
+      <str name="start">0</str>
+      <str name="rows">100000</str>
+    </lst>
+    
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="defType">edismax</str>
+      
+      <!-- Query settings -->
+      <str name="qf">title^8.0 description^3.0 abstract^3.0 keywords^1.5 body^1.0</str>
+      <str name="f.langen.qf">title_en^8.0 description_en^3.0 abstract_en^3.0 keywords^1.5 body_en^1.0</str>
+      <str name="f.langes.qf">title_es^8.0 description_es^3.0 abstract_es^3.0 keywords^1.5 body_es^1.0</str>
+      <str name="f.langde.qf">title_de^8.0 description_de^3.0 abstract_de^3.0 keywords^1.5 body_de^1.0</str>
+      <str name="f.langit.qf">title_it^8.0 description_it^3.0 abstract_it^3.0 keywords^1.5 body_it^1.0</str>
+      <str name="f.langfr.qf">title_fr^8.0 description_fr^3.0 abstract_fr^3.0 keywords^1.5 body_fr^1.0</str>
+      <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
+      <str name="pf">title</str>
+      <int name="ps">0</int>
+      <str name="q.op">AND</str>
+      <str name="fl">id geolocation</str>
+      <str name="wt">json</str>
+
+      <!-- Faceting defaults -->
+      <str name="facet">on</str>
+      <str name="facet.field">source</str>
+      <str name="facet.field">partnername</str>
+      <str name="facet.field">langname</str>
+      <str name="facet.field">keywords</str>
+      <str name="facet.field">regions_nav</str>
+      <str name="facet.field">annexes_nav</str>
+      <str name="facet.field">nonannexes_nav</str>
+      <str name="facet.field">landmanagement_nav</str>
+      <str name="facet.field">climatezones_nav</str>
+      <str name="facet.field">typology</str>
+      <str name="facet.field">datatype</str>
+      <str name="facet.field">format</str>
+      <str name="facet.field">authors_nav</str>
+      
+      <str name="facet.range">yearpublished</str>
+      <int name="f.yearpublished.facet.range.start">1980</int>
+      <int name="f.yearpublished.facet.range.end">2015</int>
+      <int name="f.yearpublished.facet.range.gap">3</int>
+      <str name="f.yearpublished.facet.range.other">before</str>
+      <str name="f.yearpublished.facet.range.other">after</str>
+       
+      <int name="facet.mincount">1</int>
+      <int name="facet.limit">10</int>
+    </lst>
+
+    <lst name="appends">
+      <str name="fq">source:Partner</str>
+      <str name="fq">latlon:*</str>
+    </lst>
+  </requestHandler>
+  
+  
+  <!-- SKBP Partners Details search handler -->
+  <requestHandler name="/partnerdetail" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="rows">1</str>
+      
+      <!-- Query settings -->
+      <str name="df">id</str>
+      <str name="fl">source partnername url title_en description_en abstract_en body_en title_es description_es abstract_es body_es title_de description_de abstract_de body_de title_fr description_fr abstract_fr body_fr title_it description_it abstract_it body_it modified published keywords langname language languages typology datatype format authors regions annexes nonannexes landmanagement climatezones yearpublished yearmodified isbn identifier subjects accessioneddate relation citation issueddate publishers contactname contactorganisation contactphone contactemail publication citationcode geolocation geolocationpoly docsource extent volume issue type yearsubmitted ispartof attachedfiles furtherreading images countries categories categories_nav sponsorship issn doctype</str>
+      <str name="wt">json</str>
+
+      <!-- Highlighting defaults -->
+      <str name="hl">on</str>
+      <str name="hl.fl">keywords title_en description_en abstract_en body_en title_es description_es abstract_es body_es title_de description_de abstract_de body_de title_fr description_fr abstract_fr body_fr title_it description_it abstract_it body_it</str>
+      <str name="hl.simple.pre">&lt;span class="result-highlight"&gt;</str>
+      <str name="hl.simple.post">&lt;/span&gt;</str>
+      <str name="hl.snippets">3</str>
+      <str name="hl.fragsize">400</str>
+      <str name="hl.mergeContiguous">true</str>
+    </lst>
+  </requestHandler>
+
+
+  <!-- CBW (Capacity Building Marketplace) search handler -->
+  <requestHandler name="/cbw" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="rows">10</str>
+      <str name="defType">edismax</str>
+      
+      <!-- Query settings -->
+      <str name="qf">title^8.0 keywords^5.0 body^3.0</str>
+      <str name="f.langen.qf">title_en^8.0 keywords^5.0 body_en^3.0</str>
+      <str name="f.langes.qf">title_es^8.0 keywords^5.0 body_es^3.0</str>
+      <str name="f.langde.qf">title_de^8.0 keywords^5.0 body_de^3.0</str>
+      <str name="f.langit.qf">title_it^8.0 keywords^5.0 body_it^3.0</str>
+      <str name="f.langfr.qf">title_fr^8.0 keywords^5.0 body_fr^3.0</str>
+      <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
+      <str name="pf">title</str>
+      <int name="ps">0</int>
+      <str name="q.op">AND</str>
+      <str name="q.alt">*:*</str>
+      <str name="fq">source:CBW</str>
+      <str name="fl">id source title_en body_en title_es body_es title_de body_de title_it body_it title_fr body_fr authors keywords format url langname language languages datatype annexes landmanagement nonannexes regions</str>
+      <str name="wt">json</str>
+
+      <!-- Faceting defaults -->
+      <str name="facet">on</str>
+      <str name="facet.field">source</str>
+      <str name="facet.field">langname</str>
+      <str name="facet.field">keywords</str>
+      <str name="facet.field">regions_nav</str>
+      <str name="facet.field">annexes_nav</str>
+      <str name="facet.field">landmanagement_nav</str>
+      <str name="facet.field">datatype</str>
+      <str name="facet.field">format</str>
+      <str name="facet.field">authors_nav</str>
+      <str name="facet.field">classifications</str>
+      
+      <int name="facet.mincount">1</int>
+      <int name="facet.limit">10</int>
+
+      <!-- Highlighting defaults -->
+      <str name="hl">on</str>
+      <str name="hl.fl">keywords title_en body_en title_es body_es title_de body_de title_fr body_fr title_it body_it</str>
+      <str name="hl.simple.pre">&lt;span class="result-highlight"&gt;</str>
+      <str name="hl.simple.post">&lt;/span&gt;</str>
+      <str name="hl.snippets">3</str>
+      <str name="hl.fragsize">400</str>
+      <str name="hl.mergeContiguous">true</str>
+
+      <!-- Spell checking defaults -->
+      <str name="spellcheck">on</str>
+      <str name="spellcheck.extendedResults">false</str>
+      <str name="spellcheck.count">5</str>
+      <str name="spellcheck.alternativeTermCount">2</str>
+      <str name="spellcheck.maxResultsForSuggest">5</str>
+      <str name="spellcheck.collate">true</str>
+      <str name="spellcheck.collateExtendedResults">true</str>
+      <str name="spellcheck.maxCollationTries">5</str>
+      <str name="spellcheck.maxCollations">3</str>
+    </lst>
+
+    <!-- append spellchecking to our list of components -->
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+  
+  
+  <!-- CBW (Capacity Building Marketplace) Map search handler -->
+  <requestHandler name="/cbwmap" class="solr.SearchHandler">
+    <lst name="invariants">
+      <str name="start">0</str>
+      <str name="rows">100000</str>
+    </lst>
+
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="defType">edismax</str>
+      
+      <!-- Query settings -->
+      <str name="qf">title^8.0 keywords^5.0 body^3.0</str>
+      <str name="f.langen.qf">title_en^8.0 keywords^5.0 body_en^3.0</str>
+      <str name="f.langes.qf">title_es^8.0 keywords^5.0 body_es^3.0</str>
+      <str name="f.langde.qf">title_de^8.0 keywords^5.0 body_de^3.0</str>
+      <str name="f.langit.qf">title_it^8.0 keywords^5.0 body_it^3.0</str>
+      <str name="f.langfr.qf">title_fr^8.0 keywords^5.0 body_fr^3.0</str>
+      <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
+      <str name="pf">title</str>
+      <int name="ps">0</int>
+      <str name="q.op">AND</str>
+      <str name="fl">id geolocation</str>
+      <str name="wt">json</str>
+
+      <!-- Faceting defaults -->
+      <str name="facet">on</str>
+      <str name="facet.field">source</str>
+      <str name="facet.field">langname</str>
+      <str name="facet.field">keywords</str>
+      <str name="facet.field">regions_nav</str>
+      <str name="facet.field">annexes_nav</str>
+      <str name="facet.field">landmanagement_nav</str>
+      <str name="facet.field">datatype</str>
+      <str name="facet.field">format</str>
+      <str name="facet.field">authors_nav</str>
+      <str name="facet.field">classifications</str>
+      
+      <int name="facet.mincount">1</int>
+      <int name="facet.limit">10</int>
+    </lst>
+    
+    <lst name="appends">
+      <str name="fq">source:CBW</str>
+      <str name="fq">latlon:*</str>
+    </lst>
+  </requestHandler>
+  
+
+  <!-- ROE (Roster of Experts) search handler -->
+  <requestHandler name="/roe" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="rows">10</str>
+      <str name="defType">edismax</str>
+      
+      <!-- Query settings -->
+      <str name="qf">lastname^8.0 firstname^8.0 institution^5.0 workexperience^5.0 disciplines^5.0 specializations^5.0 postcop^3.0 thematicareas^3.0</str>
+      <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
+      <str name="pf">lastname</str>
+      <int name="ps">0</int>
+      <str name="q.op">AND</str>
+      <str name="q.alt">*:*</str>
+      <str name="fq">source:ROE</str>
+      <str name="fl">id source modified langname language languages country nationality lastname firstname persontitle sex division institution city telcountrycode telcitycode telnumber website expertemail workexperience disciplines regionid recarchived specializations postcop thematicareas</str>
+      <str name="wt">json</str>
+
+      <!-- Faceting defaults -->
+      <str name="facet">on</str>
+      <str name="facet.field">source</str>
+      <str name="facet.field">country</str>
+      <str name="facet.field">disciplines_nav</str>
+      <str name="facet.field">specializations_nav</str>
+      <str name="facet.field">postcop_nav</str>
+      <str name="facet.field">thematicareas_nav</str>
+      
+      <str name="facet.range">yearmodified</str>
+      <int name="f.yearmodified.facet.range.start">1980</int>
+      <int name="f.yearmodified.facet.range.end">2015</int>
+      <int name="f.yearmodified.facet.range.gap">3</int>
+      <str name="f.yearmodified.facet.range.other">before</str>
+      <str name="f.yearmodified.facet.range.other">after</str>
+       
+      <int name="facet.mincount">1</int>
+      <int name="facet.limit">10</int>
+
+      <!-- Highlighting defaults -->
+      <str name="hl">on</str>
+      <str name="hl.fl">lastname firstname institution workexperience disciplines specializations postcop thematicareas</str>
+      <str name="hl.simple.pre">&lt;span class="result-highlight"&gt;</str>
+      <str name="hl.simple.post">&lt;/span&gt;</str>
+      <str name="hl.snippets">3</str>
+      <str name="hl.fragsize">400</str>
+      <str name="hl.mergeContiguous">true</str>
+
+      <!-- Spell checking defaults -->
+      <str name="spellcheck">on</str>
+      <str name="spellcheck.extendedResults">false</str>
+      <str name="spellcheck.count">5</str>
+      <str name="spellcheck.alternativeTermCount">2</str>
+      <str name="spellcheck.maxResultsForSuggest">5</str>
+      <str name="spellcheck.collate">true</str>
+      <str name="spellcheck.collateExtendedResults">true</str>
+      <str name="spellcheck.maxCollationTries">5</str>
+      <str name="spellcheck.maxCollations">3</str>
+    </lst>
+
+    <!-- append spellchecking to our list of components -->
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+  
+  
+  <!-- ROE (Roster of Experts) Map search handler -->
+  <requestHandler name="/roemap" class="solr.SearchHandler">
+    <lst name="invariants">
+      <str name="start">0</str>
+      <str name="rows">100000</str>
+    </lst>
+
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="defType">edismax</str>
+      
+      <!-- Query settings -->
+      <str name="qf">lastname^8.0 firstname^8.0 institution^5.0 workexperience^5.0 disciplines^5.0 specializations^5.0 postcop^3.0 thematicareas^3.0</str>
+      <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
+      <str name="pf">lastname</str>
+      <int name="ps">0</int>
+      <str name="q.op">AND</str>
+      <str name="fl">id geolocation</str>
+      <str name="wt">json</str>
+      
+      <!-- Faceting defaults -->
+      <str name="facet">on</str>
+      <str name="facet.field">source</str>
+      <str name="facet.field">country</str>
+      <str name="facet.field">disciplines_nav</str>
+      <str name="facet.field">specializations_nav</str>
+      <str name="facet.field">postcop_nav</str>
+      <str name="facet.field">thematicareas_nav</str>
+      
+      <str name="facet.range">yearmodified</str>
+      <int name="f.yearmodified.facet.range.start">1980</int>
+      <int name="f.yearmodified.facet.range.end">2015</int>
+      <int name="f.yearmodified.facet.range.gap">3</int>
+      <str name="f.yearmodified.facet.range.other">before</str>
+      <str name="f.yearmodified.facet.range.other">after</str>
+       
+      <int name="facet.mincount">1</int>
+      <int name="facet.limit">10</int>
+    </lst>
+    
+    <lst name="appends">
+      <str name="fq">source:ROE</str>
+      <str name="fq">latlon:*</str>
+    </lst>
+  </requestHandler>
+
+
+  <!-- KB (Knowledge Base) search handler -->
+  <requestHandler name="/kb" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="rows">10</str>
+      <str name="defType">edismax</str>
+      
+      <!-- Query settings -->
+      <str name="qf">kss^8.0 managingentity^5.0 topics^3.0</str>
+      <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
+      <str name="pf">topics</str>
+      <int name="ps">0</int>
+      <str name="q.op">AND</str>
+      <str name="q.alt">*:*</str>
+      <str name="fq">source:KB</str>
+      <str name="fl">id source langname language languages yearmodified country website knowledgebase kss kssaddress managingentity region topics</str>
+      <str name="wt">json</str>
+
+      <!-- Faceting defaults -->
+      <str name="facet">on</str>
+      <str name="facet.field">source</str>
+      <str name="facet.field">knowledgebase</str>
+      <str name="facet.field">region</str>
+      <str name="facet.field">managingentitytype</str>
+      <str name="facet.field">topics_nav</str>
+      <str name="facet.field">infoformats</str>
+      
+      <str name="facet.range">yearmodified</str>
+      <int name="f.yearmodified.facet.range.start">1980</int>
+      <int name="f.yearmodified.facet.range.end">2015</int>
+      <int name="f.yearmodified.facet.range.gap">3</int>
+      <str name="f.yearmodified.facet.range.other">before</str>
+      <str name="f.yearmodified.facet.range.other">after</str>
+       
+      <int name="facet.mincount">1</int>
+      <int name="facet.limit">10</int>
+
+      <!-- Highlighting defaults -->
+      <str name="hl">on</str>
+      <str name="hl.fl">kss managingentity topics</str>
+      <str name="hl.simple.pre">&lt;span class="result-highlight"&gt;</str>
+      <str name="hl.simple.post">&lt;/span&gt;</str>
+      <str name="hl.snippets">3</str>
+      <str name="hl.fragsize">400</str>
+      <str name="hl.mergeContiguous">true</str>
+
+      <!-- Spell checking defaults -->
+      <str name="spellcheck">on</str>
+      <str name="spellcheck.extendedResults">false</str>
+      <str name="spellcheck.count">5</str>
+      <str name="spellcheck.alternativeTermCount">2</str>
+      <str name="spellcheck.maxResultsForSuggest">5</str>
+      <str name="spellcheck.collate">true</str>
+      <str name="spellcheck.collateExtendedResults">true</str>
+      <str name="spellcheck.maxCollationTries">5</str>
+      <str name="spellcheck.maxCollations">3</str>
+    </lst>
+
+    <!-- append spellchecking to our list of components -->
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+
+
+  <!-- KB (Knowledge Base) Map search handler -->
+  <requestHandler name="/kbmap" class="solr.SearchHandler">
+    <lst name="invariants">
+      <str name="start">0</str>
+      <str name="rows">100000</str>
+    </lst>
+    
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="defType">edismax</str>
+      
+      <!-- Query settings -->
+      <str name="qf">kss^8.0 managingentity^5.0 topics^3.0</str>
+      <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
+      <str name="pf">topics</str>
+      <int name="ps">0</int>
+      <str name="q.op">AND</str>
+      <str name="fl">id geolocation</str>
+      <str name="wt">json</str>
+
+      <!-- Faceting defaults -->
+      <str name="facet">on</str>
+      <str name="facet.field">source</str>
+      <str name="facet.field">knowledgebase</str>
+      <str name="facet.field">region</str>
+      <str name="facet.field">managingentitytype</str>
+      <str name="facet.field">topics_nav</str>
+      <str name="facet.field">infoformats</str>
+      
+      <str name="facet.range">yearmodified</str>
+      <int name="f.yearmodified.facet.range.start">1980</int>
+      <int name="f.yearmodified.facet.range.end">2015</int>
+      <int name="f.yearmodified.facet.range.gap">3</int>
+      <str name="f.yearmodified.facet.range.other">before</str>
+      <str name="f.yearmodified.facet.range.other">after</str>
+       
+      <int name="facet.mincount">1</int>
+      <int name="facet.limit">10</int>
+    </lst>
+    
+    <lst name="appends">
+      <str name="fq">source:KB</str>
+      <str name="fq">latlon:*</str>
+    </lst>
+  </requestHandler>
+  
+  
+  <!-- Velocity SFE SearchHandler -->
+  <requestHandler name="/browse" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="rows">10</str>
+      <str name="defType">edismax</str>
+
+      <!-- VelocityResponseWriter settings -->
+      <str name="wt">velocity</str>
+      <str name="v.template">browse</str>
+      <str name="v.layout">layout</str>
+      <str name="title">UNCCD SKBP</str>
+
+      <!-- Query settings -->
+      <str name="qf">title^8.0 description^3.0 abstract^3.0 keywords^1.5 body^1.0 lastname^8.0 firstname^8.0 institution^5.0 workexperience^5.0 disciplines^5.0 specializations^5.0 postcop^3.0 thematicareas^3.0 kss^8.0 managingentity^5.0 topics^3.0</str>
+      <str name="f.langen.qf">title_en^8.0 description_en^3.0 abstract_en^3.0 keywords^1.5 body_en^1.0</str>
+      <str name="f.langes.qf">title_es^8.0 description_es^3.0 abstract_es^3.0 keywords^1.5 body_es^1.0</str>
+      <str name="f.langde.qf">title_de^8.0 description_de^3.0 abstract_de^3.0 keywords^1.5 body_de^1.0</str>
+      <str name="f.langit.qf">title_it^8.0 description_it^3.0 abstract_it^3.0 keywords^1.5 body_it^1.0</str>
+      <str name="f.langfr.qf">title_fr^8.0 description_fr^3.0 abstract_fr^3.0 keywords^1.5 body_fr^1.0</str>
+      <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
+      <str name="pf">title</str>
+      <int name="ps">0</int>
+      <str name="q.op">AND</str>
+      <str name="q.alt">*:*</str>
+      <str name="fl">*,score</str>
+      <str name="wt">json</str>
+
+      <!-- Faceting defaults -->
+      <str name="facet">on</str>
+      <!-- SKBP partners -->
+      <str name="facet.field">source</str>
+      <str name="facet.field">partnername</str>
+      <str name="facet.field">langname</str>
+      <str name="facet.field">keywords</str>
+      <str name="facet.field">regions_nav</str>
+      <str name="facet.field">annexes_nav</str>
+      <str name="facet.field">nonannexes_nav</str>
+      <str name="facet.field">landmanagement_nav</str>
+      <str name="facet.field">climatezones_nav</str>
+      <str name="facet.field">typology</str>
+      <str name="facet.field">datatype</str>
+      <str name="facet.field">format</str>
+      <str name="facet.field">authors_nav</str>
+      <str name="facet.field">classifications</str>
+      <!-- UNCCD Roster of Experts (ROE) -->
+      <str name="facet.field">country</str>
+      <str name="facet.field">disciplines_nav</str>
+      <str name="facet.field">specializations_nav</str>
+      <str name="facet.field">postcop_nav</str>
+      <str name="facet.field">thematicareas_nav</str>
+      <!-- UNCCD Knowledge Base(KB) -->
+      <str name="facet.field">knowledgebase</str>
+      <str name="facet.field">region</str>
+      <str name="facet.field">managingentitytype</str>
+      <str name="facet.field">topics_nav</str>
+      <str name="facet.field">infoformats</str>
+      
+      <str name="facet.range">yearpublished</str>
+      <int name="f.yearpublished.facet.range.start">1980</int>
+      <int name="f.yearpublished.facet.range.end">2015</int>
+      <int name="f.yearpublished.facet.range.gap">3</int>
+      <str name="f.yearpublished.facet.range.other">before</str>
+      <str name="f.yearpublished.facet.range.other">after</str>
+      
+      <str name="facet.range">yearmodified</str>
+      <int name="f.yearmodified.facet.range.start">1980</int>
+      <int name="f.yearmodified.facet.range.end">2015</int>
+      <int name="f.yearmodified.facet.range.gap">3</int>
+      <str name="f.yearmodified.facet.range.other">before</str>
+      <str name="f.yearmodified.facet.range.other">after</str>
+       
+      <int name="facet.mincount">1</int>
+      <int name="facet.limit">10</int>
+
+      <!-- Highlighting defaults -->
+      <str name="hl">on</str>
+      <str name="hl.fl">keywords title_en description_en abstract_en body_en title_es description_es abstract_es body_es title_de description_de abstract_de body_de title_fr description_fr abstract_fr body_fr title_it description_it abstract_it body_it lastname firstname institution workexperience disciplines specializations postcop thematicareas knowledgebase kss managingentity topics</str>
+      <str name="hl.simple.pre">&lt;span class="result-highlight"&gt;</str>
+      <str name="hl.simple.post">&lt;/span&gt;</str>
+      <str name="hl.snippets">3</str>
+      <str name="hl.fragsize">400</str>
+      <str name="hl.mergeContiguous">true</str>
+
+      <!-- Spell checking defaults -->
+      <str name="spellcheck">on</str>
+      <str name="spellcheck.extendedResults">false</str>
+      <str name="spellcheck.count">5</str>
+      <str name="spellcheck.alternativeTermCount">2</str>
+      <str name="spellcheck.maxResultsForSuggest">5</str>
+      <str name="spellcheck.collate">true</str>
+      <str name="spellcheck.collateExtendedResults">true</str>
+      <str name="spellcheck.maxCollationTries">5</str>
+      <str name="spellcheck.maxCollations">3</str>
+    </lst>
+
+    <!-- append spellchecking to our list of components -->
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+
+
+  <!-- Velocity SFE SearchHandler -->
+  <requestHandler name="/advanced" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="rows">10</str>
+
+      <!-- VelocityResponseWriter settings -->
+      <str name="wt">velocity</str>
+      <str name="v.template">browse</str>
+      <str name="v.layout">layout</str>
+      <str name="title">SKBP</str>
+
+      <!-- Query settings -->
+      <str name="df">title</str>
+      <str name="q.alt">*:*</str>
+      <str name="q.op">AND</str>
+      <str name="fl">*,score</str>
+
+      <!-- Faceting defaults -->
+      <str name="facet">on</str>
+      <!-- SKBP partners -->
+      <str name="facet.field">source</str>
+      <str name="facet.field">partnername</str>
+      <str name="facet.field">langname</str>
+      <str name="facet.field">keywords</str>
+      <str name="facet.field">regions_nav</str>
+      <str name="facet.field">annexes_nav</str>
+      <str name="facet.field">nonannexes_nav</str>
+      <str name="facet.field">landmanagement_nav</str>
+      <str name="facet.field">climatezones_nav</str>
+      <str name="facet.field">typology</str>
+      <str name="facet.field">datatype</str>
+      <str name="facet.field">format</str>
+      <str name="facet.field">authors_nav</str>
+      <str name="facet.field">classifications</str>
+      <!-- UNCCD Roster of Experts (ROE) -->
+      <str name="facet.field">country</str>
+      <str name="facet.field">disciplines_nav</str>
+      <str name="facet.field">specializations_nav</str>
+      <str name="facet.field">postcop_nav</str>
+      <str name="facet.field">thematicareas_nav</str>
+      <!-- UNCCD Knowledge Base(KB) -->
+      <str name="facet.field">knowledgebase</str>
+      <str name="facet.field">region</str>
+      <str name="facet.field">managingentitytype</str>
+      <str name="facet.field">topics_nav</str>
+      <str name="facet.field">infoformats</str>
+      
+      <str name="facet.range">yearpublished</str>
+      <int name="f.yearpublished.facet.range.start">1980</int>
+      <int name="f.yearpublished.facet.range.end">2015</int>
+      <int name="f.yearpublished.facet.range.gap">3</int>
+      <str name="f.yearpublished.facet.range.other">before</str>
+      <str name="f.yearpublished.facet.range.other">after</str>
+      
+      <str name="facet.range">yearmodified</str>
+      <int name="f.yearmodified.facet.range.start">1980</int>
+      <int name="f.yearmodified.facet.range.end">2015</int>
+      <int name="f.yearmodified.facet.range.gap">3</int>
+      <str name="f.yearmodified.facet.range.other">before</str>
+      <str name="f.yearmodified.facet.range.other">after</str>
+       
+      <int name="facet.mincount">1</int>
+      <int name="facet.limit">10</int>
+
+      <!-- Highlighting defaults -->
+      <str name="hl">on</str>
+      <str name="hl.fl">keywords title_en description_en abstract_en body_en title_es description_es abstract_es body_es title_de description_de abstract_de body_de title_fr description_fr abstract_fr body_fr title_it description_it abstract_it body_it lastname firstname institution workexperience disciplines specializations postcop thematicareas kss managingentity topics</str>
+      <str name="hl.simple.pre">&lt;span class="result-highlight"&gt;</str>
+      <str name="hl.simple.post">&lt;/span&gt;</str>
+      <str name="hl.snippets">3</str>
+      <str name="hl.fragsize">400</str>
+      <str name="hl.mergeContiguous">true</str>
+
+      <!-- Spell checking defaults -->
+      <str name="spellcheck">on</str>
+      <str name="spellcheck.extendedResults">false</str>
+      <str name="spellcheck.count">5</str>
+      <str name="spellcheck.alternativeTermCount">2</str>
+      <str name="spellcheck.maxResultsForSuggest">5</str>
+      <str name="spellcheck.collate">true</str>
+      <str name="spellcheck.collateExtendedResults">true</str>
+      <str name="spellcheck.maxCollationTries">5</str>
+      <str name="spellcheck.maxCollations">3</str>
+    </lst>
+
+    <!-- append spellchecking to our list of components -->
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+
+
+  <!-- Field Analysis Request Handler -->
+  <requestHandler name="/analysis/field" startup="lazy" class="solr.FieldAnalysisRequestHandler" />
+
+
+  <!-- Document Analysis Handler -->
+  <requestHandler name="/analysis/document" class="solr.DocumentAnalysisRequestHandler" startup="lazy" />
+
+
+  <!-- Echo the request contents back to the client -->
+  <requestHandler name="/debug/dump" class="solr.DumpRequestHandler" >
+    <lst name="defaults">
+     <str name="echoParams">explicit</str>
+     <str name="echoHandler">true</str>
+    </lst>
+  </requestHandler>
+
+
+  <!-- Spell Check -->
+  <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
+    <str name="queryAnalyzerFieldType">text_general</str>
+
+    <!-- Multiple "Spell Checkers" can be declared and used by this component -->
+
+    <!-- Spell Check -->
+    <lst name="spellchecker">
+      <str name="name">default</str>
+      <str name="field">keywords</str>
+      <str name="classname">solr.DirectSolrSpellChecker</str>
+      <!-- the spellcheck distance measure used, the default is the internal levenshtein -->
+      <str name="distanceMeasure">internal</str>
+      <!-- minimum accuracy needed to be considered a valid spellcheck suggestion -->
+      <float name="accuracy">0.5</float>
+      <!-- the maximum #edits we consider when enumerating terms: can be 1 or 2 -->
+      <int name="maxEdits">2</int>
+      <!-- the minimum shared prefix when enumerating terms -->
+      <int name="minPrefix">1</int>
+      <!-- maximum number of inspections per result. -->
+      <int name="maxInspections">5</int>
+      <!-- minimum length of a query term to be considered for correction -->
+      <int name="minQueryLength">4</int>
+      <!-- maximum threshold of documents a query term can appear to be considered for correction -->
+      <float name="maxQueryFrequency">0.01</float>
+    </lst>
+
+    <!-- Spellchecker that break or combine words -->
+    <lst name="spellchecker">
+      <str name="name">wordbreak</str>
+      <str name="classname">solr.WordBreakSolrSpellChecker</str>
+      <str name="field">keywords</str>
+      <str name="combineWords">true</str>
+      <str name="breakWords">true</str>
+      <int name="maxChanges">10</int>
+    </lst>
+
+  </searchComponent>
+
+
+  <!-- Spell Check SearchHandler -->
+  <requestHandler name="/spell" class="solr.SearchHandler" startup="lazy">
+    <lst name="defaults">
+      <str name="df">keywords</str>
+      <str name="spellcheck.dictionary">default</str>
+      <str name="spellcheck.dictionary">wordbreak</str>
+      <str name="spellcheck">on</str>
+      <str name="spellcheck.extendedResults">true</str>
+      <str name="spellcheck.count">10</str>
+      <str name="spellcheck.alternativeTermCount">5</str>
+      <str name="spellcheck.maxResultsForSuggest">5</str>
+      <str name="spellcheck.collate">true</str>
+      <str name="spellcheck.collateExtendedResults">true</str>
+      <str name="spellcheck.maxCollationTries">10</str>
+      <str name="spellcheck.maxCollations">5</str>
+    </lst>
+
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+
+
+  <!-- Sugggester for autocomplete -->
+  <searchComponent name="suggest" class="solr.SuggestComponent">
+    <lst name="suggester">
+      <str name="name">defaultSuggester</str>
+      <!-- str name="lookupImpl">FuzzyLookupFactory</str -->         <!-- org.apache.solr.spelling.suggest.fst -->
+      <str name="lookupImpl">AnalyzingInfixLookupFactory</str>
+      <str name="suggestAnalyzerFieldType">text_general</str>
+      <str name="dictionaryImpl">DocumentDictionaryFactory</str>     <!-- org.apache.solr.spelling.suggest.HighFrequencyDictionaryFactory --> 
+      <str name="field">suggestions</str>
+      <str name="weightField">modified</str>
+      <str name="suggestAnalyzerFieldType">string</str>
+      <str name="buildOnCommit">true</str>
+    </lst>
+  </searchComponent>
+
+
+  <!-- Query Suggester SearchHandler -->
+  <requestHandler name="/suggest" class="solr.SearchHandler" startup="lazy">
+    <lst name="defaults">
+      <str name="suggest">true</str>
+      <str name="suggest.count">10</str>
+    </lst>
+    <arr name="components">
+      <str>suggest</str>
+    </arr>
+  </requestHandler>
+  
+
+  <!-- Terms Component -->
+  <searchComponent name="terms" class="solr.TermsComponent"/>
+
+
+  <!-- Terms Request Handler -->
+  <requestHandler name="/terms" class="solr.SearchHandler" startup="lazy">
+     <lst name="defaults">
+      <bool name="terms">true</bool>
+      <bool name="distrib">false</bool>
+    </lst>
+    <arr name="components">
+      <str>terms</str>
+    </arr>
+  </requestHandler>
+
+
+  <!-- Highlighting Component -->
+  <searchComponent class="solr.HighlightComponent" name="highlight">
+    <highlighting>
+      <!-- Gap Fragmenter -->
+      <fragmenter name="gap" default="true" class="solr.highlight.GapFragmenter">
+        <lst name="defaults">
+          <int name="hl.fragsize">100</int>
+        </lst>
+      </fragmenter>
+
+      <!-- Regular expression Fragmenter -->
+      <fragmenter name="regex" class="solr.highlight.RegexFragmenter">
+        <lst name="defaults">
+          <int name="hl.fragsize">70</int>
+          <float name="hl.regex.slop">0.5</float>
+          <str name="hl.regex.pattern">[-\w ,/\n\&quot;&apos;]{20,200}</str>
+        </lst>
+      </fragmenter>
+
+      <!-- Standard formatter -->
+      <formatter name="html" default="true" class="solr.highlight.HtmlFormatter">
+        <lst name="defaults">
+          <str name="hl.simple.pre"><![CDATA[<em>]]></str>
+          <str name="hl.simple.post"><![CDATA[</em>]]></str>
+        </lst>
+      </formatter>
+
+      <!-- Standard encoder -->
+      <encoder name="html" class="solr.highlight.HtmlEncoder" />
+
+      <!-- Standard fragListBuilder -->
+      <fragListBuilder name="simple" class="solr.highlight.SimpleFragListBuilder"/>
+
+      <!-- Single fragListBuilder -->
+      <fragListBuilder name="single" class="solr.highlight.SingleFragListBuilder"/>
+
+      <!-- Weighted fragListBuilder -->
+      <fragListBuilder name="weighted" default="true" class="solr.highlight.WeightedFragListBuilder"/>
+
+      <!-- Default Tag FragmentsBuilder -->
+      <fragmentsBuilder name="default" default="true" class="solr.highlight.ScoreOrderFragmentsBuilder"/>
+
+      <!-- Multi-colored Tag FragmentsBuilder -->
+      <fragmentsBuilder name="colored" class="solr.highlight.ScoreOrderFragmentsBuilder">
+        <lst name="defaults">
+          <str name="hl.tag.pre"><![CDATA[
+            <b style="background:yellow">,<b style="background:lawgreen">,
+            <b style="background:aquamarine">,<b style="background:magenta">,
+            <b style="background:palegreen">,<b style="background:coral">,
+            <b style="background:wheat">,<b style="background:khaki">,
+            <b style="background:lime">,<b style="background:deepskyblue">]]></str>
+          <str name="hl.tag.post"><![CDATA[</b>]]></str>
+        </lst>
+      </fragmentsBuilder>
+
+      <!-- Simple Boundary Scanner -->
+      <boundaryScanner name="default" default="true" class="solr.highlight.SimpleBoundaryScanner">
+        <lst name="defaults">
+          <str name="hl.bs.maxScan">10</str>
+          <str name="hl.bs.chars">.,!? &#9;&#10;&#13;</str>
+        </lst>
+      </boundaryScanner>
+
+      <!-- Break Iterator Boundary Scanner -->
+      <boundaryScanner name="breakIterator" class="solr.highlight.BreakIteratorBoundaryScanner">
+        <lst name="defaults">
+          <!-- type should be one of CHARACTER, WORD(default), LINE and SENTENCE -->
+          <str name="hl.bs.type">WORD</str>
+          <!-- language and country are used when constructing Locale object.  -->
+          <!-- And the Locale object will be used when getting instance of BreakIterator -->
+          <str name="hl.bs.language">en</str>
+          <str name="hl.bs.country">US</str>
+        </lst>
+      </boundaryScanner>
+    </highlighting>
+  </searchComponent>
+
+
+  <!-- JSON Response Writer -->
+  <queryResponseWriter name="json" class="solr.JSONResponseWriter">
+    <!-- str name="content-type">text/plain; charset=UTF-8</str -->
+  </queryResponseWriter>
+
+
+  <!-- Velocity Response Writer -->
+  <queryResponseWriter name="velocity" class="solr.VelocityResponseWriter" startup="lazy">
+    <str name="template.base.dir">${velocity.template.base.dir:}</str>
+  </queryResponseWriter>
+
+  <!-- Legacy config for the admin interface -->
+  <admin>
+    <defaultQuery>*:*</defaultQuery>
+  </admin>
+
+</config>
