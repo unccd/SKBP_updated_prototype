@@ -1,0 +1,5 @@
+{
+    "solrhost": "http://localhost:8983/solr/",
+    "collection": "unccd/",
+    "handlers":["select", "partner","partnerdetail","roe","kb","cbw","selectmap", "partnermap","roemap","kbmap","cbwmap"]
+}
