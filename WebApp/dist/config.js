@@ -4,5 +4,13 @@ var config = {
     "searchHandler": "select",
     "highlightsDir": "highlights",
 
-    "autocompleteHandler": "terms"
+    "autocompleteHandler": "terms",
+  "sorts" : ["Relevance", "Source", "Language", "Format", "Published"],
+  "sortsMap" : {"Relevance": "score desc",
+    "Source": "source asc",
+    "Language": "langname asc",
+    "Format": "format asc",
+    "Published": "published desc"
+  },
+  "rows": ["10", "20", "50", "100"]
 }
