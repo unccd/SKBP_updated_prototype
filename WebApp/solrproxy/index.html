@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Scientific Knowledge Brokering Portal Solr Proxy</title>
+    </head>
+    <body>
+        <h1>Scientific Knowledge Brokering Portal Solr Proxy</h1>
+        <p>
+            This web application should be accessible to the search interface
+        </p>
+        <p>
+            Configure solr host settings in %userhome%/.unccd/config.json
+        </p>
+        <p>
+            Default configuration is:
+        <pre>
+{
+    "solrhost": "http://localhost:8983/solr/",
+    "collection": "unccd/",
+    "handlers":["select", "partner","partnerdetail","roe","kb","cbw","selectmap", "partnermap","roemap","kbmap","cbwmap"]
+}
+</pre>
+        </p>
+        <br/>
+        <p>
+            URL for this proxy is configured in property "url" in config.js in the search interface:<br/>
+        <pre>
+var config = {
+    "url": "http://localhost:8080/solrproxy/fw",
+    "collectionName": "unccd",
+    "searchHandler": "select",
+    "highlightsDir": "highlights",
+
+    "autocompleteHandler": "terms"
+}
+
+        </pre>
+        </p>
+    </body>
+</html>
