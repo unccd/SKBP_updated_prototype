@@ -158,9 +158,9 @@
       <!-- Faceting defaults -->
       <str name="facet">on</str>
       <!-- SKBP partners and CBW -->
-      <str name="facet.field">source</str>
-      <str name="facet.field">partnername</str>
-      <str name="facet.field">langname</str>
+      <str name="facet.field">{!ex=sourceF}source</str>
+      <str name="facet.field">{!ex=partnernameF}partnername</str>
+      <str name="facet.field">{!ex=langnameF}langname</str>
       <str name="facet.field">keywords</str>
       <str name="facet.field">regions_nav</str>
       <str name="facet.field">annexes_nav</str>
@@ -258,9 +258,9 @@
       <!-- Faceting defaults -->
       <str name="facet">on</str>
       <!-- SKBP partners and CBW -->
-      <str name="facet.field">source</str>
-      <str name="facet.field">partnername</str>
-      <str name="facet.field">langname</str>
+      <str name="facet.field">{!ex=sourceF}source</str>
+      <str name="facet.field">{!ex=partnernameF}partnername</str>
+      <str name="facet.field">{!ex=langnameF}langname</str>
       <str name="facet.field">keywords</str>
       <str name="facet.field">regions_nav</str>
       <str name="facet.field">annexes_nav</str>
@@ -329,14 +329,14 @@
       <str name="q.op">AND</str>
       <str name="q.alt">*:*</str>
       <str name="fq">source:Partner</str>
-      <str name="fl">id url title_en title_es title_de title_it title_fr abstract_en abstract_es abstract_de abstract_it description_fr description_en description_es description_de description_it description_fr modified published</str>
+      <str name="fl">id partnername url title_en title_es title_de title_it title_fr abstract_en abstract_es abstract_de abstract_it description_fr description_en description_es description_de description_it description_fr modified published</str>
       <str name="wt">json</str>
 
       <!-- Faceting defaults -->
       <str name="facet">on</str>
-      <str name="facet.field">source</str>
-      <str name="facet.field">partnername</str>
-      <str name="facet.field">langname</str>
+      <str name="facet.field">{!ex=sourceF}source</str>
+      <str name="facet.field">{!ex=partnernameF}partnername</str>
+      <str name="facet.field">{!ex=langnameF}langname</str>
       <str name="facet.field">keywords</str>
       <str name="facet.field">regions_nav</str>
       <str name="facet.field">annexes_nav</str>
@@ -413,9 +413,9 @@
 
       <!-- Faceting defaults -->
       <str name="facet">on</str>
-      <str name="facet.field">source</str>
-      <str name="facet.field">partnername</str>
-      <str name="facet.field">langname</str>
+      <str name="facet.field">{!ex=sourceF}source</str>
+      <str name="facet.field">{!ex=partnernameF}partnername</str>
+      <str name="facet.field">{!ex=langnameF}langname</str>
       <str name="facet.field">keywords</str>
       <str name="facet.field">regions_nav</str>
       <str name="facet.field">annexes_nav</str>
@@ -492,8 +492,8 @@
 
       <!-- Faceting defaults -->
       <str name="facet">on</str>
-      <str name="facet.field">source</str>
-      <str name="facet.field">langname</str>
+      <str name="facet.field">{!ex=sourceF}source</str>
+      <str name="facet.field">{!ex=langnameF}langname</str>
       <str name="facet.field">keywords</str>
       <str name="facet.field">regions_nav</str>
       <str name="facet.field">annexes_nav</str>
@@ -561,8 +561,8 @@
 
       <!-- Faceting defaults -->
       <str name="facet">on</str>
-      <str name="facet.field">source</str>
-      <str name="facet.field">langname</str>
+      <str name="facet.field">{!ex=sourceF}source</str>
+      <str name="facet.field">{!ex=langnameF}langname</str>
       <str name="facet.field">keywords</str>
       <str name="facet.field">regions_nav</str>
       <str name="facet.field">annexes_nav</str>
@@ -603,7 +603,7 @@
 
       <!-- Faceting defaults -->
       <str name="facet">on</str>
-      <str name="facet.field">source</str>
+      <str name="facet.field">{!ex=sourceF}source</str>
       <str name="facet.field">country</str>
       <str name="facet.field">disciplines_nav</str>
       <str name="facet.field">specializations_nav</str>
@@ -670,7 +670,7 @@
       
       <!-- Faceting defaults -->
       <str name="facet">on</str>
-      <str name="facet.field">source</str>
+      <str name="facet.field">{!ex=sourceF}source</str>
       <str name="facet.field">country</str>
       <str name="facet.field">disciplines_nav</str>
       <str name="facet.field">specializations_nav</str>
@@ -715,7 +715,7 @@
 
       <!-- Faceting defaults -->
       <str name="facet">on</str>
-      <str name="facet.field">source</str>
+      <str name="facet.field">{!ex=sourceF}source</str>
       <str name="facet.field">knowledgebase</str>
       <str name="facet.field">region</str>
       <str name="facet.field">managingentitytype</str>
@@ -782,7 +782,7 @@
 
       <!-- Faceting defaults -->
       <str name="facet">on</str>
-      <str name="facet.field">source</str>
+      <str name="facet.field">{!ex=sourceF}source</str>
       <str name="facet.field">knowledgebase</str>
       <str name="facet.field">region</str>
       <str name="facet.field">managingentitytype</str>
@@ -838,9 +838,9 @@
       <!-- Faceting defaults -->
       <str name="facet">on</str>
       <!-- SKBP partners -->
-      <str name="facet.field">source</str>
-      <str name="facet.field">partnername</str>
-      <str name="facet.field">langname</str>
+      <str name="facet.field">{!ex=sourceF}source</str>
+      <str name="facet.field">{!ex=partnernameF}partnername</str>
+      <str name="facet.field">{!ex=langnameF}langname</str>
       <str name="facet.field">keywords</str>
       <str name="facet.field">regions_nav</str>
       <str name="facet.field">annexes_nav</str>
@@ -931,9 +931,9 @@
       <!-- Faceting defaults -->
       <str name="facet">on</str>
       <!-- SKBP partners -->
-      <str name="facet.field">source</str>
-      <str name="facet.field">partnername</str>
-      <str name="facet.field">langname</str>
+      <str name="facet.field">{!ex=sourceF}source</str>
+      <str name="facet.field">{!ex=partnernameF}partnername</str>
+      <str name="facet.field">{!ex=langnameF}langname</str>
       <str name="facet.field">keywords</str>
       <str name="facet.field">regions_nav</str>
       <str name="facet.field">annexes_nav</str>

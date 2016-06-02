@@ -12,5 +12,6 @@ var config = {
     "Format": "format asc",
     "Published": "published desc"
   },
-  "rows": ["10", "20", "50", "100"]
+  "rows": ["10", "20", "50", "100"],
+  "multipleFacets": ["source", "partnername", "langname"]
 }
