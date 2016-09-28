@@ -58,9 +58,9 @@
   <field name="yearpublished" type="int" indexed="true" stored="true" multiValued="false"/>                   <!-- CSIC, ISRIC, AGRIS, WOCAT, TECA, CBW          -->
   <field name="yearmodified" type="int" indexed="true" stored="true" multiValued="false"/>                    <!-- CSIC, ISRIC, AGRIS, WOCAT, TECA, CBW,      KB -->
   <!-- Store values in multiple languages to search without specifying language -->
-  <field name="title" type="text_general" indexed="true" stored="false" multiValued="true"/>                  <!-- CSIC, ISRIC, AGRIS, WOCAT, TECA, CBW          -->
+  <field name="title" type="text_general" indexed="true" stored="true" multiValued="true"/>                  <!-- CSIC, ISRIC, AGRIS, WOCAT, TECA, CBW          -->
   <field name="description" type="text_general" indexed="true" stored="false" multiValued="true"/>            <!-- CSIC,        AGRIS, WOCAT, TECA               -->
-  <field name="abstract" type="text_general" indexed="true" stored="false" multiValued="true"/>               <!-- CSIC, ISRIC, AGRIS, WOCAT, TECA,              -->
+  <field name="abstract" type="text_general" indexed="true" stored="true" multiValued="true"/>               <!-- CSIC, ISRIC, AGRIS, WOCAT, TECA,              -->
   <field name="body" type="text_general" indexed="true" stored="false" multiValued="true"/>                   <!--                     WOCAT, TECA, CBW          -->
 
   <!-- CBW HTML fields -->
@@ -109,8 +109,13 @@
   <field name="issn" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="doctype" type="string" indexed="true" stored="true" multiValued="false"/>
 
+  <!-- WOCAT Best Practices XML fields -->
+  <field name="WOCATBPtype" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="UNCCDBP" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="accesslevel" type="string" indexed="true" stored="true" multiValued="false"/>
+
   <!-- ROE (Roster of Experts) CSV fields -->
-  <field name="country" type="string" indexed="true" stored="true" multiValued="false"/>                      <!-- KB -->
+  <field name="country" type="string" indexed="true" stored="true" multiValued="false"/>                      <!-- KB, WOCAT -->
   <field name="nationality" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="lastname" type="text_en" indexed="true" stored="true" multiValued="false"/>
   <field name="firstname" type="text_en" indexed="true" stored="true" multiValued="false"/>

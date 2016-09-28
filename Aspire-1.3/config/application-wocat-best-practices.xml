@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application name="ApplicationWOCATBestPractices" typeFlags="job-input">
+
+  <components>
+
+    <component name="HotFolderFeeder" subType="hotFolderFeeder" factoryName="aspire-filefeeder">
+      <config>
+        <feederLabel>CrawlFolder</feederLabel>
+        <metadataMap>
+          <map from="fileName" to="fileName"/>
+          <map from="fullPath" to="fullPath"/>
+        </metadataMap>
+        <autoStart>false</autoStart>
+        <loopWait>43200000</loopWait>
+        <hotFolders>
+          <hotFolder match=".*\.xml">
+            <inputQueueFolder>datastore/wocatbp/input-queue</inputQueueFolder>
+            <quarantineFolder>datastore/wocatbp/quarantine</quarantineFolder>
+            <completedFolder>datastore/wocatbp/completed</completedFolder>
+            <inProcessFolder>datastore/wocatbp/in-process</inProcessFolder>
+          </hotFolder>
+        </hotFolders>
+        <branches>
+          <branch event="onPublish" pipelineManager="ProcessWOCATBestPracticesData"/>
+        </branches>
+      </config>
+    </component>
+    
+    
+    <component name="ProcessWOCATBestPracticesData" subType="pipeline" factoryName="aspire-application">
+      <queueSize>100</queueSize>
+      <maxThreads>20</maxThreads>
+      
+      <components>
+
+        <component name="Scheduler" subType="default" factoryName="aspire-scheduler">
+          <schedules>
+            <schedule name="UpdateSchedule" enabled="true" singleton="false">
+              <cron>${schedule}</cron>
+              <event>onPublish</event>
+            </schedule>
+          </schedules>
+          <branches>
+            <branch event="onPublish" pipelineManager="../ProcessWOCATBestPracticesData" pipeline="doc-process-xml"/>
+          </branches>
+        </component>
+
+        <component name="SetFetchURL" subType="default" factoryName="aspire-groovy">
+          <script>
+            <![CDATA[
+
+                //--------------------------------------- IMPORTS ---------------------------------------------//
+                import java.net.URL;
+                import java.nio.charset.StandardCharsets;
+                import java.util.List;
+                import java.util.zip.GZIPInputStream;
+                import javax.net.ssl.HttpsURLConnection;
+                import com.searchtechnologies.aspire.services.AspireException;
+                import com.searchtechnologies.aspire.services.AspireObject;
+                import java.net.MalformedURLException;
+                import java.io.BufferedReader;
+                import java.io.ByteArrayInputStream;
+                import java.io.IOException;
+                import java.io.InputStream;
+                import java.io.InputStreamReader;
+                import java.io.StringReader;
+
+                //--------------------------------------- CODE ---------------------------------------------//
+
+                //XML fields
+                final String NEXT_PAGE_LITERAL = "next";
+                final String RESULTS_LITERAL = "results";
+                final String ROOT_LITERAL = "root";
+                final String XML_DECLARATION = "<?xml version='1.0' encoding='UTF-8'?>";
+                final String NAME_LITERAL = "name";
+                final String DEFINITION_LITERAL = "definition";
+                final String LIST_ITEM_LITERAL = "list-item";
+                final String TEXT_LITERAL = "text";
+                final String TAG_NAME_LITERAL = "taggerName";
+                final String TAG_DEFINITION_LITERAL = "taggerDefinition";
+                
+                //variables
+                final String baseURL = "https://qcat.wocat.net/en/api/v1/questionnaires/?page=";
+                HttpsURLConnection urlConn = null;
+                int pageNumber = 0;
+                boolean morePages = true;
+                String data;
+                
+                    
+                try{
+                        
+                  //Creation of global AspireObject
+                  AspireObject globalRoot = new AspireObject(ROOT_LITERAL);
+                  AspireObject globalResults = new AspireObject(RESULTS_LITERAL);
+                        
+                  while(morePages){
+                    AspireObject nextPage = null;
+                    
+                    try {          
+                      pageNumber++;
+                      URL url = new URL(baseURL + Integer.toString(pageNumber));
+                      
+                      if (url != null) {
+                        urlConn = (HttpsURLConnection) url.openConnection();
+                        urlConn.setRequestMethod("GET");
+                        urlConn.setRequestProperty("Content-Type", "application/xml");
+                        urlConn.setRequestProperty("Authorization", "Token 09df2f889cd0b354a50c4a710b3b1256615219e3");
+                        urlConn.setRequestProperty("Accept", "application/xml");
+                        urlConn.setRequestProperty("Cookie", "csrftoken=LqKisiec9fLN8kRRiXcbocijKPxgo0M8 ");
+                
+                        if (urlConn.getResponseCode() == 200) {
+                          InputStream inputStream = new GZIPInputStream(urlConn.getInputStream());
+                          
+                          if (inputStream != null) {
+                            
+                            // Reads the content and stores it in a data variable.
+                            InputStreamReader isr = new InputStreamReader(inputStream, "UTF-8");              
+                            BufferedReader br = new BufferedReader(isr);
+                            String line = null;
+                            data = "";
+                            while((line = br.readLine()) != null){
+                              data = data + line;
+                            }
+                            
+                            //Transforms the string to an AspireObject
+                            AspireObject root = AspireObject.createFromXML(new StringReader(data));
+                            
+                            //Get results and add the list-items to the globalResults AspireObject
+                            AspireObject results = root.get(RESULTS_LITERAL);
+                            List<AspireObject> listItems = results.getChildren();
+
+                            if(listItems != null){
+
+                              //Create a new field for name and definition for the taggers.
+                              for(int temp = 0; temp < listItems.size(); temp++){
+                                AspireObject ao = listItems.get(temp);
+
+                                if(ao != null && ao.get(NAME_LITERAL) != null && ao.get(NAME_LITERAL).get(LIST_ITEM_LITERAL) != null && ao.get(NAME_LITERAL).get(LIST_ITEM_LITERAL).get(TEXT_LITERAL) !=  null &&
+                                    ao.get(DEFINITION_LITERAL) != null && ao.get(DEFINITION_LITERAL).get(LIST_ITEM_LITERAL) != null && ao.get(DEFINITION_LITERAL).get(LIST_ITEM_LITERAL).get(TEXT_LITERAL) != null){
+                                  AspireObject name = ao.get(NAME_LITERAL).get(LIST_ITEM_LITERAL).get(TEXT_LITERAL);
+                                  AspireObject definition = ao.get(DEFINITION_LITERAL).get(LIST_ITEM_LITERAL).get(TEXT_LITERAL);
+                                  ao.add(TAG_NAME_LITERAL, name.getText());
+                                  ao.add(TAG_DEFINITION_LITERAL, definition.getText());
+                                }
+                              }
+
+                              //Add to the documents to a global list.                                
+                              globalResults.add(listItems);
+                            }
+                            
+                            //More pages available?
+                            nextPage = root.get(NEXT_PAGE_LITERAL);
+                            if(nextPage.getText() == null || nextPage.getText().isEmpty()){
+                              morePages = false;
+                            }                
+                          }
+                          
+                        } else {              
+                          System.out.println("Page "+Integer.toString(pageNumber)+" not processed. Returned HTTP Code: " + urlConn.getResponseCode());
+                          component.error("Returned HTTP Code: " + urlConn.getResponseCode());
+
+                        }
+                      }
+                    } catch (MalformedURLException mue) {
+                      System.out.println("(500) - Error at URL in Page: " + Integer.toString(pageNumber) + " --- " + mue.toString());
+                      component.error("500", mue);
+
+                    } catch (IOException ioe) {
+                      System.out.println("(501) - Error at IO in Page: " + Integer.toString(pageNumber) + " --- " + ioe.toString());
+                      component.error("501", ioe);
+
+                    } catch (Exception e){
+                      System.out.println("(502) - Error (GENERIC) in Page: " + Integer.toString(pageNumber) + " --- " + e.toString());
+                      component.error("502", e);
+
+                    }
+                    finally {
+                             
+                      //Done processing.
+                      System.out.println("Page "+Integer.toString(pageNumber)+" Done.");
+                      if (urlConn != null) {
+                        urlConn.disconnect();
+                      }
+                    }
+                  }      
+
+                  //Validates if the boolean to display a message.
+                  if(!morePages){
+                    System.out.println("No more pages.");
+                  }
+                  
+                  //Adds the results child to the root and converts it to a String
+                  globalRoot.add(globalResults);
+                  String finalXML = XML_DECLARATION + globalRoot.toXmlString();    
+
+
+                  //Sets the contentStream variable with the globalRoot XML 
+                  InputStream stream = new ByteArrayInputStream(finalXML.getBytes(StandardCharsets.UTF_8));          
+                  job.putVariable("contentStream", stream);
+
+                
+                }catch (AspireException e) {
+                  System.out.println("(600) - Error at Aspire Object: " + e.toString());
+                  component.error("600", e);
+                }
+                
+            ]]>
+          </script>
+        </component>
+
+
+        <!--component name="FetchUrl" subType="default" factoryName="aspire-fetch-url"/-->
+
+        <component name="XMLSubJobExtract" subType="xmlSubJobExtractor" factoryName="aspire-xml-files">
+          <config>
+            <rootNode>/root/results</rootNode>            
+            <branches>
+              <branch event="onSubJob" pipelineManager="../ProcessWOCATBPXML"/>
+            </branches>
+          </config>
+        </component>
+
+
+        <component name="WaitForSubJobs" subType="waitForSubJobs" factoryName="aspire-tools"/>
+
+      </components>
+
+
+      <pipelines>
+        <pipeline name="doc-process-xml" default="true">
+          <stages>
+            <stage component="SetFetchURL"/>
+            <!--stage component="FetchUrl"/-->
+            <stage component="XMLSubJobExtract"/>
+            <stage component="WaitForSubJobs"/>
+          </stages>
+        </pipeline>
+      </pipelines>
+    </component>
+    
+    
+    <component name="ProcessWOCATBPXML" subType="pipeline" factoryName="aspire-application">
+      <queueSize>200</queueSize>
+      <maxThreads>50</maxThreads>
+      
+      <components> 
+     
+        <component name="KeywordsTagger" subType="default" factoryName="aspire-tag-text">
+          <output>keywordsTags</output>
+          <tagFields>
+            <tagField field="taggerName"/>
+            <tagField field="taggerDefinition"/>
+            <tagField field="data" isbody="true"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="agrovoc_keywords_unccd" tagFile="config/tagger/agrovoc_keywords_unccd.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+            <tokenFilter class="org.apache.lucene.analysis.LowerCaseFilter"/>
+          </tokenProcessing>
+        </component>
+        
+
+        <component name="KeywordsTaggerCaseSensitive" subType="default" factoryName="aspire-tag-text">
+          <output>keywordsTags</output>
+          <tagFields>
+            <tagField field="taggerName"/>
+            <tagField field="taggerDefinition"/>
+            <tagField field="data" isbody="true"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="agrovoc_keywords_unccd" tagFile="config/tagger/agrovoc_keywords_unccd_case_sensitive.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+            <tokenFilter class="org.apache.lucene.analysis.LowerCaseFilter"/>
+          </tokenProcessing>
+        </component>
+
+        
+        <component name="RegionsTagger" subType="default" factoryName="aspire-tag-text">
+          <output>regionsTags</output>
+          <tagFields>
+            <tagField field="country"/> 
+            <tagField field="taggerName"/>
+            <tagField field="taggerDefinition"/>
+            <tagField field="data" isbody="true"/>      
+          </tagFields>
+          <tagLists>
+            <tagList id="regions" tagFile="config/tagger/regions.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+            <tokenFilter class="org.apache.lucene.analysis.LowerCaseFilter"/>
+          </tokenProcessing>
+        </component>
+
+         <component name="AnnexesTagger" subType="default" factoryName="aspire-tag-text">
+          <output>annexesTags</output>
+          <tagFields>
+            <tagField field="taggerName"/>
+            <tagField field="taggerDefinition"/>
+            <tagField field="data" isbody="true"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="annexes" tagFile="config/tagger/annexes.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+            <tokenFilter class="org.apache.lucene.analysis.LowerCaseFilter"/>
+          </tokenProcessing>
+        </component>
+        
+        
+        <component name="NonAnnexesTagger" subType="default" factoryName="aspire-tag-text">
+          <output>nonAnnexesTags</output>
+          <tagFields>
+            <tagField field="taggerName"/>
+            <tagField field="taggerDefinition"/>
+            <tagField field="data" isbody="true"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="nonAnnexes" tagFile="config/tagger/non_annexes.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+            <tokenFilter class="org.apache.lucene.analysis.LowerCaseFilter"/>
+          </tokenProcessing>
+        </component>
+
+        <component name="LandManagementTagger" subType="default" factoryName="aspire-tag-text">
+          <output>landManagementTags</output>
+          <tagFields>
+            <tagField field="taggerName"/>
+            <tagField field="taggerDefinition"/>
+            <tagField field="data" isbody="true"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="landManagement" tagFile="config/tagger/land_management.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+            <tokenFilter class="org.apache.lucene.analysis.LowerCaseFilter"/>
+          </tokenProcessing>
+        </component>               
+
+        <component name="ClimateZonesTagger" subType="default" factoryName="aspire-tag-text">
+          <output>climateZonesTags</output>
+          <tagFields>
+            <tagField field="country"/> 
+            <tagField field="taggerName"/>
+            <tagField field="taggerDefinition"/>
+            <tagField field="data" isbody="true"/>
+          </tagFields>
+          <tagLists>
+            <tagList id="climateZones" tagFile="config/tagger/climate_zones.txt"/>
+          </tagLists>
+          <tokenProcessing>
+            <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
+            <tokenFilter class="org.apache.lucene.analysis.LowerCaseFilter"/>
+          </tokenProcessing>
+        </component>
+
+        <component name="setIndicators" subType="default" factoryName="aspire-groovy">
+          <script>
+            <![CDATA[
+              doc.fetchUrl = "https://qcat.wocat.net" + doc.url.text();
+              doc.WOCATBP = "true";
+            ]]>
+          </script>
+        </component>
+
+        <component name="printDoc" subType="default" factoryName="aspire-groovy">
+          <script>
+            <![CDATA[
+              println "The doc is: $doc \n";
+            ]]>
+          </script>
+        </component>
+
+        <component name="Router" subType="router" factoryName="aspire-tools">
+          <routeTable>
+            <route component="/BusinessRulesEngine"/>
+            <route component="/PublishToSolr"/>
+          </routeTable>
+        </component>
+        
+      </components>
+
+
+      <pipelines>
+        <pipeline name="default-pipeline" default="true">
+          <stages>
+            <stage component="KeywordsTagger"/>
+            <stage component="KeywordsTaggerCaseSensitive"/>
+            <stage component="RegionsTagger"/>
+            <stage component="AnnexesTagger"/>
+            <stage component="NonAnnexesTagger"/>
+            <stage component="LandManagementTagger"/>
+            <stage component="ClimateZonesTagger"/>
+            <stage component="setIndicators"/>
+            <!--stage component="printDoc"/-->
+            
+            <stage component="Router"/>
+          </stages>
+        </pipeline>
+      </pipelines>
+    </component>
+
+  </components>
+</application>
