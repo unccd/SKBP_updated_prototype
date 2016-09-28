@@ -10,8 +10,15 @@ var config = {
     "Source": "source asc",
     "Language": "langname asc",
     "Format": "format asc",
-    "Published": "published desc"
-  },
+    "Published": "published desc"},
   "rows": ["10", "20", "50", "100"],
-  "multipleFacets": ["source", "partnername", "langname"]
+  "partnerLogos":{
+        "AGRIS":"logo-agris",
+        "CSIC":"logo-csic",
+        "ISRIC":"logo-isric",
+        "TECA":"logo-teca",
+        "WOCAT":"logo-wocat"
+    },
+    "multipleFacets":["source", "partnername", "langname"]
+  
 }

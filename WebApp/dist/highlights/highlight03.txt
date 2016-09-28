@@ -1,3 +1,3 @@
 Roster of Experts
-#/results?q=*&source=ROE&resultsMode=list
+#/results?q=*&source=ROE&resultsMode=map
 The Roster of independent Experts has been established in accordance with article 24, paragraph 2, of the Convention. It is maintained and managed by the UNCCD Secretariat. You can find your local experts on the Scientific Knowledge Brokering Portal.
