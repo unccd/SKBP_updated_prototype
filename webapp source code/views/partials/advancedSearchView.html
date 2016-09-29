@@ -1,0 +1,102 @@
+<!-- Search area -->
+<div class="jumbotron unccd-clear-mg unccd-clear-pd unccd-jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 unccd-search">
+        <div data-search-input-directive></div>
+        <a href="#/advancedSearch" title="Advanced search" class="unccd-advanced-search-link unccd-color-white">Advanced search</a>
+        <div class="clearfix"> </div>
+      </div>
+      <div class="col-md-4 unccd-promo unccd-segoe-ui-light unccd-color-white">
+        <div data-search-promo-directive></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /.search area -->
+
+
+<!-- Content -->
+<div class="unccd-content unccd-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="unccd-segoe-ui-normal">Advanced search</h3><br />
+        <!-- Advanced search container -->
+        <div class="unccd-advanced-search">
+          <!-- Sources -->
+          <form class="form-inline unccd-advanced-search-sources-select">
+            <fieldset>
+              <label class="control-label">
+                Select your source:&#160;&#160;
+              </label>
+              <select class="form-control unccd-set-radius" ng-model="advSelectedSource" ng-options="advSource for advSource in advSources">
+                <option style="display:none" value="" disabled selected>Sources</option>
+              </select>
+            </fieldset>
+          </form><!--/.sources -->
+
+          <!-- Fields -->
+          <form class="form-horizontal unccd-advanced-search-sources">
+            <div ng-if="advSelectedSource === 'SKBP Partners'" class="row">
+              <div class="col-md-4" ng-repeat="skbpField in skbpFields">
+                <fieldset>
+                  <label class="control-label">{{skbpField.name | translate}}</label>
+                  <input ng-if="skbpField.type !== 'langSelect' && skbpField.type !== 'year'" type="text" name="skbpField.name" class="form-control" ng-model="skbpField.value"/>
+                  <select ng-if="skbpField.type === 'langSelect'" class="form-control" ng-model="selectedLang" ng-options="lang.lang for lang in advLanguages">
+                    <!--<option style="display:none" value="" disabled selected>Select language</option>-->
+                  </select>
+                    <input ng-if="skbpField.type == 'year'" type="text" name="skbpField.name" class="form-control" ng-model="skbpField.valueFrom" placeholder="{{skbpField.pFrom}}" style="margin-bottom: 30px;"/>
+                    <input ng-if="skbpField.type == 'year'" type="text" name="skbpField.name" class="form-control" ng-model="skbpField.valueTo" placeholder="{{skbpField.pTo}}"/>
+                </fieldset>
+              </div>
+              <div class="clearfix"> </div><br />
+            </div>
+            <div ng-if="advSelectedSource === 'Capacity Building Marketplace'" class="row">
+              <div class="col-md-4" ng-repeat="cbwField in cbwFields">
+                <fieldset>
+                  <label class="control-label">{{cbwField.name | translate}}</label>
+                  <!-- Selects between an input and a select, if is a language field, then shows a select -->
+                  <input ng-if="cbwField.type !== 'langSelect'" type="text" name="cbwField.name" class="form-control" ng-model="cbwField.value"/>
+                  <select ng-if="cbwField.type === 'langSelect'" class="form-control" ng-init="selectedLang = advLanguages[0]" ng-model="selectedLang" ng-options="lang.lang for lang in advLanguages">
+                    <!--<option style="display:none" value="" disabled selected>Select language</option>-->
+                  </select>
+                </fieldset>
+              </div>
+              <div class="clearfix"> </div><br />
+            </div>
+            <div ng-if="advSelectedSource === 'Roster of Experts'" class="row">
+              <div class="col-md-4" ng-repeat="roeField in roeFields">
+                <fieldset>
+                  <label class="control-label">{{roeField.name | translate}}</label>
+                  <input type="text" name="roeField.name" class="form-control" ng-model="roeField.value"/>
+                  <select ng-if="roeField.type === 'langSelect'" class="form-control" ng-init="selectedLang = advLanguages[0]" ng-model="selectedLang" ng-options="lang.lang for lang in advLanguages">
+                    <!--<option style="display:none" value="" disabled selected>Select language</option>-->
+                  </select>
+                </fieldset>
+              </div>
+              <div class="clearfix"> </div><br />
+            </div>
+            <div ng-if="advSelectedSource === 'Knowledge Bases'" class="row">
+              <div class="col-md-4" ng-repeat="kbField in kbFields">
+                <fieldset>
+                  <label class="control-label">{{kbField.name | translate}}</label>
+                  <input type="text" name="kbField.name" class="form-control" ng-model="kbField.value"/>
+                  <select ng-if="kbField.type === 'langSelect'" class="form-control" ng-init="selectedLang = advLanguages[0]" ng-model="selectedLang" ng-options="lang.lang for lang in advLanguages">
+                    <!--<option style="display:none" value="lang.code" disabled selected>Select language</option>-->
+                  </select>
+                </fieldset>
+                <div class="clearfix"> </div><br />
+              </div>
+            </div>
+            <input style="display: none;" type="submit" ng-click="advSubmit()" />
+            <a class="btn btn-success unccd-color-white" role="button" type="submit" ng-click="advSubmit()">Search</a>
+          </form><!--/.fields-->
+        </div><!--/.advanced search container -->
+      </div>
+    </div>
+  </div>
+</div><!-- /.content -->
+
+
+<!-- Partners -->
+<div data-partner-logos-directive></div><!-- /.partners -->

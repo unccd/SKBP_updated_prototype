@@ -1,0 +1,57 @@
+<!-- Search area -->
+<div class="jumbotron unccd-clear-mg unccd-clear-pd unccd-jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 unccd-search">
+        <div data-search-input-directive></div>
+        <a href="#/advancedSearch" title="Advanced search" class="unccd-advanced-search-link unccd-color-white">Advanced search</a>
+        <div class="clearfix"> </div>
+      </div>
+      <div class="col-md-4 unccd-promo unccd-segoe-ui-light unccd-color-white">
+        <div data-search-promo-directive></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.search area -->
+
+
+<!-- Highlights -->
+<div class="unccd-highlights unccd-content">
+  <!-- Container -->
+  <div class="container">
+    <!-- Row -->
+    <div class="row">
+      <!-- Carousel -->
+      <ul id="unccd-highlights-carousel" class="list-unstyled" ng-show="showCarousel">
+        <li class="col-md-4" ng-repeat="highlight in highlights">
+          <h4 class="unccd-segoe-ui-normal"><a href="{{highlight.url}}" title="{{highlight.title}}">{{highlight.title}}</a></h4>
+          <p>{{highlight.description}}</p>
+          <!--<img ng-src="{{imgHighlights[$index]}}" style="width: 100%; margin-bottom: 10px;">-->
+          <p><a class="btn btn-default" href="{{highlight.url}}" role="button" title="{{highlight.title}}">View details &raquo;</a></p>
+        </li>
+      </ul>
+      <!-- /.Carousel -->
+      <div class="clearfix"></div>
+      <!-- Controlers -->
+      <div class="unccd-highlights-carousel-control unccd-color-silver unccd-clear-decoration" ng-show="showCarousel">
+        <a id="prev" class="prev glyphicon glyphicon-circle-arrow-left" href="#" ng-show="showCarousel"> </a>
+        <a id="next" class="next glyphicon glyphicon-circle-arrow-right" href="#" ng-show="showCarousel"> </a>
+      </div>
+      <!-- /.controlers -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container -->
+</div>
+<!-- /.highlights -->
+
+
+<!-- Guides -->
+<!-- Pedro -> Original code is in template of home page if will be needed -->
+<!-- /.guides -->
+
+
+<!-- Partners -->
+<div data-partner-logos-directive></div>
+<!-- /.partners -->

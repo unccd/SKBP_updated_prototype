@@ -1,0 +1,16 @@
+<div ng-controller="searchInputController">
+  <form class="navbar-form unccd-clear-shadow" role="search">
+    <div class="input-group unccd-clear-input unccd-search-input">
+      <!--<input type="text" class="form-control" placeholder="Search for..." name="srch-term" id="srch-term" ng-model="inputValue" ng-change="generateAutocompleteValues()"/>-->
+      <input type="text" class="form-control" ng-model="inputValue" placeholder="Search for..." typeahead="autocompleteValue for autocompleteValue in autocompleteValues" typeahead-loading="loadingLocations" typeahead-no-results="noResults" class="form-control" ng-change="generateAutocompleteValues()">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit" ng-click="submit()"><span class="glyphicon glyphicon-search"> </span></button>
+      </span>
+    </div>
+    <div class="btn-group unccd-sources">
+      <select class="form-control unccd-set-radius unccd-clear-shadow unccd-border-color-white" ng-model="selectedSource" ng-options="source for source in sources" style="max-width: 180px;">
+        <option style="display:none" value="" disabled selected>Sources</option>
+      </select>
+    </div>
+  </form>
+</div>

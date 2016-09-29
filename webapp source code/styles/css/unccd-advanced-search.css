@@ -1,0 +1,19 @@
+/*** Advanced search ***/
+.unccd-advanced-search {
+  padding: 20px 20px 30px 20px;
+  margin-bottom: 20px;
+  /*border: 1px solid #E5E5E6;*/
+  border: 1px solid #EDEDEE;
+  border-radius: 4px;
+  background-color: #FCFCFD;
+}
+
+.unccd-advanced-search-sources .control-label {
+  margin-bottom: 5px;
+  padding-top: 7px;
+  color: #656664;
+}
+
+.unccd-advanced-search-sources-select {
+  margin-bottom: 15px;
+}

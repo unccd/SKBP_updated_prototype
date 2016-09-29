@@ -1,0 +1,24 @@
+/*** Typeahead ***/
+.unccd-search-input .dropdown-menu {
+  min-width: 400px;
+}
+
+.unccd-search-input .dropdown-menu > .active > a, 
+.unccd-search-input .dropdown-menu > .active > a:hover, 
+.unccd-search-input .dropdown-menu > .active > a:focus {
+  background-color: #F2F2F3;
+  color: black;
+}
+
+
+/*************************/
+/***** MEDIA QUERIES *****/
+/*************************/
+
+
+/*** Max 768 ***/
+@media (max-width: 768px) {
+ .unccd-search-input .dropdown-menu {
+    min-width: 100%;
+  } 
+}
