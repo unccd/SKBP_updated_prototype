@@ -110,9 +110,11 @@
   <field name="doctype" type="string" indexed="true" stored="true" multiValued="false"/>
 
   <!-- WOCAT Best Practices XML fields -->
+  <field name="accesslevel" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="WOCATBPtype" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="UNCCDBP" type="string" indexed="true" stored="true" multiValued="false"/>
-  <field name="accesslevel" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="WOCATBPtype_nav" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="UNCCDBP_nav" type="string" indexed="true" stored="true" multiValued="false"/>
 
   <!-- ROE (Roster of Experts) CSV fields -->
   <field name="country" type="string" indexed="true" stored="true" multiValued="false"/>                      <!-- KB, WOCAT -->
@@ -141,6 +143,7 @@
   <field name="postcop_nav" type="string" indexed="true" stored="true" multiValued="true"/>
   <field name="thematicareas" type="text_en" indexed="true" stored="true" multiValued="true"/>
   <field name="thematicareas_nav" type="string" indexed="true" stored="true" multiValued="true"/>
+  
 
   <!-- KB (Knowledge Base) CSV fields -->
   <field name="knowledgebase" type="string" indexed="true" stored="true" multiValued="false"/>
@@ -180,6 +183,9 @@
   <copyField source="postcop" dest="postcop_nav"/>
   <copyField source="thematicareas" dest="thematicareas_nav"/>
   <copyField source="topics" dest="topics_nav"/>
+  <copyField source="WOCATBPtype" dest="WOCATBPtype_nav"/>
+  <copyField source="UNCCDBP" dest="UNCCDBP_nav"/>
+  
   <!-- Copy the fields for multilanguage search -->
   <copyField source="title_*" dest="title"/>
   <copyField source="alttitle_*" dest="title"/>
