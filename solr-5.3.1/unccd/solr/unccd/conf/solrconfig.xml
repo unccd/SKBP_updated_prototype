@@ -139,8 +139,9 @@
       <str name="echoParams">explicit</str>
       <str name="rows">10</str>
       <str name="defType">edismax</str>
+      <int name="facet.threads">24</int>
       
-      <!-- Query settings -->
+	  <!-- Query settings -->
       <str name="qf">title^8.0 description^3.0 abstract^3.0 keywords^1.5 body^1.0 lastname^8.0 firstname^8.0 institution^5.0 workexperience^5.0 disciplines^5.0 specializations^5.0 postcop^3.0 thematicareas^3.0 kss^8.0 managingentity^5.0 topics^3.0</str>
       <str name="f.langen.qf">title_en^8.0 description_en^3.0 abstract_en^3.0 keywords^1.5 body_en^1.0</str>
       <str name="f.langes.qf">title_es^8.0 description_es^3.0 abstract_es^3.0 keywords^1.5 body_es^1.0</str>
@@ -243,7 +244,8 @@
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       <str name="defType">edismax</str>
-      
+      <int name="facet.threads">24</int>
+	  
       <!-- Query settings -->
       <str name="qf">title^8.0 description^3.0 abstract^3.0 keywords^1.5 body^1.0 lastname^8.0 firstname^8.0 institution^5.0 workexperience^5.0 disciplines^5.0 specializations^5.0 postcop^3.0 thematicareas^3.0 kss^8.0 managingentity^5.0 topics^3.0</str>
       <str name="f.langen.qf">title_en^8.0 description_en^3.0 abstract_en^3.0 keywords^1.5 body_en^1.0</str>
@@ -405,7 +407,8 @@
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       <str name="defType">edismax</str>
-      
+      <int name="facet.threads">24</int>
+	  
       <!-- Query settings -->
       <str name="qf">title^8.0 description^3.0 abstract^3.0 keywords^1.5 body^1.0</str>
       <str name="f.langen.qf">title_en^8.0 description_en^3.0 abstract_en^3.0 keywords^1.5 body_en^1.0</str>
@@ -461,7 +464,8 @@
   <requestHandler name="/partnerdetail" class="solr.SearchHandler">
     <lst name="defaults">
       <str name="rows">1</str>
-      
+      <int name="facet.threads">24</int>
+	  
       <!-- Query settings -->
       <str name="df">id</str>
       <str name="fl">source partnername url title_en description_en abstract_en body_en title_es description_es abstract_es body_es title_de description_de abstract_de body_de title_fr description_fr abstract_fr body_fr title_it description_it abstract_it body_it modified published keywords langname language languages typology datatype format authors regions annexes nonannexes landmanagement climatezones yearpublished yearmodified isbn identifier subjects accessioneddate relation citation issueddate publishers contactname contactorganisation contactphone contactemail publication citationcode geolocation geolocationpoly docsource extent volume issue type yearsubmitted ispartof attachedfiles furtherreading images countries categories categories_nav sponsorship issn doctype country regions accesslevel WOCATBPtype sourceurl UNCCDBP</str>
@@ -486,7 +490,8 @@
       <str name="echoParams">explicit</str>
       <str name="rows">10</str>
       <str name="defType">edismax</str>
-      
+      <int name="facet.threads">24</int>
+	  
       <!-- Query settings -->
       <str name="qf">title^8.0 keywords^5.0 body^3.0</str>
       <str name="f.langen.qf">title_en^8.0 keywords^5.0 body_en^3.0</str>
@@ -557,6 +562,7 @@
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       <str name="defType">edismax</str>
+      <int name="facet.threads">24</int>
       
       <!-- Query settings -->
       <str name="qf">title^8.0 keywords^5.0 body^3.0</str>
@@ -603,6 +609,7 @@
       <str name="echoParams">explicit</str>
       <str name="rows">10</str>
       <str name="defType">edismax</str>
+      <int name="facet.threads">24</int>
       
       <!-- Query settings -->
       <str name="qf">lastname^8.0 firstname^8.0 institution^5.0 workexperience^5.0 disciplines^5.0 specializations^5.0 postcop^3.0 thematicareas^3.0</str>
@@ -672,6 +679,7 @@
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       <str name="defType">edismax</str>
+      <int name="facet.threads">24</int>
       
       <!-- Query settings -->
       <str name="qf">lastname^8.0 firstname^8.0 institution^5.0 workexperience^5.0 disciplines^5.0 specializations^5.0 postcop^3.0 thematicareas^3.0</str>
@@ -715,6 +723,7 @@
       <str name="echoParams">explicit</str>
       <str name="rows">10</str>
       <str name="defType">edismax</str>
+      <int name="facet.threads">24</int>
       
       <!-- Query settings -->
       <str name="qf">kss^8.0 managingentity^5.0 topics^3.0</str>
@@ -784,6 +793,7 @@
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       <str name="defType">edismax</str>
+      <int name="facet.threads">24</int>
       
       <!-- Query settings -->
       <str name="qf">kss^8.0 managingentity^5.0 topics^3.0</str>
@@ -827,7 +837,8 @@
       <str name="echoParams">explicit</str>
       <str name="rows">10</str>
       <str name="defType">edismax</str>
-
+      <int name="facet.threads">24</int>
+	  
       <!-- VelocityResponseWriter settings -->
       <str name="wt">velocity</str>
       <str name="v.template">browse</str>
@@ -932,7 +943,8 @@
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       <str name="rows">10</str>
-
+      <int name="facet.threads">24</int>
+	  
       <!-- VelocityResponseWriter settings -->
       <str name="wt">velocity</str>
       <str name="v.template">browse</str>
