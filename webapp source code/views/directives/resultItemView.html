@@ -23,9 +23,11 @@
       </div>
       <div class="modal-body">
         <div ng-repeat="(key, value) in currentResultItem">
+          <div ng-if="showField(key)">
             <!-- Create a link if the item is a url or website -->
-            <p ng-if="key === 'url' || key === 'website'"><strong>{{key | translate}}:</strong> <a href="{{value}}" target="_blank">{{ getFormattedVersion(value) }}</a></p>
-            <p ng-if="key !== 'url' && key !== 'website'"><strong>{{key | translate}}:</strong> {{ getFormattedVersion(value) }}</p>
+            <p ng-if="key === 'url' || key === 'website'"><strong>{{key| translate}}:</strong> <a href="{{value}}" target="_blank">{{ getFormattedVersion(value)}}</a></p>
+            <p ng-if="key !== 'url' && key !== 'website'"><strong>{{key| translate}}:</strong> {{ getFormattedVersion(value)}}</p>
+          </div>
         </div>
       </div>
       <div class="modal-footer">

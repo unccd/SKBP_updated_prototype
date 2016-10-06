@@ -167,13 +167,15 @@ unccdApp.controller('searchResultsController',
               // in other case we can show from the list results
 
               var source = $location.search().source;
-              if (source !== "Partner") {
+
+
+              if (typeof source === 'undefined' && source !== "Partner" && source !== "WOCATBP") {
                 for (var i = 0; i < $scope.results.length; i++) {
                   if ($scope.results[i].id === docId) {
                     if ($scope.results[i].source) {
                       source = $scope.results[i].source;
                     }
-                    if (source !== "Partner") {
+                    if (source !== "Partner" && source !== "WOCATBP") {
                       $scope.currentResultItem = $scope.results[i];
                       $scope.items = $scope.currentResultItem;
                       $scope.openModal();
