@@ -6,9 +6,7 @@
  The ASF licenses this file to You under the Apache License, Version 2.0
  (the "License"); you may not use this file except in compliance with
  the License.  You may obtain a copy of the License at
-
      http://www.apache.org/licenses/LICENSE-2.0
-
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,7 +47,16 @@
     <!-- Specifies which Lucene LockFactory implementation to use -->
     <lockType>${solr.lock.type:native}</lockType>
 
-    <!-- Lucene Infostream used for advanced debugging -->
+	<mergePolicyFactory class="org.apache.solr.index.LogByteSizeMergePolicyFactory">
+      <!-- Merge Factor
+         The merge factor controls how many segments will get merged at a time.
+         For LogByteSizeMergePolicy, mergeFactor decides how many new segments
+         will be allowed before they are merged into one.
+      -->
+      <int name="mergeFactor">4</int>
+    </mergePolicyFactory>
+    
+	<!-- Lucene Infostream used for advanced debugging -->
     <infoStream>false</infoStream>
 
   </indexConfig>
@@ -71,7 +78,7 @@
     <!-- AutoCommit configuration -->
     <autoCommit>
       <maxTime>${solr.autoCommit.maxTime:60000}</maxTime>
-      <openSearcher>true</openSearcher>
+      <openSearcher>false</openSearcher>
     </autoCommit>
 
   </updateHandler>
@@ -87,13 +94,13 @@
     <slowQueryThresholdMillis>500</slowQueryThresholdMillis>
 
     <!-- Filter Cache -->
-    <filterCache class="solr.FastLRUCache" size="100000" initialSize="10000" autowarmCount="10000"/>
+    <filterCache class="solr.FastLRUCache" size="512" initialSize="512" autowarmCount="0"/>
 
     <!-- Query Result Cache -->
-    <queryResultCache class="solr.LRUCache" size="100000" initialSize="10000" autowarmCount="10000"/>
+    <queryResultCache class="solr.LRUCache" size="512" initialSize="512" autowarmCount="32"/>
 
     <!-- Document Cache -->
-    <documentCache class="solr.LRUCache" size="100000" initialSize="10000" autowarmCount="10000"/>
+    <documentCache class="solr.LRUCache" size="512" initialSize="512" autowarmCount="0"/>
 
     <!-- Lazy Field Loading -->
     <enableLazyFieldLoading>true</enableLazyFieldLoading>
@@ -139,9 +146,9 @@
       <str name="echoParams">explicit</str>
       <str name="rows">10</str>
       <str name="defType">edismax</str>
-      <int name="facet.threads">24</int>
+	  <int name="facet.threads">24</int> 
       
-	  <!-- Query settings -->
+      <!-- Query settings -->
       <str name="qf">title^8.0 description^3.0 abstract^3.0 keywords^1.5 body^1.0 lastname^8.0 firstname^8.0 institution^5.0 workexperience^5.0 disciplines^5.0 specializations^5.0 postcop^3.0 thematicareas^3.0 kss^8.0 managingentity^5.0 topics^3.0</str>
       <str name="f.langen.qf">title_en^8.0 description_en^3.0 abstract_en^3.0 keywords^1.5 body_en^1.0</str>
       <str name="f.langes.qf">title_es^8.0 description_es^3.0 abstract_es^3.0 keywords^1.5 body_es^1.0</str>
@@ -239,13 +246,13 @@
     <lst name="invariants">
       <str name="start">0</str>
       <str name="rows">100000</str>
+	  <int name="facet.threads">24</int> 
     </lst>
 
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       <str name="defType">edismax</str>
-      <int name="facet.threads">24</int>
-	  
+      
       <!-- Query settings -->
       <str name="qf">title^8.0 description^3.0 abstract^3.0 keywords^1.5 body^1.0 lastname^8.0 firstname^8.0 institution^5.0 workexperience^5.0 disciplines^5.0 specializations^5.0 postcop^3.0 thematicareas^3.0 kss^8.0 managingentity^5.0 topics^3.0</str>
       <str name="f.langen.qf">title_en^8.0 description_en^3.0 abstract_en^3.0 keywords^1.5 body_en^1.0</str>
@@ -323,6 +330,7 @@
       <str name="echoParams">explicit</str>
       <str name="rows">10</str>
       <str name="defType">edismax</str>
+	  <int name="facet.threads">24</int> 
       
       <!-- Query settings -->
       <str name="qf">title^8.0 description^3.0 abstract^3.0 keywords^1.5 body^1.0</str>
@@ -402,12 +410,13 @@
     <lst name="invariants">
       <str name="start">0</str>
       <str name="rows">100000</str>
+	  <int name="facet.threads">24</int> 
     </lst>
     
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       <str name="defType">edismax</str>
-      <int name="facet.threads">24</int>
+      <int name="facet.threads">24</int> 
 	  
       <!-- Query settings -->
       <str name="qf">title^8.0 description^3.0 abstract^3.0 keywords^1.5 body^1.0</str>
@@ -464,7 +473,7 @@
   <requestHandler name="/partnerdetail" class="solr.SearchHandler">
     <lst name="defaults">
       <str name="rows">1</str>
-      <int name="facet.threads">24</int>
+      <int name="facet.threads">24</int> 
 	  
       <!-- Query settings -->
       <str name="df">id</str>
@@ -490,7 +499,7 @@
       <str name="echoParams">explicit</str>
       <str name="rows">10</str>
       <str name="defType">edismax</str>
-      <int name="facet.threads">24</int>
+      <int name="facet.threads">24</int> 
 	  
       <!-- Query settings -->
       <str name="qf">title^8.0 keywords^5.0 body^3.0</str>
@@ -557,13 +566,14 @@
     <lst name="invariants">
       <str name="start">0</str>
       <str name="rows">100000</str>
+	  <int name="facet.threads">24</int> 
     </lst>
 
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       <str name="defType">edismax</str>
-      <int name="facet.threads">24</int>
-      
+      <int name="facet.threads">24</int> 
+	  
       <!-- Query settings -->
       <str name="qf">title^8.0 keywords^5.0 body^3.0</str>
       <str name="f.langen.qf">title_en^8.0 keywords^5.0 body_en^3.0</str>
@@ -609,8 +619,8 @@
       <str name="echoParams">explicit</str>
       <str name="rows">10</str>
       <str name="defType">edismax</str>
-      <int name="facet.threads">24</int>
-      
+      <int name="facet.threads">24</int> 
+	  
       <!-- Query settings -->
       <str name="qf">lastname^8.0 firstname^8.0 institution^5.0 workexperience^5.0 disciplines^5.0 specializations^5.0 postcop^3.0 thematicareas^3.0</str>
       <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
@@ -674,13 +684,14 @@
     <lst name="invariants">
       <str name="start">0</str>
       <str name="rows">100000</str>
+	  <int name="facet.threads">24</int> 
     </lst>
 
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       <str name="defType">edismax</str>
-      <int name="facet.threads">24</int>
-      
+      <int name="facet.threads">24</int> 
+	  
       <!-- Query settings -->
       <str name="qf">lastname^8.0 firstname^8.0 institution^5.0 workexperience^5.0 disciplines^5.0 specializations^5.0 postcop^3.0 thematicareas^3.0</str>
       <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
@@ -723,8 +734,8 @@
       <str name="echoParams">explicit</str>
       <str name="rows">10</str>
       <str name="defType">edismax</str>
-      <int name="facet.threads">24</int>
-      
+      <int name="facet.threads">24</int> 
+	  
       <!-- Query settings -->
       <str name="qf">kss^8.0 managingentity^5.0 topics^3.0</str>
       <str name="bf">recip(rord(processingtime),1,1000,1000)^1.5</str>
@@ -788,12 +799,13 @@
     <lst name="invariants">
       <str name="start">0</str>
       <str name="rows">100000</str>
+	  <int name="facet.threads">24</int> 
     </lst>
     
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       <str name="defType">edismax</str>
-      <int name="facet.threads">24</int>
+	  <int name="facet.threads">24</int> 
       
       <!-- Query settings -->
       <str name="qf">kss^8.0 managingentity^5.0 topics^3.0</str>
@@ -837,8 +849,8 @@
       <str name="echoParams">explicit</str>
       <str name="rows">10</str>
       <str name="defType">edismax</str>
-      <int name="facet.threads">24</int>
-	  
+	  <int name="facet.threads">24</int> 
+
       <!-- VelocityResponseWriter settings -->
       <str name="wt">velocity</str>
       <str name="v.template">browse</str>
@@ -943,8 +955,7 @@
     <lst name="defaults">
       <str name="echoParams">explicit</str>
       <str name="rows">10</str>
-      <int name="facet.threads">24</int>
-	  
+	  <int name="facet.threads">24</int> 
       <!-- VelocityResponseWriter settings -->
       <str name="wt">velocity</str>
       <str name="v.template">browse</str>
@@ -1048,6 +1059,7 @@
     <lst name="defaults">
      <str name="echoParams">explicit</str>
      <str name="echoHandler">true</str>
+	 <int name="facet.threads">24</int> 
     </lst>
   </requestHandler>
 
@@ -1095,6 +1107,7 @@
   <!-- Spell Check SearchHandler -->
   <requestHandler name="/spell" class="solr.SearchHandler" startup="lazy">
     <lst name="defaults">
+	  <int name="facet.threads">24</int> 
       <str name="df">keywords</str>
       <str name="spellcheck.dictionary">default</str>
       <str name="spellcheck.dictionary">wordbreak</str>
@@ -1134,6 +1147,7 @@
   <!-- Query Suggester SearchHandler -->
   <requestHandler name="/suggest" class="solr.SearchHandler" startup="lazy">
     <lst name="defaults">
+	  <int name="facet.threads">24</int> 
       <str name="suggest">true</str>
       <str name="suggest.count">10</str>
     </lst>
