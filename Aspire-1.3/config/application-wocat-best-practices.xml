@@ -157,6 +157,7 @@
                           
                         } else {              
                           System.out.println("Page "+Integer.toString(pageNumber)+" not processed. Returned HTTP Code: " + urlConn.getResponseCode());
+                          morePages = false;
                           component.error("Returned HTTP Code: " + urlConn.getResponseCode());
 
                         }
