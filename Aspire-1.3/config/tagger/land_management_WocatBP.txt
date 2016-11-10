@@ -1,0 +1,401 @@
+Soil Management
+  +animal manure
+  +conservation agriculture
+  +drainage
+  +hilling
+  +irrigation
+  +land improvement
+  +land levelling
+  +land management
+  +liming
+  +manure
+  +minimum tillage
+  +mulches
+  +mulching
+  +organic farming
+  +ploughing
+  +plowing
+  +reclamation
+  +ridging
+  +site preparation
+  +soil acidification
+  +soil amendments
+  +soil compaction
+  +soil conservation
+  +soil fumigation
+  +soil heating
+  +soil improvement
+  +soil injection
+  +soil management equipment
+  +soil resource management
+  +soil scarification
+  +soil solarization
+  +soil sterilization
+  +soil treatment
+  +terraces
+  +terracing
+  +tillage
+  +tillage practices
+  +water erosion
+  +weed management
+  +wind erosion
+  +zero tillage
+  +soil fertility management
+
+Crop Management
+  +agricultural management
+  +agronomy
+  +application rates
+  +choice of species
+  +crop residue management
+  +cropping patterns
+  +cropping sequence
+  +cropping systems
+  +cultivation
+  +cultural methods
+  +fallow
+  +farm inputs
+  +farm machinery
+  +farm management
+  +fertilization
+  +fertilizer
+  +fertilizer application
+  +fertilizers
+  +harvesting date
+  +harvesting frequency
+  +integrated crop management
+  +integrated plant production
+  +nursery management
+  +nursery manuring
+  +nursery raising
+  +nutrient management
+  +plant cultural practices
+  +plant nutrition
+  +planting date
+  +planting methods
+  +precision agriculture
+  +preharvest operation
+  +preharvest treatment
+  +rotation
+  +seedling rates
+  +soil injection
+  +sowing date
+  +sowing depth
+  +sowing methods
+  +sowing rates
+  +spacing
+  +treatment date
+  +rotational system
+  +crop rotation
+  +shifting cultivation	
+  +integrated pest and disease management
+  +organic agriculture
+
+Deforestation
+  +charcoal
+  +felling
+  +forest fire
+  +forest plantation management	
+  +forestry
+  +fuelwood
+  +land clearing
+  +agroforestry
+  +forest management
+
+Overgrazing
+  +browsing damage
+  +goat
+  +grazing intensity
+  +grazing systems
+  +livestock
+  +over-grazing
+  +sheep
+  +water erosion
+  +wind erosion
+  +pastoralism and grazing
+  +animal breeds
+
+Industrial activities and mining
+  +acide mine drainage
+  +agroindustrial sector
+  +agroindustry
+  +building industry
+  +charcoal
+  +chemical industry
+  +cooperative processing
+  +cottage industry
+  +energy
+  +factories
+  +fermentation industry
+  +fish industry
+  +forest products industry
+  +fuelwood
+  +industrial emission
+  +industrial organizations
+  +industrial pollution
+  +industrial supply
+  +industrial uses
+  +input industries
+  +leather industry
+  +machinery industry
+  +manufacturing
+  +mine spoil
+  +mined soils
+  +miners
+  +mining
+  +mining industry
+  +mining industry statistics
+  +non food industries
+  +oils industry
+  +packaging industry
+  +pharmaceuticals industry
+  +pollutants
+  +pollution
+  +pulp and paper industry
+  +refrigeration industry
+  +rubber industry
+  +service industry
+  +shipbuilding
+  +starch industry
+  +surface mining
+  +textile industry
+  +tobacco industry
+  +underground mining
+  +waste deposition
+  +wood industry
+
+Urbanisation and infrastructure development
+  +farmland preservation
+  +land use change
+  +rural urban relations
+  +towns
+  +urban development
+  +urban expansion
+  +urban growth
+  +urban sprawl
+  +urbanization
+
+Water Management
+  +agricultural hydraulics
+  +built drainage system
+  +drainage
+  +flood control
+  +hydraulic engineering
+  +hydraulic structures
+  +irrigation
+  +irrigation management
+  +irrigation rates
+  +management systems evaluation areas
+  +municipal water management
+  +ponding
+  +rain water management
+  +salinisation
+  +salinity control
+  +salinization
+  +stormwater management
+  +surface water management
+  +transfer of waters
+  +wastewater
+  +water allocation
+  +water conservation
+  +water demand
+  +water distribution
+  +water exploration
+  +water footprint
+  +water management in lowland
+  +water management in upland*
+  +water purification
+  +water quality management
+  +water quantity management
+  +water resource management OR "water spreading
+  +water resources
+  +water reuse
+  +water reuse" "water rights
+  +water saving
+  +water storage
+  +water supply
+  +water use
+  +water users associations
+  +water utilization
+  +watershed management
+  +wellhead protection
+  +surface water management
+  +groundwater management
+
+Natural Hazards
+  +avalanche
+  +avalanches
+  +avalanching
+  +disaster
+  +disaster assistance
+  +disaster preparedness
+  +disaster recover
+  +disaster zone
+  +disasters
+  +drought
+  +droughtiness
+  +droughting
+  +earthquake
+  +earthquakes
+  +earthquaking
+  +fire
+  +fired
+  +fires
+  +firing
+  +flood
+  +flooded
+  +flooding
+  +geological disaster
+  +hydrologic disaster
+  +landslide
+  +landslides
+  +landsliding
+  +metereological disaster
+  +natural disaster
+  +natural disasters
+  +storm
+  +storming
+  +storms
+  +tsunami
+  +tsunamis
+  +volcanic activity
+  +volcanic eruption
+  +volcanic eruptions
+  +volcano
+  +volcanoes
+  +water erosion
+  +weather hazard
+  +weather hazards
+  +wind erosion
+
+Population pressure
+  +current population survey
+  +demographic development
+  +human population
+  +overcrowding
+  +overpopulation
+  +population
+  +population density
+  +population dynamics
+  +population growth
+  +state
+
+Land tenure
+  +access rights
+  +farm tenancy
+  +land security
+  +land, land economics
+  +leasing
+  +property rights
+  +rural planning
+  +tenure
+  +tenure systems
+
+Poverty
+  +charitable organizations
+  +famine
+  +hunger
+  +income
+  +living standards
+  +low income groups
+  +low income households
+  +malnutrition
+  +quality of life
+  +rural poverty
+  +social problems
+
+Labour availability
+  +emigration
+  +employment
+  +exodus
+  +farm labor
+  +farm structure
+  +human resources
+  +immigration
+  +job training
+  +jobs
+  +labor
+  +labor economics
+  +labor force
+  +labor productivity
+  +labour mobility
+  +labour shortage
+  +land abandonment
+  +migrant labour
+  +migration
+  +nomadism
+  +occupation
+  +refugees
+  +rural settlement
+  +rural society
+  +rural urban migration
+  +seasonal migration
+  +social change
+  +transhumance
+  +transmigration
+  +urban rural migration
+  +workers
+
+Inputs and infrastructure
+  +access to markets
+  +built environment
+  +community facility
+  +economic infrastructure
+  +electrification
+  +energy distribution system
+  +equipment
+  +gas network
+  +harbours
+  +health facility
+  +information infrastructure
+  +inland waterways
+  +municipal heating network
+  +pipeline
+  +prices
+  +production possibilities
+  +public services
+  +public works
+  +railways
+  +roads
+  +sewerage system
+  +traffic infrastructure
+  +transport infrastructure
+  +water distribution system
+
+Education, access to knowledge and support services
+  +adult education
+  +agricultural education
+  +career education
+  +civic education
+  +consumer education
+  +continuing education
+  +dietetic education
+  +education programs
+  +educational institutions
+  +educational methods,
+  +educational policy
+  +educational resources
+  +environmental education
+  +formal education 
+  +health education
+  +higher education
+  +informal education
+  +level of education
+  +nutrition education
+  +primary education
+  +rural education and training
+  +secondary education
+  +training
+  +training center 
+  +training centre
+  +upbringing
+
+Governance and Institutional Policies
+  +administrative management
+  +environmental governance law
+  +environmental law
+  +governing authority
+  +governing boards
+  +law enforcement
+  +regulation
+  +regulatory framework

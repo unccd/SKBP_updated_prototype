@@ -338,7 +338,7 @@
             <tagField field="data" isbody="true"/>
           </tagFields>
           <tagLists>
-            <tagList id="landManagement" tagFile="config/tagger/land_management.txt"/>
+            <tagList id="landManagement" tagFile="config/tagger/land_management_WocatBP.txt"/>
           </tagLists>
           <tokenProcessing>
             <tokenFilter class="org.apache.lucene.analysis.standard.StandardFilter"/>
